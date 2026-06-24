@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Course Syllabus: MCI1104 Advanced Analytics</title>
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #34495e;
+            --accent-color: #3498db;
+            --bg-color: #f8f9fa;
+            --panel-bg: #ffffff;
+            --text-main: #333333;
+            --exercise-bg: #e8f4fd;
+            --exercise-border: #b6dcf9;
+            --note-bg: #fdfefe;
+            --note-border: #ecf0f1;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+            margin: 0;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            color: var(--primary-color);
+            font-size: 2.2rem;
+        }
+
+        /* Accordion Styles */
+        .accordion {
+            background-color: var(--panel-bg);
+            color: var(--primary-color);
+            cursor: pointer;
+            padding: 18px 20px;
+            width: 100%;
+            border: none;
+            border-bottom: 1px solid #e1e8ed;
+            text-align: left;
+            outline: none;
+            font-size: 1.1rem;
+            font-weight: 600;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-radius: 7px;
+            margin-bottom: 5px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .accordion:hover {
+            background-color: var(--secondary-color);
+            color: white;
+        }
+
+        .accordion.active {
+            background-color: var(--primary-color);
+            color: white;
+            border-bottom-left-radius: 0;
+            border-bottom-right-radius: 0;
+            margin-bottom: 0;
+        }
+
+        .accordion::after {
+            content: '\002B';
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-left: 15px;
+        }
+
+        .accordion.active::after {
+            content: "\2212";
+        }
+
+        /* Panel Styles */
+        .panel {
+            padding: 0 20px;
+            background-color: var(--panel-bg);
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease-out, padding 0.4s ease;
+            border-bottom-left-radius: 4px;
+            border-bottom-right-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            margin-bottom: 5px;
+        }
+
+        .panel.show {
+            padding: 20px;
+            margin-bottom: 15px;
+            border-top: 1px solid #e1e8ed;
+        }
+
+        .info-row {
+            margin-bottom: 12px;
+        }
+
+        .info-label {
+            font-weight: bold;
+            color: var(--secondary-color);
+        }
+
+        /* Lecture Notes Styles */
+        .lecture-notes {
+            background-color: var(--note-bg);
+            border: 1px solid var(--note-border);
+            border-left: 4px solid var(--secondary-color);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 7px;
+        }
+
+        .lecture-notes h3 {
+            margin-top: 0;
+            color: var(--primary-color);
+            font-size: 1.2rem;
+            border-bottom: 1px solid var(--note-border);
+            padding-bottom: 10px;
+        }
+
+        .lecture-notes ul {
+            padding-left: 20px;
+        }
+
+        /* Image Styles */
+        .lecture-image {
+            width: 100%;
+            display: block;
+            margin: 15px auto;
+            border-radius: 7px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            object-fit: cover;
+            background-color: #e1e8ed;
+        }
+
+         /* style="width:100%; max-width:800px; margin: 15px 0; border-radius: 8px;" */
+
+        .intro-section {
+            background-color: #ffede0; 
+            padding: 10px 15px 10px 15px;
+            margin-top: 15px;
+            border-radius: 7px;
+        }
+
+        .bridge-section {
+            background-color: #fff5f5; 
+            padding: 10px 15px 10px 15px;
+            border-radius: 7px; 
+            margin-top:15px; 
+            border-left: 4px solid #e53e3e;"
+        }
+
+        .exercise-box {
+            background-color: var(--exercise-bg);
+            border-left: 4px solid var(--accent-color);
+            padding: 15px;
+            margin-top: 15px;
+            border-radius: 7px;
+        }
+        
+        .exercise-box strong {
+            color: var(--primary-color);
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .eda-quote-section {
+            background-color: #f8f9fa; 
+            border-left: 4px solid #ff6b00; 
+            padding: 15px;
+            margin-top: 15px;
+            border-radius: 7px;
+        }
+        
+        .eda-quote-section blockquote {
+            margin: 0 0 15px 0;
+            padding: 0;
+            font-size: 1.15rem;
+            font-style: italic;
+            color: #2d3748;
+            line-height: 1.5;
+        }
+
+        .eda-quote-section blockquote::before {
+            content: "\201C";
+            font-size: 2rem;
+            color: #cbd5e0;
+            line-height: 0;
+            vertical-align: bottom;
+            margin-right: 5px;
+        }
+
+        .eda-quote-section .author {
+            font-weight: 700;
+            color: #4a5568;
+            display: block;
+            margin-bottom: 15px;
+            font-size: 0.95rem;
+        }
+
+        .eda-quote-section .context {
+            color: #4a5568;
+            font-size: 1rem;
+            line-height: 1.6;
+            margin: 0;
+            padding-top: 15px;
+            border-top: 1px solid #e2e8f0;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>MCI1104 ADVANCED ANALYTICS</h1>
+    <div style="margin: -25px 0px 30px 0px; text-align: center;">by: <b>Abbas Saliimi Lokman</b></div>
+
+    <button class="accordion">Week 1: Overview of Data Mining and Machine Learning</button>
+    <div class="panel">
+        <div class="info-row"><span class="info-label">What You Will Learn:</span> Transforming data to information, navigating the data mining process, contrasting machine learning with statistics, and understanding generalization as search.</div>
+        <div class="info-row"><span class="info-label">Expected Effort:</span> 6 hours of lecture/guided learning, 2 hours of independent study.</div>
+        
+        <div class="lecture-notes">
+            <h3>Week 1 Study Guide</h3>
+            
+            <h4>1. From Data to Information (Estimated Time: 20 Mins)</h4>
+            <p><strong>Core Concept:</strong> You live in a data-rich but information-poor world. Your fundamental goal in analytics is to transform the raw noise into actionable insights.</p>
+            <img class="lecture-image" src="week1-1.jpeg" alt="Placeholder for DIKW Pyramid Diagram">
+            <!-- <img class="lecture-image" src="https://placehold.co/2c3e50/ffffff?text=The+DIKW+Pyramid:+Data+to+Wisdom" alt="Placeholder for DIKW Pyramid Diagram"> -->
+            <ul>
+                <li><strong>Data:</strong> Think of this as raw, unorganized facts—numbers or text without context (e.g., "100", "Red", "10:04 AM").</li>
+                <li><strong>Information:</strong> This is what happens when you process and structure data to give it meaning (e.g., "100 customers bought the Red shirt at 10:04 AM").</li>
+                <li><strong>The DIKW Pyramid:</strong> As an analyst, you will climb the ladder from <strong>D</strong>ata &rarr; <strong>I</strong>nformation &rarr; <strong>K</strong>nowledge &rarr; <strong>W</strong>isdom. Advanced analytics empowers you to discover patterns (Knowledge) and prescribe actions (Wisdom).</li>
+            </ul>
+
+            <hr style="border: 0; border-top: 1px solid #edf2f7; margin: 20px 0;">
+
+            <h4>2. The Data Mining Process: CRISP-DM (Estimated Time: 45 Mins)</h4>
+            <p><strong>Core Concept:</strong> Real-world data mining isn't just about writing code; it requires a structured, iterative roadmap. The industry standard you will use is CRISP-DM (Cross-Industry Standard Process for Data Mining).</p>
+            <img class="lecture-image" src="week1-2.jpeg" alt="Placeholder for CRISP-DM Process Cycle">
+            <!-- <img class="lecture-image" src="https://placehold.co/2c3e50/ffffff?text=CRISP-DM+Lifecycle+Diagram" alt="Placeholder for CRISP-DM Process Cycle"> -->
+            <ul>
+                <li><strong>Business Understanding:</strong> You must first define the problem. What is the business goal? <em>(e.g., "We need to reduce customer churn by 10%.")</em></li>
+                <li><strong>Data Understanding:</strong> Explore the data you have. Is it complete? Are there missing values?</li>
+                <li><strong>Data Preparation:</strong> Prepare to spend 70-80% of your time here. You will clean, format, and engineer features from your raw data.</li>
+                <li><strong>Modeling:</strong> Apply your algorithms. You will often jump back and forth between this step and Data Preparation.</li>
+                <li><strong>Evaluation:</strong> Does your model actually solve the business problem defined in step one, or does it just look good on paper?</li>
+                <li><strong>Deployment:</strong> Put your model to work in the real world and monitor its performance.</li>
+            </ul>
+
+            <hr style="border: 0; border-top: 1px solid #edf2f7; margin: 20px 0;">
+
+            <h4>3. Machine Learning vs. Statistics (Estimated Time: 25 Mins)</h4>
+            <p><strong>Core Concept:</strong> As you transition into advanced analytics, it's crucial to understand how your statistical background differs from the machine learning mindset.</p>
+            <img class="lecture-image" src="week1-3.jpeg" alt="Placeholder for Machine Learning vs Statistics Table">
+            <!-- <img class="lecture-image" src="https://placehold.co/2c3e50/ffffff?text=Machine+Learning+vs+Statistics+Comparison" alt="Placeholder for Machine Learning vs Statistics Table"> -->
+            <ul>
+                <li><strong>Statistics (The "Why"):</strong> Focuses heavily on <em>inference</em>. You use it to understand the underlying data generation process and rely on strict mathematical assumptions.</li>
+                <li><strong>Machine Learning (The "What"):</strong> Focuses heavily on <em>prediction</em>. You will train algorithms to find complex patterns without needing strict theoretical assumptions about the data.</li>
+                <li><strong>Learning the Lingo:</strong> Be prepared to switch vocabularies. What statisticians call "Variables" and "Parameters," you will often hear machine learning engineers call "Features" and "Weights."</li>
+            </ul>
+
+            <hr style="border: 0; border-top: 1px solid #edf2f7; margin: 20px 0;">
+
+            <h4>4. Generalization as Search (Estimated Time: 30 Mins)</h4>
+            <p><strong>Core Concept:</strong> How will your models actually "learn"? By searching through a massive landscape of possibilities to find the best fit.</p>
+            <img class="lecture-image" src="week1-4.jpeg" alt="Placeholder for Overfitting vs Underfitting Graphs">
+            <!-- <img class="lecture-image" src="https://placehold.co/2c3e50/ffffff?text=Overfitting+(Variance)+vs+Underfitting+(Bias)" alt="Placeholder for Overfitting vs Underfitting Graphs"> -->
+            <ul>
+                <li><strong>The Hypothesis Space:</strong> Think of this as a vast space containing every possible model your algorithm could create. Your algorithm's job is to search this space for the winning model.</li>
+                <li><strong>Your Core Challenge: Generalization.</strong> Anyone can build a model that memorizes the past. Your true task is to build a model that <em>generalizes</em> well to the future (unseen data).</li>
+                <li><strong>The Balancing Act:</strong> 
+                    <ul>
+                        <li><em>Overfitting (High Variance):</em> Your model memorized the training data—including the noise. It will fail in the real world.</li>
+                        <li><em>Underfitting (High Bias):</em> Your model is too simple and hasn't learned enough. It fails on both training and real-world data.</li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+
+        <div class="exercise-box">
+            <strong>Independent Learning Challenge:</strong>
+            <p>No practical laboratory hours are scheduled for this introductory week. Instead, take a moment to reflect on your own experiences:</p>
+            <p><em>"Think of a problem or inefficiency in your daily life or workplace. How would you frame it using the first two steps (Business Understanding & Data Understanding) of the CRISP-DM framework?"</em></p>
+        </div>
+    </div>
+
+    <!-- <button class="accordion">Week 2: Input: Concepts, Instances, and Attributes</button>
+    <div class="panel">
+        <div class="info-row"><span class="info-label">Teaching Plan:</span> Components of the input for learning, concepts in learning, types of attributes, and preparing the input.</div>
+        <div class="info-row"><span class="info-label">Time Allocation:</span> 2 hours lecture, 4 hours practical.</div>
+        
+        <div class="lecture-notes">
+            <h3>Lecture Notes</h3>
+            <p><strong>Understanding Datasets:</strong> A dataset is essentially a collection of instances (rows) and attributes (columns). A "concept" is the actual target we are trying to learn (e.g., classifying a tumor as benign or malignant).</p>
+            <ul>
+                <li><strong>Categorical Attributes:</strong> Nominal (no order, e.g., color) and Ordinal (ordered, e.g., size).</li>
+                <li><strong>Numeric Attributes:</strong> Interval (no true zero, e.g., Celsius) and Ratio (true zero, e.g., weight).</li>
+                <li><strong>Data Preparation:</strong> Involves cleaning missing data, handling outliers, encoding categories, and normalizing numeric values.</li>
+            </ul>
+            <img class="lecture-image" src="https://placehold.co/34495e/ffffff?text=Instances+(Rows)+vs.+Attributes+(Columns)" alt="Diagram illustrating tabular data structure">
+        </div>
+
+        <div class="exercise-box">
+            <strong>Python Exercise:</strong>
+            Focus on data manipulation. Have students use pandas to load a dataset, explore different attribute types (categorical, numerical), and perform data preparation (such as handling missing values or formatting data types).
+        </div>
+    </div> -->
+
+    <button class="accordion">Week 2: Input: Concepts, Instances, and Attributes</button>
+    <div class="panel">
+        <div class="info-row"><span class="info-label">What You Will Learn:</span> How to dissect a dataset into components for learning, define the core "concept" your model needs to learn, identify different attribute types, and prepare raw data for machine learning algorithms.</div>
+        <div class="info-row"><span class="info-label">Expected Effort:</span> 2 hours of interactive lecture, 4 hours of practical laboratory work.</div>
+        
+        <div class="lecture-notes">
+            <h3>Week 2 Study Guide</h3>
+            
+            <h4>1. Components of the Input for Learning (Estimated Time: 30 Mins)</h4>
+            <p><strong>Core Concept:</strong> Before you can build a model, you need to understand the anatomy of the data feeding into it. Think of a standard dataset as a highly structured grid of information.</p>
+            <img class="lecture-image" src="week2-1.jpeg" alt="Placeholder for Diagram showing Tabular Data Structure">
+            <!-- <img class="lecture-image" src="https://placehold.co/34495e/ffffff?text=Anatomy+of+a+Dataset:+Instances+and+Attributes" alt="Placeholder for Diagram showing Tabular Data Structure"> -->
+            <ul>
+                <li><strong>Instances (The "Rows"):</strong> These are the individual, independent examples in your dataset. Depending on your domain, you might call them records, examples, data points, or samples. If you are predicting house prices, one instance is a single house.</li>
+                <li><strong>Attributes (The "Columns"):</strong> These are the distinct properties, features, or characteristics of your instances. Using the house example, attributes would be the number of bedrooms, square footage, and neighborhood.</li>
+                <li><strong>The Matrix Form:</strong> In practice, you will work with this data as an <b><i>N</i></b> x <b><i>M</i></b> matrix, where <b><i>N</i></b> is the number of instances and <b><i>M</i></b> is the number of attributes.</li>
+            </ul>
+
+            <hr style="border: 0; border-top: 1px solid #edf2f7; margin: 20px 0;">
+
+            <h4>2. Concepts in Learning (Estimated Time: 25 Mins)</h4>
+            <p><strong>Core Concept:</strong> The "concept" is the specific thing you want your algorithm to comprehend or output. It is the target of your analytical efforts.</p>
+            <img class="lecture-image" src="week2-2.jpeg" alt="Placeholder for Diagram illustrating Learning Concepts">
+            <!-- <img class="lecture-image" src="https://placehold.co/34495e/ffffff?text=Learning+Concepts:+Classification,+Clustering,+Association" alt="Placeholder for Diagram illustrating Learning Concepts"> -->
+            <ul>
+                <li><strong>Classification Concept:</strong> You want the algorithm to learn how to assign instances to predefined categories. <em>(e.g., "Is this email Spam or Not Spam?")</em></li>
+                <li><strong>Association Concept:</strong> You want the algorithm to learn rules that associate different attributes together. <em>(e.g., "Customers who buy bread are also likely to buy butter.")</em></li>
+                <li><strong>Clustering Concept:</strong> You want the algorithm to group similar instances together when there are no predefined categories. <em>(e.g., "Segment our customer base into three distinct purchasing behaviors.")</em></li>
+                <li><strong>Numeric Prediction Concept:</strong> You want to forecast a continuous numerical value. <em>(e.g., "What will the temperature be tomorrow?")</em></li>
+            </ul>
+
+            <hr style="border: 0; border-top: 1px solid #edf2f7; margin: 20px 0;">
+
+            <h4>3. Types of Attributes (Estimated Time: 35 Mins)</h4>
+            <p><strong>Core Concept:</strong> Not all data is created equal. Algorithms treat text, categories, and numbers very differently. You must be able to classify your variables to choose the right analytical approach.</p>
+            <img class="lecture-image" src="week2-3.jpeg" alt="Placeholder for Attribute Types Chart"> 
+            <!-- <img class="lecture-image" src="https://placehold.co/34495e/ffffff?text=Categorical+vs+Numeric+Attributes" alt="Placeholder for Attribute Types Chart">  -->
+            <ul>
+                <li><strong>Categorical (Qualitative) Attributes:</strong>
+                    <ul>
+                        <li><em>Nominal:</em> Categories with no inherent mathematical order or ranking. (e.g., Eye Color: Blue, Brown, Green). You cannot say Brown is "greater than" Blue.</li>
+                        <li><em>Ordinal:</em> Categories with a clear, logical order or rank, but the exact distance between them isn't mathematically measurable. (e.g., Customer Satisfaction: Low, Medium, High).</li>
+                    </ul>
+                </li>
+                <li><strong>Numeric (Quantitative) Attributes:</strong>
+                    <ul>
+                        <li><em>Interval:</em> Measurable quantities where the difference between values is meaningful, but there is no "true zero" point. (e.g., Temperature in Celsius: 0°C does not mean "no temperature").</li>
+                        <li><em>Ratio:</em> Measurable quantities with a true, meaningful zero point, allowing you to compute ratios. (e.g., Weight, Age, Salary: Someone earning $100k makes twice as much as someone earning $50k).</li>
+                    </ul>
+                </li>
+            </ul>
+
+            <hr style="border: 0; border-top: 1px solid #edf2f7; margin: 20px 0;">
+
+            <h4>4. Preparing the Input (Estimated Time: 30 Mins)</h4>
+            <p><strong>Core Concept:</strong> Algorithms are strictly mathematical and highly sensitive to bad data. "Garbage in, garbage out." You must prepare the raw input before any learning can happen.</p>
+            <img class="lecture-image" src="week2-4.jpeg" alt="Placeholder for Data Cleaning Pipeline">
+            <!-- <img class="lecture-image" src="https://placehold.co/34495e/ffffff?text=Data+Preparation+Pipeline" alt="Placeholder for Data Cleaning Pipeline"> -->
+            <ul>
+                <li><strong>Handling Missing Data:</strong> Datasets will have blanks. You must decide whether to delete instances with missing data or "impute" them (fill them in using averages or predictions).</li>
+                <li><strong>Encoding Categories:</strong> Machine learning algorithms cannot read text like "Red" or "Blue." You will learn to convert these into numbers using techniques like One-Hot Encoding.</li>
+                <li><strong>Handling Outliers:</strong> Identifying extreme anomalies that could artificially skew your model's perspective.</li>
+                <li><strong>Normalization/Standardization:</strong> Scaling numeric attributes so they are on similar scales (e.g., shrinking values ranging from 1,000–100,000 to fall between 0 and 1). This ensures that attributes with naturally larger numbers don't unfairly dominate the algorithm.</li>
+            </ul>
+        </div>
+
+        <div class="exercise-box">
+            <strong>Practical Lab: Python & Pandas (4 Hours)</strong>
+            <p>It's time to get your hands dirty! In this week's lab, you will step into the shoes of a data analyst. Using Python and the Pandas library, you will:</p>
+            <ol>
+                <li><b>Load a real-world dataset:</b> (e.g., Titanic passenger data or Housing prices).</li>
+                <li><b>Explore the data:</b> Write code to distinguish between the categorical and numerical attributes.</li>
+                <li><b>Clean the data:</b> Identify missing values and practice different imputation strategies.</li>
+                <li><b>Transform the data:</b> Convert a nominal attribute into a machine-readable format and normalize a ratio attribute.</li>
+            </ol>
+        </div>
+    </div>
+
+    <!-- <button class="accordion">Week 3: Data Representation</button>
+    <div class="panel">
+        <div class="info-row"><span class="info-label">Teaching Plan:</span> Classification of data representation methods, composition, comparison, relationships, and distributions.</div>
+        <div class="info-row"><span class="info-label">Time Allocation:</span> 2 hours lecture, 4 hours practical.</div>
+        
+        <div class="lecture-notes">
+            <h3>Lecture Notes</h3>
+            <p><strong>Exploratory Data Analysis (EDA):</strong> Visual representation helps uncover hidden patterns, skewness, and correlations before applying predictive models.</p>
+            <ul>
+                <li><strong>Distributions:</strong> Analyzed using Histograms and Box-plots to find medians, quartiles, and outliers.</li>
+                <li><strong>Relationships:</strong> Explored using Scatter plots (for two numeric variables) and Correlation Heatmaps to quantify linear relationships.</li>
+                <li><strong>Composition:</strong> Pie charts (rarely recommended) or Stacked Bar charts to show parts of a whole.</li>
+            </ul>
+            <img class="lecture-image" src="https://placehold.co/2c3e50/ffffff?text=Data+Visualization:+Histograms+and+Scatterplots" alt="Data visualization dashboard concept">
+        </div>
+
+        <div class="exercise-box">
+            <strong>Python Exercise:</strong>
+            Use visualization libraries like matplotlib or seaborn to build data representations. Students should plot data distributions, compare variables, and map relationships using scatter plots or correlation matrices.
+        </div>
+    </div> -->
+
+    <button class="accordion">Week 3: Data Representation</button>
+    <div class="panel">
+        <div class="info-row"><span class="info-label">What You Will Learn:</span> The principles of Exploratory Data Analysis (EDA) and how to visually represent data through composition, comparison, relationships, and distributions.</div>
+        <div class="info-row"><span class="info-label">Expected Effort:</span> 2 hours of interactive lecture, 4 hours of practical laboratory work.</div>
+        
+        <div class="lecture-notes">
+            <h3>Week 3 Study Guide</h3>
+            <div class="intro-section">
+                <p><strong>Introduction:</strong> Before you build complex models or even draw a single chart, you must become a data detective. EDA is the critical process of performing initial investigations on data to discover patterns, spot anomalies, test hypotheses, and check assumptions.</p>  
+                <div class="eda-quote-section">
+                    <blockquote>
+                        Forcing the data to reveal its structural secrets.
+                    </blockquote>
+                    <span class="author">— John Tukey, Pioneer of EDA</span>
+                    <p class="context">
+                        <strong>Your goal:</strong> Understand what the data is telling you before forcing it into an algorithm. This starts with non-visual EDA (calculating means, medians, and missing values) to establish a baseline, followed by visual data representation; which is our primary focus this week.
+                    </p>
+                </div>
+            </div>
+            <img class="lecture-image" src="week3-0.jpeg" alt="Placeholder for EDA Mindset Concept">  
+            <!-- <img class="lecture-image" src="https://placehold.co/2c3e50/ffffff?text=The+EDA+Mindset:+Detect+before+you+Direct" alt="Placeholder for EDA Mindset Concept" style="width:100%; max-width:800px; margin-top: 15px; border-radius: 8px;">     -->
+            
+            <hr style="border: 0; border-top: 1px solid #edf2f7; margin: 20px 0;">
+
+            <h4>1. Classification of Data Representation Methods (Estimated Time: 20 Mins)</h4>
+            <p><strong>Core Concept:</strong> Once you understand your numerical baseline, you move to visual EDA. Not every chart works for every dataset. Your first job is to classify what you are trying to show. Are you trying to see the composition of a whole, compare items, show a relationship between variables, or understand the distribution of a single variable? Asking the right question dictates the right visual tool.</p>
+            <img class="lecture-image" src="week3-1.jpeg" alt="Placeholder for Chart Selection Flowchart">
+            <!-- <img class="lecture-image" src="https://placehold.co/2c3e50/ffffff?text=Chart+Selection+Decision+Tree" alt="Placeholder for Chart Selection Flowchart"> -->
+
+            <hr style="border: 0; border-top: 1px solid #edf2f7; margin: 20px 0;">
+
+            <h4>2. Composition (Estimated Time: 20 Mins)</h4>
+            <p><strong>Core Concept:</strong> You use composition charts when you want to show how a whole entity is divided into its constituent parts. <em>(e.g., "What percentage of our total sales comes from each region?")</em></p>
+            <img class="lecture-image" src="week3-2.jpeg" alt="Placeholder for Composition Charts">
+            <ul>
+                <li><strong>Pie Charts:</strong> While popular, you should use these sparingly. Human eyes are notoriously bad at comparing angles and areas, making similar-sized slices hard to differentiate.</li>
+                <li><strong>Donut Charts:</strong> A variation of the pie chart with the center removed. By focusing the eye on the length of the arcs rather than the area or angle of slices, they can be slightly easier to read, though they share the same general limitations.</li>
+                <li><strong>Treemaps:</strong> Useful for displaying large volumes of hierarchical data using nested rectangles. The size and color of each rectangle allow you to compare multiple dimensions of the data at once.</li>
+                <li><strong>Stacked Bar Charts:</strong> A highly effective alternative to pie and donut charts. They allow you to easily compare parts of a whole, especially when you need to track how that composition changes across different categories or time periods.</li>
+            </ul>
+
+            <hr style="border: 0; border-top: 1px solid #edf2f7; margin: 20px 0;">
+
+            <h4>3. Comparison (Estimated Time: 25 Mins)</h4>
+            <p><strong>Core Concept:</strong> You will use comparison charts to evaluate multiple items against each other, or to see how a single item changes over time. <em>(e.g., "How did product A perform compared to product B over the last 12 months?")</em></p>
+            <img class="lecture-image" src="week3-3.jpeg" alt="Placeholder for Comparison Charts">
+            <ul>
+                <li><strong>Column Charts (Vertical):</strong> Your standard tool for comparing discrete categorical data. Always ensure your y-axis starts at zero to avoid misleading visual comparisons.</li>
+                <li><strong>Bar Charts (Horizontal):</strong> Functionally identical to column charts but laid out horizontally. These are highly recommended when your category labels are long or when you are comparing a large number of items.</li>
+                <li><strong>Grouped Bar/Column Charts:</strong> Used when you need to compare multiple sub-groups side-by-side within primary categories (e.g., comparing both Product A and Product B's performance simultaneously across four different quarters).</li>
+                <li><strong>Line Charts:</strong> The definitive choice for comparing continuous data over a period of time (Time Series), allowing you to easily spot historical trends, volatility, and seasonality.</li>
+            </ul>
+
+            <hr style="border: 0; border-top: 1px solid #edf2f7; margin: 20px 0;">
+
+            <h4>4. Relationships (Estimated Time: 30 Mins)</h4>
+            <p><strong>Core Concept:</strong> In predictive analytics, identifying relationships is crucial. You want to know if changing one variable affects another. <em>(e.g., "As marketing spend increases, does customer acquisition also increase?")</em></p>
+            <img class="lecture-image" src="week3-4.jpeg" alt="Placeholder for Relationship Charts">
+            <ul>
+                <li><strong>Scatter Plots:</strong> The foundational chart for visualizing the relationship between two continuous numeric variables along an x and y-axis. You will look for linear trends, clusters, or a complete lack of correlation (random scatter).</li>
+                <li><strong>Bubble Charts:</strong> An evolution of the scatter plot that allows you to visualize a third numeric dimension. The x and y axes dictate the position, while the area (size) of the "bubble" represents the magnitude of the third variable.</li>
+                <li><strong>Connected Scatter Plots:</strong> A hybrid between a scatter plot and a line chart. It plots two variables on the axes but connects the points with a line in a specific sequence (typically chronological) to trace how their relationship evolves over time.</li>
+                <li><strong>Correlation Heatmaps:</strong> A powerful tool to view relationships across your entire dataset at once. Using a color gradient in a grid format, it mathematically quantifies and displays how strongly every numerical variable correlates with every other variable.</li>
+            </ul>
+            
+
+            <hr style="border: 0; border-top: 1px solid #edf2f7; margin: 20px 0;">
+
+            <h4>5. Distributions (Estimated Time: 25 Mins)</h4>
+            <p><strong>Core Concept:</strong> Before analyzing how variables interact, you must understand each variable on its own. How is the data spread out? Where is the center? Are there extreme anomalies?</p>
+            <img class="lecture-image" src="week3-5.jpeg" alt="Placeholder for Distribution Charts">
+            <ul>
+                <li><strong>Histograms:</strong> These group numeric data into "bins" to show the frequency of values. You will use this to determine if your data follows a normal distribution (bell curve) or if it is skewed to one side.</li>
+                <li><strong>Density Plots:</strong> A smoothed, continuous version of a histogram. It estimates the probability distribution of a continuous variable, making it easier to visualize the overall shape of the data without being affected by arbitrary bin sizes.</li>
+                <li><strong>Box-Plots (Box and Whisker):</strong> Excellent for visualizing the median, the interquartile range, and pinpointing exact statistical outliers (data points that fall far outside the normal distribution).</li>
+                <li><strong>Violin Plots:</strong> A hybrid between a box plot and a density plot. It provides the same statistical summary as a box plot but adds a rotated density plot on each side, allowing you to easily spot multiple peaks or clusters in the data that a standard box plot would hide.</li>
+            </ul>
+        </div>
+
+        <div class="exercise-box">
+            <strong>Practical Lab: Python Visualizations (4 Hours)</strong>
+            <p>You will now translate these visual concepts into code. Using Python's powerful visualization libraries, <b>Matplotlib</b> and <b>Seaborn</b>, you will:</p>
+            <ol>
+                <li><b>Analyze Distributions:</b> Plot histograms to observe the skewness of numerical features in a provided dataset.</li>
+                <li><b>Hunt for Outliers:</b> Generate box-plots and statistically identify anomalous data points.</li>
+                <li><b>Map Relationships:</b> Create a correlation heatmap to identify which features have the strongest predictive relationship with your target variable, followed by scatter plots to visualize those specific pairs.</li>
+            </ol>
+        </div>
+    </div>
+
+    <button class="accordion">Week 4: Time Series Data (Part 1)</button>
+    <div class="panel">
+        <div class="info-row"><span class="info-label">What You Will Learn:</span> The unique characteristics of sequential data, how to decompose a time series into its core components, the critical concept of stationarity, and how to transform data for modeling.</div>
+        <div class="info-row"><span class="info-label">Expected Effort:</span> 2 hours of interactive lecture, 4 hours of practical laboratory work.</div>
+        
+        <div class="lecture-notes">
+            <h3>Week 4 Study Guide:</h3>
+            <div class="intro-section">
+                <p><strong>Introduction: </strong>Up until now, the datasets you have explored were likely "snapshots" in time. If you shuffled the rows of a housing price dataset, the overall patterns wouldn't change. Time Series data breaks this rule completely. In this module, you will learn how to handle data where <strong>time is the primary axis</strong>, and the chronological order of your instances is the most important feature of all.</p>
+            </div>
+            <img class="lecture-image" src="week4-0.jpeg" alt="Placeholder for Time Series Concept">
+
+            <hr style="border: 0; border-top: 1px solid #edf2f7; margin: 20px 0;">
+
+            <h4>1. The Nature of Time Series Data (Estimated Time: 30 Mins)</h4>
+            <p><strong>Core Concept:</strong> Time series data is a sequence of data points recorded at specific, usually consistent, intervals of time (e.g., daily stock prices, hourly temperature, monthly sales). Because the data is sequential, you cannot assume that one data point is independent of the one before or after it.</p>
+            <img class="lecture-image" src="week4-1.jpeg" alt="Placeholder for Time Series vs Cross-Sectional Data">
+            <ul>
+                <li><strong>The i.i.d. Assumption Fails:</strong> Standard machine learning models assume data is <i><b>independent and identically distributed (i.i.d.).</b></i> In time series, today's value is heavily influenced by yesterday's value (autocorrelation). Standard models will fail if you ignore this sequence.</li>
+                <li><strong>Decomposition (The Anatomy of a Series):</strong> To understand a time series, you must break it apart. Any time series can be decomposed into three primary components:
+                    <ul>
+                        <li><strong>Trend:</strong> The long-term macro direction of the data (e.g., a company's revenue generally increasing over 5 years).</li>
+                        <li><strong>Seasonality:</strong> Predictable, repeating short-term cycles tied to the calendar or clock (e.g., retail sales spiking every December, or website traffic dropping every night at 3 AM).</li>
+                        <li><strong>Residual (Noise):</strong> The random, unpredictable variations left over after extracting the trend and seasonality.</li>
+                    </ul>
+                </li>
+            </ul>
+
+            <hr style="border: 0; border-top: 1px solid #edf2f7; margin: 20px 0;">
+
+            <h4>2. Stationary and Non-Stationary Time Series (Estimated Time: 45 Mins)</h4>
+            <p><strong>Core Concept:</strong> Predictive models hate moving targets. If the fundamental properties of your data change over time, a model trained on the past will fail in the future. This is why we need <strong>Stationarity</strong>.</p>
+            <img class="lecture-image" src="week4-2.png" alt="Placeholder for Stationary vs Non-Stationary Graphs">
+            <ul>
+                <li><strong>What is Stationarity?</strong> A time series is strictly stationary if its statistical properties, specifically its <strong>mean</strong> (average) and <strong>variance</strong> (spread), remain constant over time. It has no long-term trend and no seasonal spikes.</li>
+                <li><strong>Why it matters:</strong> Most time series forecasting models (like ARIMA) mathematically require the data to be stationary to make accurate predictions.</li>
+                <li><strong>The Augmented Dickey-Fuller (ADF) Test:</strong> You don't have to guess if data is stationary just by looking at a chart. You will use the ADF test, a statistical hypothesis test where:
+                    <ul>
+                        <li><strong>Null Hypothesis (H<sub>0</sub>):</strong> The data is non-stationary (it has a time-dependent structure).</li>
+                        <li><strong>Alternate Hypothesis (H<sub>1</sub>):</strong> The data is stationary. (If your p-value is &lt; 0.05, you reject the null and celebrate!).</li>
+                    </ul>
+                </li>
+            </ul>
+            <img class="lecture-image" src="week4-a.jpeg" alt="Placeholder for Quick Example: Stock Prices vs. Daily Returns">
+            <div class="eda-quote-section">
+                <img class="lecture-image" src="week4-b.png" alt="Placeholder for 3-steps P-value calculation">
+            </div>
+
+            <hr style="border: 0; border-top: 1px solid #edf2f7; margin: 20px 0;">
+
+            <h4>3. Data Transformation: Achieving Stationarity (Estimated Time: 45 Mins)</h4>
+            <p><strong>Core Concept:</strong> Real-world data is almost never perfectly stationary. Your job is to mathematically transform the non-stationary data into a stationary format before feeding it to a model.</p>
+            <img class="lecture-image" src="week4-3.jpeg" alt="Placeholder for Differencing and Log Transformations">
+            <ul>
+                <li><strong>Differencing (To remove Trend):</strong> Instead of predicting the actual value, you predict the <em>change</em> in value from one period to the next. You subtract the previous observation from the current observation: y'<sub>t</sub> = y<sub>t</sub> - y<sub>t-1</sub>. This flattens out upward or downward trends.</li>
+                <li><strong>Logarithmic Transformations (To stabilize Variance):</strong> If the swings in your data get wilder as time goes on (e.g., a stock fluctuating by $10 in 2010 but fluctuating by $100 in 2020), taking the natural log of the series will penalize larger values and stabilize the variance.</li>
+                <li><strong>Seasonal Differencing:</strong> If you have strong monthly seasonality, standard differencing won't work. You must subtract the value from the same season in the previous cycle (e.g., subtracting last January's sales from this January's sales: y'<sub>t</sub> = y<sub>t</sub> - y<sub>t-12</sub>).</li>
+            </ul>
+        </div>
+
+        <div class="exercise-box">
+            <strong>Practical Lab: Python & Time Series Analysis (4 Hours)</strong>
+            <p>This week, you will use Python libraries like <b>Pandas</b> and <b>Statsmodels</b> to tackle the dimension of time:</p>
+            <ol>
+                <li><b>Decomposition:</b> Load a chronological dataset (e.g., airline passenger data) and use <code>seasonal_decompose()</code> to plot the Trend, Seasonality, and Residuals.</li>
+                <li><b>Hypothesis Testing:</b> Run an Augmented Dickey-Fuller (ADF) test using Python and interpret the resulting p-value.</li>
+                <li><b>Transformation:</b> Apply `.diff()` and `np.log()` to your dataset until you can successfully pass the ADF test and prove your data is stationary.</li>
+            </ol>
+        </div>
+    </div>
+
+    <!-- <button class="accordion">Week 5: Time Series Data (Part 2)</button>
+    <div class="panel">
+        <div class="info-row"><span class="info-label">Teaching Plan:</span> Converting time series data to discrete sequence data and time series forecasting.</div>
+        <div class="info-row"><span class="info-label">Time Allocation:</span> 2 hours lecture, 4 hours practical.</div>
+        
+        <div class="lecture-notes">
+            <h3>Lecture Notes</h3>
+            <p><strong>Framing for Machine Learning:</strong> To use standard algorithms (like Random Forest or Neural Networks) on time series data, we must convert the 1D sequence into a supervised learning problem.</p>
+            <ul>
+                <li><strong>Sliding Window Strategy:</strong> We use past observations ("lags", e.g., t-1, t-2) as our input features (X) to predict the current/future observation (y).</li>
+                <li><strong>Baseline Models:</strong> Before building complex models, establish baselines like the Naïve Forecast (predicting today's value will be exactly the same as yesterday's).</li>
+            </ul>
+            <img class="lecture-image" src="https://placehold.co/2c3e50/ffffff?text=Sliding+Window+Feature+Engineering" alt="Diagram showing lagging features for time series">
+        </div>
+
+        <div class="exercise-box">
+            <strong>Python Exercise:</strong>
+            Have students practice lagging features to convert time series data into discrete sequence formats, followed by creating a baseline time series forecasting model to understand future outcomes.
+        </div>
+    </div> -->
+
+    <button class="accordion">Week 5: Time Series Data (Part 2)</button>
+    <div class="panel">
+        <div class="info-row"><span class="info-label">What You Will Learn:</span> Re-framing chronological sequences into tabular supervised learning formats, engineering lag features, and establishing robust baseline forecasting models.</div>
+        <div class="info-row"><span class="info-label">Expected Effort:</span> 2 hours of interactive lecture, 4 hours of practical laboratory work.</div>
+        
+        <div class="lecture-notes">
+            <h3>Week 5 Study Guide</h3>
+
+            <div class="intro-section">
+                <p><strong>Introduction: </strong>Last week, you learned how to decompose and stabilize time series data. This week, we face a new challenge: how do we feed this chronological data into standard machine learning algorithms like Random Forests or Neural Networks? Traditional algorithms expect independent features (columns) and a target (row), but time series is just a single, continuous line of data. In this module, you will learn the crucial data engineering steps to reframe time as a supervised learning problem.</p>
+            </div>
+            <img class="lecture-image" src="week5-0.jpeg" alt="Placeholder for Time Series ML Transformation Concept">
+
+            <hr style="border: 0; border-top: 1px solid #edf2f7; margin: 20px 0;">
+
+            <h4>1. The Machine Learning Paradigm Mismatch (Estimated Time: 30 Mins)</h4>
+            <p><strong>Core Concept:</strong> Standard supervised learning requires an input feature matrix (X) and an output target vector (y). However, a raw time series is simply a 1-dimensional array of values recorded over time (e.g., [10, 15, 12, 18, 20]).</p>
+            <img class="lecture-image" src="week5-1.jpeg" alt="Placeholder for Supervised Learning vs Time Series Structure">
+            <ul>
+                <li><strong>The Problem:</strong> If your boss asks you to predict tomorrow's sales, and your data is just a single column of past sales, you don't have any independent "features" for a standard algorithm to learn from.</li>
+                <li><strong>The Solution:</strong> You must artificially create features out of the past. The assumption is that history contains the clues to the future. The data itself must become its own features.</li>
+            </ul>
+
+            <hr style="border: 0; border-top: 1px solid #edf2f7; margin: 20px 0;">
+
+            <h4>2. Converting Time Series to Discrete Sequence Data (Estimated Time: 30 Mins)</h4>
+            <p><strong>Core Concept:</strong> To satisfy machine learning algorithms, we use a technique called the <strong>Sliding Window Strategy</strong> (also known as lag feature engineering). This transforms sequential data into discrete, tabular data.</p>
+            <img class="lecture-image" src="week5-2.jpeg" alt="Placeholder for Sliding Window Strategy Diagram">
+            <ul>
+                <li><strong>Creating "Lags":</strong> A lag is simply an observation from a previous time step. If today is time <i>t</i>, yesterday is <i>t-1</i>, and the day before is <i>t-2</i>.</li>
+                <li><strong>The Window:</strong> You define a "window" of past observations to use as features to predict the current observation. For example, if you set a window size of 3, you are telling the algorithm: <em>"Use t-3, t-2, and t-1 as the input features (X) to predict t (y)."</em></li>
+                <li><strong>Sliding the Window:</strong> You then "slide" this window down your dataset one row at a time. This converts your single column of data into a wide matrix, perfectly formatted for any standard machine learning model.</li>
+                <li><strong>Choosing Window Size:</strong> How far back should you look? This requires experimentation. If you are predicting daily temperature, a window of 3 days might be too narrow, but 365 days might be unnecessary noise.</li>
+            </ul>
+
+            <hr style="border: 0; border-top: 1px solid #edf2f7; margin: 20px 0;">
+
+            <h4>3. Time Series Forecasting and Baselines (Estimated Time: 30 Mins)</h4>
+            <p><strong>Core Concept:</strong> Forecasting is the act of extrapolating the future based on the past. However, before you build a massive, complex Neural Network, you must always establish a simple baseline. If your advanced model cannot beat a basic baseline, it is useless!</p>
+            <img class="lecture-image" src="week5-3.png" alt="Placeholder for Baseline Forecasting Models">
+            <ul>
+                <li><strong>The Naïve Forecast:</strong> The simplest forecasting model in existence. It assumes that tomorrow will be exactly the same as today. (Prediction for <i>t</i> = Actual value at <i>t-1</i>). While it sounds too simple, it is notoriously hard to beat in highly volatile domains like the stock market.</li>
+                <li><strong>The Seasonal Naïve Forecast:</strong> If your data has strong seasonality (e.g., retail sales spike every Saturday), you predict that tomorrow's value will be the same as the value from the exact same season in the last cycle (e.g., this Saturday will equal last Saturday).</li>
+                <li><strong>Moving Average Baseline:</strong> Instead of relying on just yesterday, this baseline predicts the future by taking the simple average of the last <i>N</i> periods within a rolling window. It smooths out random noise to provide a steady baseline prediction.</li>
+            </ul>
+
+            <hr style="border: 0; border-top: 1px solid #edf2f7; margin: 20px 0;">
+
+            <h4>4. Evaluating Forecast Accuracy (Estimated Time: 30 Mins)</h4>
+            <p><strong>Core Concept:</strong> To know if your advanced machine learning model actually beat the baseline, you need mathematical scoring metrics. You cannot just "eyeball" a line chart to prove your model's worth.</p>
+            <img class="lecture-image" src="week5-4.jpeg" alt="Placeholder for Evaluation Metrics Comparison" style="width:100%; max-width:800px; margin: 15px 0; border-radius: 8px;">
+            <ul>
+                <li><strong>Mean Absolute Error (MAE):</strong> The average absolute distance between your predictions and the actual values. It is highly interpretable for business stakeholders (e.g., "Our forecast is off by an average of 5 units").</li>
+                <li><strong>Root Mean Squared Error (RMSE):</strong> Squares the errors before averaging them, meaning it heavily penalizes large mistakes. This is crucial when large forecasting errors are financially catastrophic.</li>
+                <li><strong>Chronological Train/Test Splits:</strong> Unlike standard machine learning, you cannot randomly shuffle time series data to test it. You must split it chronologically (e.g., train on 2018-2022, test on 2023) to prevent "data leakage" from the future.</li>
+            </ul>
+
+            <hr style="border: 0; border-top: 1px solid #edf2f7; margin: 20px 0;">
+
+            <div class="bridge-section">
+                <p><strong>The Bridge: From Prediction to Prescription</strong></p>
+                <p>By the end of this week, your models can confidently answer the question: <em>"What will happen tomorrow?"</em> But in the real world, foresight alone is not enough. If your model predicts that inventory will run out next week, what is the optimal way to restock it while minimizing shipping costs? Next week, we cross the chasm from <strong>Predictive Analytics</strong> (forecasting the future) into <strong>Prescriptive Analytics</strong> (calculating the exact actions you should take to optimize that future).</p>
+            </div>
+        </div>
+
+        <div class="exercise-box">
+            <strong>Practical Lab: Python Feature Engineering (4 Hours)</strong>
+            <p>This week, you will act as a data engineer, preparing chronological data for machine learning:</p>
+            <ol>
+                <li><b>Lag Creation:</b> Load a time series dataset in Pandas and use the <code>.shift()</code> function to create new columns for <i>t-1</i>, <i>t-2</i>, and <i>t-3</i>. Watch how the sliding window matrix takes shape!</li>
+                <li><b>Data Cleanup:</b> Notice the <code>NaN</code> (missing) values created by shifting the data? Write code to safely drop or impute these unfillable gaps at the beginning of your dataset.</li>
+                <li><b>Baseline Testing:</b> Write a simple script to calculate the Mean Absolute Error (MAE) of a Naïve Forecast on your data. This is the score your future Machine Learning models will have to beat.</li>
+            </ol>
+        </div>
+    </div>
+
+    
+
+
+
+
+
+
+
+
+    <button class="accordion">Week 6: Prescriptive Analytics (Part 1)</button>
+    <div class="panel">
+        <div class="info-row"><span class="info-label">Teaching Plan:</span> Introduction to prescriptive analytics, making recommendations, and techniques in prescriptive analytics.</div>
+        <div class="info-row"><span class="info-label">Time Allocation:</span> 2 hours lecture, 4 hours practical.</div>
+        
+        <div class="lecture-notes">
+            <h3>Lecture Notes</h3>
+            <p><strong>Moving Beyond Prediction:</strong> Predictive analytics answers "What will happen?", but prescriptive analytics answers "What should we do?". It turns foresight into actionable optimization.</p>
+            <ul>
+                <li><strong>Optimization:</strong> Mathematical programming (Linear, Integer) to maximize (profit, efficiency) or minimize (cost, time) objectives under strict constraints.</li>
+                <li><strong>Recommendation Engines:</strong> Collaborative Filtering (user-behavior driven) vs. Content-Based Filtering (item-attribute driven) to prescribe actions/items to users.</li>
+            </ul>
+            <img class="lecture-image" src="https://placehold.co/34495e/ffffff?text=Predictive+vs.+Prescriptive+Analytics" alt="Analytics Maturity Curve">
+        </div>
+
+        <div class="exercise-box">
+            <strong>Python Exercise:</strong>
+            Build a basic recommendation system or optimization model to recommend the best course of action to take for a specified outcome.
+        </div>
+    </div>
+
+    <button class="accordion">Week 7: Prescriptive Analytics (Part 2)</button>
+    <div class="panel">
+        <div class="info-row"><span class="info-label">Teaching Plan:</span> Examples of prescriptive analytics in various domains.</div>
+        <div class="info-row"><span class="info-label">Time Allocation:</span> 2 hours lecture, 4 hours practical.</div>
+        
+        <div class="lecture-notes">
+            <h3>Lecture Notes</h3>
+            <p><strong>Real-World Applications:</strong> We explore industry-specific case studies where prescriptive analytics drives massive ROI.</p>
+            <ul>
+                <li><strong>Logistics & Supply Chain:</strong> Vehicle Routing Problems (VRP) to minimize fuel consumption while meeting delivery time windows.</li>
+                <li><strong>Healthcare:</strong> Optimizing hospital bed allocations, staff scheduling based on predicted patient influx, and prescribing personalized treatment plans based on patient risk profiles.</li>
+                <li><strong>Finance:</strong> Algorithmic trading and portfolio optimization (e.g., Markowitz Efficient Frontier) to prescribe exact asset allocations.</li>
+            </ul>
+            <img class="lecture-image" src="https://placehold.co/2c3e50/ffffff?text=Prescriptive+Case+Studies:+Logistics+%26+Healthcare" alt="Industry applications grid">
+        </div>
+
+        <div class="exercise-box">
+            <strong>Python Exercise:</strong>
+            Case-study based modeling. Provide domain-specific datasets (e.g., healthcare or business) and have students apply predictive and prescriptive techniques to recommend real-world solutions.
+        </div>
+    </div>
+
+    <button class="accordion">Week 8: Application of Prediction Methods - Simple Regression</button>
+    <div class="panel">
+        <div class="info-row"><span class="info-label">Teaching Plan:</span> Forecasting numeric data, regression methods, and specifically Simple Regression.</div>
+        <div class="info-row"><span class="info-label">Time Allocation:</span> 2 hours lecture, 4 hours practical.</div>
+        
+        <div class="lecture-notes">
+            <h3>Lecture Notes</h3>
+            <p><strong>Predicting Continuous Values:</strong> Regression analysis estimates the relationships among variables. The focus is predicting a continuous quantity (e.g., price, temperature).</p>
+            <ul>
+                <li><strong>Simple Linear Regression:</strong> Modeling the relationship between a single independent variable (X) and dependent variable (Y) using a straight line (y = mx + c).</li>
+                <li><strong>Ordinary Least Squares (OLS):</strong> The method used to find the "line of best fit" by minimizing the sum of the squared differences (residuals) between predicted and actual values.</li>
+            </ul>
+            <img class="lecture-image" src="https://placehold.co/34495e/ffffff?text=Line+of+Best+Fit+(OLS)" alt="Simple Linear Regression Plot">
+        </div>
+
+        <div class="exercise-box">
+            <strong>Python Exercise:</strong>
+            Use scikit-learn to build, train, and evaluate a simple linear regression predictive model using a single numeric predictor.
+        </div>
+    </div>
+
+    <button class="accordion">Week 9: Application of Prediction Methods - Multiple Regression</button>
+    <div class="panel">
+        <div class="info-row"><span class="info-label">Teaching Plan:</span> Multiple Regression method.</div>
+        <div class="info-row"><span class="info-label">Time Allocation:</span> 2 hours lecture, 4 hours practical.</div>
+        
+        <div class="lecture-notes">
+            <h3>Lecture Notes</h3>
+            <p><strong>Adding Complexity:</strong> Extending our model to use multiple independent variables to predict the dependent variable (y = b0 + b1x1 + b2x2 + ...).</p>
+            <ul>
+                <li><strong>Multicollinearity:</strong> A problem where independent variables are highly correlated with each other, destabilizing the model's coefficients. Detected using Variance Inflation Factor (VIF).</li>
+                <li><strong>Evaluation Metrics:</strong> Assessing model fit using R-squared (variance explained), Adjusted R-squared (penalizes adding useless features), MAE, and RMSE.</li>
+            </ul>
+            <img class="lecture-image" src="https://placehold.co/2c3e50/ffffff?text=Multiple+Features+Regression+Plane" alt="3D regression plane diagram">
+        </div>
+
+        <div class="exercise-box">
+            <strong>Python Exercise:</strong>
+            Extend the Week 8 exercise by constructing a multiple linear regression model. Have students evaluate model correlations, coefficients, and overall predictive performance.
+        </div>
+    </div>
+
+    <button class="accordion">Week 10: Application of Prediction Methods - Neural Networks</button>
+    <div class="panel">
+        <div class="info-row"><span class="info-label">Teaching Plan:</span> Black box implementation focusing on Neural networks for prediction problems.</div>
+        <div class="info-row"><span class="info-label">Time Allocation:</span> 2 hours lecture, 4 hours practical.</div>
+        
+        <div class="lecture-notes">
+            <h3>Lecture Notes</h3>
+            <p><strong>Introduction to Deep Learning:</strong> Artificial Neural Networks (ANNs) mimic biological brains to solve highly non-linear problems. Often considered "black boxes" due to low interpretability but high accuracy.</p>
+            <ul>
+                <li><strong>Architecture:</strong> Composed of an Input Layer, Hidden Layers (where features are extracted), and an Output Layer.</li>
+                <li><strong>Mechanisms:</strong> Data passes forward (Forward Propagation), errors are calculated, and weights are adjusted backwards (Backpropagation) using gradient descent.</li>
+                <li><strong>Activation Functions:</strong> Introduces non-linearity (e.g., Sigmoid, ReLU).</li>
+            </ul>
+            <img class="lecture-image" src="https://placehold.co/34495e/ffffff?text=Feed-Forward+Neural+Network" alt="Nodes and layers of an Artificial Neural Network">
+        </div>
+
+        <div class="exercise-box">
+            <strong>Python Exercise:</strong>
+            Use libraries such as keras or scikit-learn to build a standard feed-forward neural network to solve a predictive classification or regression problem.
+        </div>
+    </div>
+
+    <button class="accordion">Week 11: Application of Prediction Methods - Neural Networks for Time Series</button>
+    <div class="panel">
+        <div class="info-row"><span class="info-label">Teaching Plan:</span> Neural networks for time series problems.</div>
+        <div class="info-row"><span class="info-label">Time Allocation:</span> 2 hours lecture, 4 hours practical.</div>
+        
+        <div class="lecture-notes">
+            <h3>Lecture Notes</h3>
+            <p><strong>Modeling Sequences:</strong> Standard Feed-Forward networks lack "memory." For time series data, we require networks that process sequences dynamically.</p>
+            <ul>
+                <li><strong>Recurrent Neural Networks (RNNs):</strong> Maintain an internal hidden state to remember past inputs, but struggle with long sequences (vanishing gradient problem).</li>
+                <li><strong>LSTMs (Long Short-Term Memory):</strong> A powerful variant of RNNs that uses specialized "gates" (Forget gate, Input gate, Output gate) to decide exactly what information to keep or throw away over long periods.</li>
+            </ul>
+            <img class="lecture-image" src="https://placehold.co/2c3e50/ffffff?text=LSTM+Cell+Architecture" alt="Diagram of an LSTM cell and its gates">
+        </div>
+
+        <div class="exercise-box">
+            <strong>Python Exercise:</strong>
+            Apply deep learning (e.g., using Recurrent Neural Networks or LSTMs) to the time series data explored in Weeks 4 and 5 to forecast future outcomes.
+        </div>
+    </div>
+
+    <button class="accordion">Weeks 12 - 14: Project Work and Presentation</button>
+    <div class="panel">
+        <div class="info-row"><span class="info-label">Teaching Plan:</span> Dedicated weeks for Project work (Weeks 12 and 13) and Project Presentation (Week 14).</div>
+        
+        <div class="lecture-notes">
+            <h3>Capstone Guidelines</h3>
+            <p><strong>End-to-End Analytics:</strong> Students will consolidate all learning by executing a full data science pipeline on a real-world dataset of their choosing.</p>
+            <ul>
+                <li><strong>Weeks 12-13 (Execution):</strong> Perform data ingestion, EDA, feature engineering, predictive modeling, and derive prescriptive recommendations.</li>
+                <li><strong>Week 14 (Communication):</strong> Technical knowledge is only useful if it can be communicated. Presentations must cater to both technical and non-technical stakeholders, focusing on business impact and prescriptive value.</li>
+            </ul>
+            <img class="lecture-image" src="https://placehold.co/34495e/ffffff?text=Final+Capstone+Presentation" alt="Project presentation outline">
+        </div>
+
+        <div class="exercise-box">
+            <strong>Exercise:</strong>
+            Students will construct a predictive model using a dataset in any domain of their interest. They will apply the Python analytics tools and techniques learned throughout the course to solve a real-world problem and present their recommendations.
+        </div>
+    </div>
+
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var accordions = document.getElementsByClassName("accordion");
+
+        for (var i = 0; i < accordions.length; i++) {
+            accordions[i].addEventListener("click", function() {
+                // Toggle active class on the button
+                this.classList.toggle("active");
+
+                // Get the associated panel
+                var panel = this.nextElementSibling;
+
+                // Toggle the 'show' class to add padding
+                panel.classList.toggle("show");
+
+                // Manage max-height for smooth transition
+                if (panel.style.maxHeight) {
+                    panel.style.maxHeight = null;
+                } else {
+                    // With fixed aspect-ratio images, scrollHeight is calculated correctly immediately
+                    panel.style.maxHeight = panel.scrollHeight + 100 + "px"; 
+                }
+            });
+        }
+    });
+</script>
+
+</body>
+</html>

@@ -397,8 +397,8 @@
                             <circle cx="290" cy="50" r="4" fill="#38bdf8" />
                             <circle cx="340" cy="60" r="4" fill="#38bdf8" />
 
-                            <!-- Dynamic Model Curve Path -->
-                            <path id="model-curve" d="M 30 150 Q 200 120 360 40" stroke="#6366f1" stroke-width="3" fill="none" />
+                            <!-- Dynamic Model Curve Path (Updated default for Optimal Fit) -->
+                            <path id="model-curve" d="M 30 150 C 130 120, 230 80, 360 42" stroke="#6366f1" stroke-width="3" fill="none" />
                         </svg>
                     </div>
 
@@ -607,26 +607,26 @@
             const desc = document.getElementById('complexity-desc');
 
             if (val == 1) {
-                // Linear / Underfitting
-                curve.setAttribute('d', 'M 30 150 L 360 60');
+                // Underfitting: Completely flat line predicting the mean (High Bias, ignores data trend)
+                curve.setAttribute('d', 'M 30 95 L 360 95');
                 valLabel.innerText = 'Degree 1 (Underfitting)';
                 fitStatus.innerText = 'High Bias (Underfit)';
                 fitStatus.className = 'px-2.5 py-1 bg-amber-500/20 text-amber-300 border border-amber-500/30 rounded-full text-xs font-bold';
-                desc.innerText = 'Underfitting: Model is too simple (a straight line) to capture the trend. High bias on both training & test data.';
+                desc.innerText = 'Underfitting: Model predicts a flat constant value. It is far too simplistic and fails to capture any underlying pattern or slope in the data.';
             } else if (val == 2) {
-                // Optimal Smooth Curve
-                curve.setAttribute('d', 'M 30 150 Q 200 120 360 40');
+                // Optimal Fit: Smooth curve following the true signal through the center of points
+                curve.setAttribute('d', 'M 30 150 C 130 120, 230 80, 360 42');
                 valLabel.innerText = 'Degree 2 (Balanced)';
                 fitStatus.innerText = 'Optimal Generalization';
                 fitStatus.className = 'px-2.5 py-1 bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 rounded-full text-xs font-bold';
-                desc.innerText = 'Balanced: Model captures true underlying pattern while ignoring noise. Generalizes well to unseen future data!';
+                desc.innerText = 'Balanced: Model captures the true underlying downward trend while ignoring random point noise. Generalizes well!';
             } else if (val == 3) {
-                // Overfitting Wavy Path
-                curve.setAttribute('d', 'M 30 150 C 70 100, 70 160, 90 110 C 110 60, 120 160, 140 130 C 165 90, 175 100, 190 80 C 210 60, 225 120, 240 90 C 265 60, 275 30, 290 50 C 310 70, 325 80, 340 60');
+                // Overfitting: Wavy line connecting every single sample point
+                curve.setAttribute('d', 'M 30 150 L 50 140 C 70 120, 75 110, 90 110 C 115 110, 120 130, 140 130 C 165 130, 175 80, 190 80 C 210 80, 220 90, 240 90 C 265 90, 275 50, 290 50 C 315 50, 325 60, 340 60 L 360 40');
                 valLabel.innerText = 'Degree 9 (Overfitting)';
                 fitStatus.innerText = 'High Variance (Overfit)';
                 fitStatus.className = 'px-2.5 py-1 bg-rose-500/20 text-rose-300 border border-rose-500/30 rounded-full text-xs font-bold';
-                desc.innerText = 'Overfitting: Model memorized every single training noise point. Perfect on past data, but completely fails on new real-world data.';
+                desc.innerText = 'Overfitting: Model memorized every individual point including noise. Perfect on past training data, but will fail on new unseen data.';
             }
         }
 

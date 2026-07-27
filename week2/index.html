@@ -716,9 +716,29 @@
                 desc: "Grouping similar instances together without predefined labels.",
                 example: "\"Segment our customer base into 3 distinct behaviors.\"",
                 visual: `
-                    <div class="relative w-32 h-24 mx-auto">
-                        <div class="absolute top-0 left-0 w-12 h-12 rounded-full border border-emerald-500/50 bg-emerald-500/10 flex flex-wrap gap-1 p-1"><div class="w-2 h-2 bg-emerald-400 rounded-full"></div><div class="w-2 h-2 bg-emerald-400 rounded-full"></div><div class="w-2 h-2 bg-emerald-400 rounded-full"></div></div>
-                        <div class="absolute bottom-0 right-0 w-10 h-10 rounded-full border border-fuchsia-500/50 bg-fuchsia-500/10 flex flex-wrap gap-1 p-1"><div class="w-2 h-2 bg-fuchsia-400 rounded-full"></div><div class="w-2 h-2 bg-fuchsia-400 rounded-full"></div></div>
+                    <div class="relative w-48 h-28 mx-auto flex items-center justify-center">
+                        <!-- Cluster 1: High Spenders (Emerald - 5 items) -->
+                        <div class="absolute top-0 left-0 w-14 h-14 rounded-full border border-emerald-500/50 bg-emerald-500/10 flex flex-wrap items-center justify-center gap-1.5 p-2 shadow-sm">
+                            <div class="w-2 h-2 bg-emerald-400 rounded-full"></div>
+                            <div class="w-2 h-2 bg-emerald-400 rounded-full"></div>
+                            <div class="w-2 h-2 bg-emerald-400 rounded-full"></div>
+                            <div class="w-2 h-2 bg-emerald-400 rounded-full"></div>
+                            <div class="w-2 h-2 bg-emerald-400 rounded-full"></div>
+                        </div>
+                        <!-- Cluster 2: Frequent Browsers (Fuchsia - 4 items) -->
+                        <div class="absolute bottom-0 right-0 w-14 h-14 rounded-full border border-fuchsia-500/50 bg-fuchsia-500/10 flex flex-wrap items-center justify-center gap-1.5 p-2 shadow-sm">
+                            <div class="w-2 h-2 bg-fuchsia-400 rounded-full"></div>
+                            <div class="w-2 h-2 bg-fuchsia-400 rounded-full"></div>
+                            <div class="w-2 h-2 bg-fuchsia-400 rounded-full"></div>
+                            <div class="w-2 h-2 bg-fuchsia-400 rounded-full"></div>
+                        </div>
+                        <!-- Cluster 3: Occasional Buyers (Cyan - 4 items) -->
+                        <div class="absolute top-1 right-2 w-12 h-12 rounded-full border border-cyan-500/50 bg-cyan-500/10 flex flex-wrap items-center justify-center gap-1.5 p-2 shadow-sm">
+                            <div class="w-2 h-2 bg-cyan-400 rounded-full"></div>
+                            <div class="w-2 h-2 bg-cyan-400 rounded-full"></div>
+                            <div class="w-2 h-2 bg-cyan-400 rounded-full"></div>
+                            <div class="w-2 h-2 bg-cyan-400 rounded-full"></div>
+                        </div>
                     </div>`
             },
             prediction: {

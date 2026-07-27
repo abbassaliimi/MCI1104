@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Week 1 Study Guide: Business Analytics & Data Mining</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        darkBg: '#0f172a',
+                        cardBg: '#1e293b',
+                        accentIndigo: '#6366f1',
+                        accentEmerald: '#10b981',
+                        accentAmber: '#f59e0b',
+                        accentRose: '#f43f5e'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Smooth vertical scroll snap settings */
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background-color: #0f172a;
+            color: #f8fafc;
+        }
+
+        .scroll-container {
+            height: 100vh;
+            overflow-y: scroll;
+            scroll-snap-type: y mandatory;
+            scroll-behavior: smooth;
+        }
+
+        .page-section {
+            height: 100vh;
+            width: 100vw;
+            scroll-snap-align: start;
+            scroll-snap-stop: always;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-sizing: border-box;
+            padding: 2.5rem 5rem 2.5rem 3rem;
+        }
+
+        /* Custom scrollbar hiding */
+        .scroll-container::-webkit-scrollbar {
+            display: none;
+        }
+        .scroll-container {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        /* Nav dot indicators */
+        .nav-dot {
+            transition: all 0.3s ease;
+        }
+        .nav-dot.active {
+            background-color: #6366f1;
+            height: 1.75rem;
+            border-radius: 9999px;
+        }
+
+        /* Pyramid shapes */
+        .pyramid-level {
+            clip-path: polygon(15% 0%, 85% 0%, 100% 100%, 0% 100%);
+            transition: all 0.3s ease;
+        }
+        .pyramid-top {
+            clip-path: polygon(50% 0%, 50% 0%, 100% 100%, 0% 100%);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Vertical Floating Navigation Indicators -->
+    <nav class="fixed right-6 top-1/2 -translate-y-1/2 z-50 flex flex-col items-center gap-3 bg-slate-900/60 backdrop-blur-md p-3 rounded-full border border-slate-800 shadow-2xl">
+        <button onclick="scrollToPage(0)" title="1. Data to Information" class="nav-dot w-3 h-3 bg-slate-600 rounded-full hover:bg-indigo-400 focus:outline-none"></button>
+        <button onclick="scrollToPage(1)" title="2. CRISP-DM Process" class="nav-dot w-3 h-3 bg-slate-600 rounded-full hover:bg-indigo-400 focus:outline-none"></button>
+        <button onclick="scrollToPage(2)" title="3. ML vs Statistics" class="nav-dot w-3 h-3 bg-slate-600 rounded-full hover:bg-indigo-400 focus:outline-none"></button>
+        <button onclick="scrollToPage(3)" title="4. Generalization as Search" class="nav-dot w-3 h-3 bg-slate-600 rounded-full hover:bg-indigo-400 focus:outline-none"></button>
+        <button onclick="scrollToPage(4)" title="5. Reflection Challenge" class="nav-dot w-3 h-3 bg-slate-600 rounded-full hover:bg-indigo-400 focus:outline-none"></button>
+    </nav>
+
+    <!-- Main Vertical Scroll Container -->
+    <main id="scrollContainer" class="scroll-container">
+
+        <!-- PAGE 1: DATA TO INFORMATION -->
+        <section class="page-section bg-slate-950">
+            <div class="max-w-6xl w-full grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                <div class="lg:col-span-6 space-y-6">
+                    <div class="flex items-center gap-3">
+                        <span class="px-3 py-1 bg-indigo-500/10 text-indigo-400 border border-indigo-500/30 rounded-full text-xs font-semibold tracking-wider uppercase">Topic 01</span>
+                        <span class="flex items-center gap-1 text-slate-400 text-xs font-medium">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                            Estimated Time: 20 Mins
+                        </span>
+                    </div>
+
+                    <h1 class="text-4xl font-extrabold text-white tracking-tight">From Data to Information</h1>
+
+                    <div class="p-4 bg-slate-900 border-l-4 border-indigo-500 rounded-r-lg">
+                        <p class="text-slate-300 text-sm leading-relaxed">
+                            <strong class="text-indigo-300">Core Concept:</strong> You live in a data-rich but information-poor world. Your fundamental goal in analytics is to transform raw noise into actionable insights.
+                        </p>
+                    </div>
+
+                    <ul class="space-y-3 text-slate-300 text-sm">
+                        <li class="flex items-start gap-2">
+                            <span class="text-indigo-400 font-bold">•</span>
+                            <span><strong class="text-white">Data:</strong> Raw, unorganized facts—numbers or text without context (e.g., <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded">100</code>, <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded">Red</code>, <code class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded">10:04 AM</code>).</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-indigo-400 font-bold">•</span>
+                            <span><strong class="text-white">Information:</strong> Processed and structured data given explicit meaning (e.g., <em>"100 customers bought the Red shirt at 10:04 AM"</em>).</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-indigo-400 font-bold">•</span>
+                            <span><strong class="text-white">The DIKW Pyramid:</strong> As an analyst, you climb from <strong>Data</strong> &rarr; <strong>Information</strong> &rarr; <strong>Knowledge</strong> &rarr; <strong>Wisdom</strong> to discover patterns and prescribe actions.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Interactive DIKW Pyramid Visual -->
+                <div class="lg:col-span-6 flex flex-col items-center justify-center bg-slate-900 p-6 rounded-2xl border border-slate-800 shadow-xl">
+                    <h3 class="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-4">Interactive DIKW Pyramid</h3>
+                    
+                    <div class="w-full max-w-md flex flex-col items-center gap-1.5">
+                        <button onclick="setDikwLevel('wisdom')" id="dikw-wisdom" class="w-2/5 py-3 bg-purple-600/30 hover:bg-purple-600/50 border border-purple-500/50 rounded-t-lg text-center transition-all cursor-pointer group">
+                            <span class="text-xs font-bold text-purple-200 group-hover:text-white block">WISDOM</span>
+                            <span class="text-[10px] text-purple-300">Actionable Decisions</span>
+                        </button>
+                        <button onclick="setDikwLevel('knowledge')" id="dikw-knowledge" class="w-3/5 py-3 bg-indigo-600/30 hover:bg-indigo-600/50 border border-indigo-500/50 text-center transition-all cursor-pointer group">
+                            <span class="text-xs font-bold text-indigo-200 group-hover:text-white block">KNOWLEDGE</span>
+                            <span class="text-[10px] text-indigo-300">Pattern Discovery</span>
+                        </button>
+                        <button onclick="setDikwLevel('information')" id="dikw-information" class="w-4/5 py-3 bg-blue-600/30 hover:bg-blue-600/50 border border-blue-500/50 text-center transition-all cursor-pointer group">
+                            <span class="text-xs font-bold text-blue-200 group-hover:text-white block">INFORMATION</span>
+                            <span class="text-[10px] text-blue-300">Contextual Meaning</span>
+                        </button>
+                        <button onclick="setDikwLevel('data')" id="dikw-data" class="w-full py-3 bg-slate-700/40 hover:bg-slate-700/70 border border-slate-600 rounded-b-lg text-center transition-all cursor-pointer group">
+                            <span class="text-xs font-bold text-slate-200 group-hover:text-white block">DATA</span>
+                            <span class="text-[10px] text-slate-400">Raw Facts & Noise</span>
+                        </button>
+                    </div>
+
+                    <!-- Dynamic Card for DIKW selection -->
+                    <div id="dikw-display" class="mt-6 w-full p-4 bg-slate-950 border border-slate-800 rounded-xl min-h-[90px] flex flex-col justify-center">
+                        <p class="text-xs text-indigo-400 font-semibold uppercase tracking-wider">Click a pyramid layer to inspect</p>
+                        <p class="text-sm text-slate-300 mt-1">Select any tier above to see how raw facts transform into prescriptive wisdom.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PAGE 2: CRISP-DM PROCESS -->
+        <section class="page-section bg-slate-900">
+            <div class="max-w-6xl w-full grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                <div class="lg:col-span-5 space-y-5">
+                    <div class="flex items-center gap-3">
+                        <span class="px-3 py-1 bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 rounded-full text-xs font-semibold tracking-wider uppercase">Topic 02</span>
+                        <span class="flex items-center gap-1 text-slate-400 text-xs font-medium">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                            Estimated Time: 45 Mins
+                        </span>
+                    </div>
+
+                    <h2 class="text-3xl font-extrabold text-white tracking-tight">The Data Mining Process: CRISP-DM</h2>
+
+                    <div class="p-4 bg-slate-950 border-l-4 border-emerald-500 rounded-r-lg">
+                        <p class="text-slate-300 text-sm leading-relaxed">
+                            <strong class="text-emerald-300">Core Concept:</strong> Real-world data mining requires a structured, iterative roadmap. The industry standard is <strong>CRISP-DM</strong> (Cross-Industry Standard Process for Data Mining).
+                        </p>
+                    </div>
+
+                    <div class="p-3 bg-amber-500/10 border border-amber-500/30 rounded-xl text-xs text-amber-200 flex items-center gap-3">
+                        <span class="text-xl">⚠️</span>
+                        <span><strong>Analyst Time Benchmark:</strong> Expect to spend <strong>70% – 80%</strong> of your effort solely in <em>Data Preparation</em>!</span>
+                    </div>
+                </div>
+
+                <!-- Interactive CRISP-DM Lifecycle Grid -->
+                <div class="lg:col-span-7 bg-slate-950 p-6 rounded-2xl border border-slate-800 shadow-xl">
+                    <h3 class="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-4 flex justify-between items-center">
+                        <span>CRISP-DM Interactive Cycle</span>
+                        <span class="text-xs text-emerald-400">Click steps to explore</span>
+                    </h3>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        <button onclick="showCrispStep(1)" class="crisp-btn p-3 bg-slate-900 hover:bg-slate-800 border border-slate-800 hover:border-emerald-500/50 rounded-xl text-left transition-all group">
+                            <div class="flex items-center justify-between">
+                                <span class="text-xs font-bold text-emerald-400">01. Business Understanding</span>
+                                <span class="text-slate-600 group-hover:text-emerald-400 text-xs">&rarr;</span>
+                            </div>
+                            <p class="text-xs text-slate-400 mt-1">Define project goals & business objectives.</p>
+                        </button>
+
+                        <button onclick="showCrispStep(2)" class="crisp-btn p-3 bg-slate-900 hover:bg-slate-800 border border-slate-800 hover:border-emerald-500/50 rounded-xl text-left transition-all group">
+                            <div class="flex items-center justify-between">
+                                <span class="text-xs font-bold text-emerald-400">02. Data Understanding</span>
+                                <span class="text-slate-600 group-hover:text-emerald-400 text-xs">&rarr;</span>
+                            </div>
+                            <p class="text-xs text-slate-400 mt-1">Explore raw data, completeness & quality.</p>
+                        </button>
+
+                        <button onclick="showCrispStep(3)" class="crisp-btn p-3 bg-slate-900 hover:bg-slate-800 border border-slate-800 hover:border-emerald-500/50 rounded-xl text-left transition-all group ring-2 ring-emerald-500/40">
+                            <div class="flex items-center justify-between">
+                                <span class="text-xs font-bold text-emerald-400">03. Data Preparation</span>
+                                <span class="px-1.5 py-0.5 bg-emerald-500/20 text-emerald-300 rounded text-[10px]">70-80% Time</span>
+                            </div>
+                            <p class="text-xs text-slate-400 mt-1">Clean, format, and engineer features.</p>
+                        </button>
+
+                        <button onclick="showCrispStep(4)" class="crisp-btn p-3 bg-slate-900 hover:bg-slate-800 border border-slate-800 hover:border-emerald-500/50 rounded-xl text-left transition-all group">
+                            <div class="flex items-center justify-between">
+                                <span class="text-xs font-bold text-emerald-400">04. Modeling</span>
+                                <span class="text-slate-600 group-hover:text-emerald-400 text-xs">&rarr;</span>
+                            </div>
+                            <p class="text-xs text-slate-400 mt-1">Select & train mathematical algorithms.</p>
+                        </button>
+
+                        <button onclick="showCrispStep(5)" class="crisp-btn p-3 bg-slate-900 hover:bg-slate-800 border border-slate-800 hover:border-emerald-500/50 rounded-xl text-left transition-all group">
+                            <div class="flex items-center justify-between">
+                                <span class="text-xs font-bold text-emerald-400">05. Evaluation</span>
+                                <span class="text-slate-600 group-hover:text-emerald-400 text-xs">&rarr;</span>
+                            </div>
+                            <p class="text-xs text-slate-400 mt-1">Assess model against business goals.</p>
+                        </button>
+
+                        <button onclick="showCrispStep(6)" class="crisp-btn p-3 bg-slate-900 hover:bg-slate-800 border border-slate-800 hover:border-emerald-500/50 rounded-xl text-left transition-all group">
+                            <div class="flex items-center justify-between">
+                                <span class="text-xs font-bold text-emerald-400">06. Deployment</span>
+                                <span class="text-slate-600 group-hover:text-emerald-400 text-xs">&rarr;</span>
+                            </div>
+                            <p class="text-xs text-slate-400 mt-1">Deploy to production & monitor impact.</p>
+                        </button>
+                    </div>
+
+                    <!-- Step Detail Banner -->
+                    <div id="crisp-detail" class="mt-4 p-4 bg-slate-900 border border-emerald-500/30 rounded-xl">
+                        <h4 class="text-sm font-bold text-white flex items-center gap-2">
+                            <span>01. Business Understanding</span>
+                        </h4>
+                        <p class="text-xs text-slate-300 mt-1">First, define the core problem you are trying to solve. Example: <em>"We need to reduce customer churn by 10% in Q3."</em></p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PAGE 3: ML VS STATISTICS -->
+        <section class="page-section bg-slate-950">
+            <div class="max-w-6xl w-full grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                <div class="lg:col-span-5 space-y-5">
+                    <div class="flex items-center gap-3">
+                        <span class="px-3 py-1 bg-amber-500/10 text-amber-400 border border-amber-500/30 rounded-full text-xs font-semibold tracking-wider uppercase">Topic 03</span>
+                        <span class="flex items-center gap-1 text-slate-400 text-xs font-medium">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                            Estimated Time: 25 Mins
+                        </span>
+                    </div>
+
+                    <h2 class="text-3xl font-extrabold text-white tracking-tight">Machine Learning vs. Statistics</h2>
+
+                    <div class="p-4 bg-slate-900 border-l-4 border-amber-500 rounded-r-lg">
+                        <p class="text-slate-300 text-sm leading-relaxed">
+                            <strong class="text-amber-300">Core Concept:</strong> Transitioning to advanced analytics requires understanding how classical statistics differs from the modern machine learning mindset.
+                        </p>
+                    </div>
+
+                    <!-- Lingo Switcher Widget -->
+                    <div class="p-4 bg-slate-900 rounded-xl border border-slate-800 space-y-3">
+                        <h3 class="text-xs font-bold text-amber-400 uppercase tracking-wider">Vocabulary Translator</h3>
+                        <p class="text-xs text-slate-400">Toggle terms to learn how vocabulary shifts across disciplines:</p>
+                        
+                        <div class="grid grid-cols-2 gap-2 text-center text-xs font-medium">
+                            <div class="p-2 bg-slate-800 rounded text-slate-300">Statistician</div>
+                            <div class="p-2 bg-indigo-950 border border-indigo-500/30 rounded text-indigo-300">ML Engineer</div>
+                            
+                            <div class="p-2 bg-slate-950 rounded text-slate-400">Variable</div>
+                            <div class="p-2 bg-slate-950 rounded text-emerald-400 font-bold">Feature</div>
+                            
+                            <div class="p-2 bg-slate-950 rounded text-slate-400">Parameter</div>
+                            <div class="p-2 bg-slate-950 rounded text-emerald-400 font-bold">Weight</div>
+
+                            <div class="p-2 bg-slate-950 rounded text-slate-400">Estimation</div>
+                            <div class="p-2 bg-slate-950 rounded text-emerald-400 font-bold">Training / Learning</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Comparison Cards -->
+                <div class="lg:col-span-7 grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- Statistics Card -->
+                    <div class="p-6 bg-slate-900 border border-slate-800 hover:border-slate-700 rounded-2xl flex flex-col justify-between space-y-4">
+                        <div>
+                            <div class="w-10 h-10 rounded-lg bg-blue-500/10 border border-blue-500/30 flex items-center justify-center text-blue-400 font-bold mb-3">
+                                Σ
+                            </div>
+                            <h3 class="text-lg font-bold text-white">Statistics</h3>
+                            <p class="text-xs text-blue-400 font-semibold mt-0.5">The "Why" Focus (Inference)</p>
+                            <p class="text-xs text-slate-300 mt-3 leading-relaxed">
+                                Heavy emphasis on understanding the underlying data generation process. Relies on strict mathematical assumptions, hypothesis tests, and confidence intervals.
+                            </p>
+                        </div>
+                        <ul class="text-xs text-slate-400 space-y-1.5 border-t border-slate-800 pt-3">
+                            <li class="flex items-center gap-1.5"><span class="text-blue-400">✓</span> High Interpretability</li>
+                            <li class="flex items-center gap-1.5"><span class="text-blue-400">✓</span> Strict Distribution Assumptions</li>
+                            <li class="flex items-center gap-1.5"><span class="text-blue-400">✓</span> Focus on Sample Inference</li>
+                        </ul>
+                    </div>
+
+                    <!-- Machine Learning Card -->
+                    <div class="p-6 bg-slate-900 border border-slate-800 hover:border-slate-700 rounded-2xl flex flex-col justify-between space-y-4">
+                        <div>
+                            <div class="w-10 h-10 rounded-lg bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400 font-bold mb-3">
+                                🤖
+                            </div>
+                            <h3 class="text-lg font-bold text-white">Machine Learning</h3>
+                            <p class="text-xs text-emerald-400 font-semibold mt-0.5">The "What" Focus (Prediction)</p>
+                            <p class="text-xs text-slate-300 mt-3 leading-relaxed">
+                                Trains algorithms to find complex non-linear patterns. Minimizes empirical prediction errors on unseen test sets without strict theoretical assumptions.
+                            </p>
+                        </div>
+                        <ul class="text-xs text-slate-400 space-y-1.5 border-t border-slate-800 pt-3">
+                            <li class="flex items-center gap-1.5"><span class="text-emerald-400">✓</span> High Predictive Accuracy</li>
+                            <li class="flex items-center gap-1.5"><span class="text-emerald-400">✓</span> Handles Complex High-Dim Data</li>
+                            <li class="flex items-center gap-1.5"><span class="text-emerald-400">✓</span> Empirical Generalization</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PAGE 4: GENERALIZATION AS SEARCH -->
+        <section class="page-section bg-slate-900">
+            <div class="max-w-6xl w-full grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                <div class="lg:col-span-5 space-y-5">
+                    <div class="flex items-center gap-3">
+                        <span class="px-3 py-1 bg-rose-500/10 text-rose-400 border border-rose-500/30 rounded-full text-xs font-semibold tracking-wider uppercase">Topic 04</span>
+                        <span class="flex items-center gap-1 text-slate-400 text-xs font-medium">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                            Estimated Time: 30 Mins
+                        </span>
+                    </div>
+
+                    <h2 class="text-3xl font-extrabold text-white tracking-tight">Generalization as Search</h2>
+
+                    <div class="p-4 bg-slate-950 border-l-4 border-rose-500 rounded-r-lg">
+                        <p class="text-slate-300 text-sm leading-relaxed">
+                            <strong class="text-rose-300">Core Concept:</strong> Algorithms learn by searching through a massive <em>Hypothesis Space</em> to find the model that generalizes best to unseen future data.
+                        </p>
+                    </div>
+
+                    <div class="space-y-3 text-xs text-slate-300">
+                        <div class="p-3 bg-slate-950 rounded-xl border border-slate-800">
+                            <strong class="text-white block mb-0.5">The Bias-Variance Tradeoff:</strong>
+                            <ul class="list-disc list-inside space-y-1 text-slate-400 mt-1">
+                                <li><strong class="text-amber-400">Underfitting (High Bias):</strong> Model is too simple; fails on both training & future data.</li>
+                                <li><strong class="text-rose-400">Overfitting (High Variance):</strong> Model memorizes training noise; fails on future unseen data.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Interactive Polynomial / Model Complexity Simulator -->
+                <div class="lg:col-span-7 bg-slate-950 p-6 rounded-2xl border border-slate-800 shadow-xl space-y-4">
+                    <div class="flex items-center justify-between">
+                        <h3 class="text-sm font-semibold text-slate-400 uppercase tracking-wider">Interactive Fitting Simulator</h3>
+                        <span id="fit-status" class="px-2.5 py-1 bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 rounded-full text-xs font-bold">Optimal Generalization</span>
+                    </div>
+
+                    <!-- SVG Canvas Chart -->
+                    <div class="relative w-full h-56 bg-slate-900 rounded-xl border border-slate-800 overflow-hidden flex items-center justify-center p-2">
+                        <svg id="chart-svg" class="w-full h-full" viewBox="0 0 400 200">
+                            <!-- Grid lines -->
+                            <line x1="0" y1="180" x2="400" y2="180" stroke="#334155" stroke-width="1" />
+                            <line x1="20" y1="0" x2="20" y2="200" stroke="#334155" stroke-width="1" />
+                            
+                            <!-- Sample Data Points -->
+                            <circle cx="50" cy="140" r="4" fill="#38bdf8" />
+                            <circle cx="90" cy="110" r="4" fill="#38bdf8" />
+                            <circle cx="140" cy="130" r="4" fill="#38bdf8" />
+                            <circle cx="190" cy="80" r="4" fill="#38bdf8" />
+                            <circle cx="240" cy="90" r="4" fill="#38bdf8" />
+                            <circle cx="290" cy="50" r="4" fill="#38bdf8" />
+                            <circle cx="340" cy="60" r="4" fill="#38bdf8" />
+
+                            <!-- Dynamic Model Curve Path -->
+                            <path id="model-curve" d="M 30 150 Q 200 120 360 40" stroke="#6366f1" stroke-width="3" fill="none" />
+                        </svg>
+                    </div>
+
+                    <!-- Complexity Slider Controls -->
+                    <div class="space-y-2 pt-2">
+                        <div class="flex justify-between items-center text-xs">
+                            <label for="complexity-slider" class="text-slate-300 font-semibold">Model Complexity (Hypothesis Search):</label>
+                            <span id="complexity-val" class="text-indigo-400 font-mono font-bold">Degree 2 (Balanced)</span>
+                        </div>
+                        <input id="complexity-slider" type="range" min="1" max="3" value="2" oninput="updateFitModel(this.value)" class="w-full h-2 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-indigo-500">
+                        <div class="flex justify-between text-[10px] text-slate-500 font-semibold uppercase">
+                            <span>Underfitting (High Bias)</span>
+                            <span>Optimal Fit</span>
+                            <span>Overfitting (High Variance)</span>
+                        </div>
+                    </div>
+
+                    <!-- Explanatory text -->
+                    <p id="complexity-desc" class="text-xs text-slate-400 p-3 bg-slate-900 rounded-lg border border-slate-800 min-h-[50px]">
+                        Balanced model captures the real underlying trend while ignoring random point noise. Generalizes well!
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- PAGE 5: REFLECTION CHALLENGE -->
+        <section class="page-section bg-slate-950">
+            <div class="max-w-4xl w-full bg-slate-900 p-8 rounded-3xl border border-slate-800 shadow-2xl space-y-6">
+                <div class="flex items-center gap-3">
+                    <span class="px-3 py-1 bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 rounded-full text-xs font-semibold tracking-wider uppercase">Hands-On Exercise</span>
+                    <span class="text-xs text-slate-400">Independent Learning Challenge</span>
+                </div>
+
+                <div class="space-y-2">
+                    <h2 class="text-3xl font-extrabold text-white">Apply CRISP-DM to Your Own World</h2>
+                    <p class="text-sm text-slate-300">
+                        No practical laboratory hours are scheduled for this introductory week. Instead, reflect on your own daily life or workplace experience:
+                    </p>
+                </div>
+
+                <div class="p-4 bg-slate-950 border-l-4 border-indigo-500 rounded-r-xl italic text-xs text-slate-300">
+                    "Think of a problem or inefficiency in your daily life or workplace. How would you frame it using the first two steps (Business Understanding & Data Understanding) of the CRISP-DM framework?"
+                </div>
+
+                <!-- Interactive Workbook Form -->
+                <div class="space-y-4 text-xs">
+                    <div>
+                        <label class="block font-semibold text-indigo-300 mb-1">Step 1: Business Understanding (Define Goal / Problem)</label>
+                        <input type="text" id="biz-input" placeholder="e.g., 'Reduce my weekly grocery spending by 15%' or 'Minimize customer support waiting time'" class="w-full p-3 bg-slate-950 border border-slate-800 rounded-xl text-slate-200 focus:outline-none focus:border-indigo-500">
+                    </div>
+
+                    <div>
+                        <label class="block font-semibold text-emerald-300 mb-1">Step 2: Data Understanding (Assess Available Data)</label>
+                        <textarea id="data-input" rows="3" placeholder="e.g., 'Receipt history from last 6 months. Might be missing cash purchases; dates and item names are complete.'" class="w-full p-3 bg-slate-950 border border-slate-800 rounded-xl text-slate-200 focus:outline-none focus:border-indigo-500"></textarea>
+                    </div>
+
+                    <button onclick="saveReflection()" class="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold rounded-xl transition-colors shadow-lg focus:outline-none">
+                        Save & Format Reflection
+                    </button>
+                </div>
+
+                <!-- Output Box -->
+                <div id="reflection-output" class="hidden p-4 bg-indigo-950/40 border border-indigo-500/30 rounded-2xl text-xs space-y-2">
+                    <span class="text-emerald-400 font-bold uppercase tracking-wider block">Structured Framework Summary</span>
+                    <div id="summary-content" class="text-slate-300 space-y-1"></div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Interactive Scripts -->
+    <script>
+        // Page Scroll Navigation Logic
+        const container = document.getElementById('scrollContainer');
+        const dots = document.querySelectorAll('.nav-dot');
+        const totalPages = 5;
+
+        function getCurrentPageIndex() {
+            return Math.round(container.scrollTop / window.innerHeight);
+        }
+
+        function scrollToPage(index) {
+            if (index < 0) index = 0;
+            if (index >= totalPages) index = totalPages - 1;
+            container.scrollTo({
+                top: index * window.innerHeight,
+                behavior: 'smooth'
+            });
+            updateDots(index);
+        }
+
+        function navigatePage(direction) {
+            const current = getCurrentPageIndex();
+            scrollToPage(current + direction);
+        }
+
+        function updateDots(activeIndex) {
+            dots.forEach((dot, idx) => {
+                if (idx === activeIndex) {
+                    dot.classList.add('active');
+                } else {
+                    dot.classList.remove('active');
+                }
+            });
+        }
+
+        // Listen for scroll events to update dot indicators
+        container.addEventListener('scroll', () => {
+            const index = getCurrentPageIndex();
+            updateDots(index);
+        });
+
+        // Keyboard arrow navigation support
+        window.addEventListener('keydown', (e) => {
+            if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+            if (e.key === 'ArrowDown' || e.key === 'PageDown') {
+                e.preventDefault();
+                navigatePage(1);
+            } else if (e.key === 'ArrowUp' || e.key === 'PageUp') {
+                e.preventDefault();
+                navigatePage(-1);
+            }
+        });
+
+        // Initialize active dot
+        updateDots(0);
+
+        // DIKW Interactive Pyramid Selector Logic
+        const dikwData = {
+            data: {
+                title: "Data (Raw Facts)",
+                desc: "Unorganized facts, numbers, or observations without context. Example: '100', 'Red', '10:04 AM'.",
+                badge: "bg-slate-700 text-slate-200"
+            },
+            information: {
+                title: "Information (Contextualized)",
+                desc: "Data structured and categorized to answer Who, What, Where, and When. Example: '100 customers bought the Red shirt at 10:04 AM'.",
+                badge: "bg-blue-600/30 text-blue-300"
+            },
+            knowledge: {
+                title: "Knowledge (Pattern Discovery)",
+                desc: "Synthesizing information to uncover underlying trends or rules. Example: 'Red shirts sell out 80% faster during morning flash sales.'",
+                badge: "bg-indigo-600/30 text-indigo-300"
+            },
+            wisdom: {
+                title: "Wisdom (Actionable Decisions)",
+                desc: "Applying knowledge to make optimal business decisions. Example: 'Automatically increase red shirt inventory reserves by 50% every morning before 10 AM.'",
+                badge: "bg-purple-600/30 text-purple-300"
+            }
+        };
+
+        function setDikwLevel(level) {
+            const display = document.getElementById('dikw-display');
+            const data = dikwData[level];
+            display.innerHTML = `
+                <span class="inline-block px-2 py-0.5 rounded text-[10px] font-bold ${data.badge} uppercase tracking-wider mb-1">${data.title}</span>
+                <p class="text-xs text-slate-200 leading-relaxed">${data.desc}</p>
+            `;
+        }
+
+        // CRISP-DM Step Details Toggle Logic
+        const crispSteps = {
+            1: {
+                title: "01. Business Understanding",
+                desc: "First, define the core problem you are trying to solve. Example: 'We need to reduce customer churn by 10% in Q3.'"
+            },
+            2: {
+                title: "02. Data Understanding",
+                desc: "Explore raw data assets available. Check completeness, identify missing values, detect noise, and verify sample distribution."
+            },
+            3: {
+                title: "03. Data Preparation (70-80% of effort)",
+                desc: "Clean, format, normalize, fill missing values, and engineer features. This step is the most time-consuming phase of data mining!"
+            },
+            4: {
+                title: "04. Modeling",
+                desc: "Apply machine learning algorithms or statistical models. You will frequently iterate back and forth between Data Preparation and Modeling."
+            },
+            5: {
+                title: "05. Evaluation",
+                desc: "Assess if model output actually solves the business goal defined in Step 1, rather than just achieving high statistical metric scores."
+            },
+            6: {
+                title: "06. Deployment",
+                desc: "Roll out the model into live software pipelines, set up monitoring dashboards, and track operational performance."
+            }
+        };
+
+        function showCrispStep(stepNumber) {
+            const detailBox = document.getElementById('crisp-detail');
+            const step = crispSteps[stepNumber];
+            detailBox.innerHTML = `
+                <h4 class="text-sm font-bold text-white flex items-center gap-2">
+                    <span>${step.title}</span>
+                </h4>
+                <p class="text-xs text-slate-300 mt-1">${step.desc}</p>
+            `;
+        }
+
+        // Model Fitting Simulator Logic (Complexity Slider)
+        function updateFitModel(val) {
+            const curve = document.getElementById('model-curve');
+            const valLabel = document.getElementById('complexity-val');
+            const fitStatus = document.getElementById('fit-status');
+            const desc = document.getElementById('complexity-desc');
+
+            if (val == 1) {
+                // Linear / Underfitting
+                curve.setAttribute('d', 'M 30 150 L 360 60');
+                valLabel.innerText = 'Degree 1 (Underfitting)';
+                fitStatus.innerText = 'High Bias (Underfit)';
+                fitStatus.className = 'px-2.5 py-1 bg-amber-500/20 text-amber-300 border border-amber-500/30 rounded-full text-xs font-bold';
+                desc.innerText = 'Underfitting: Model is too simple (a straight line) to capture the trend. High bias on both training & test data.';
+            } else if (val == 2) {
+                // Optimal Smooth Curve
+                curve.setAttribute('d', 'M 30 150 Q 200 120 360 40');
+                valLabel.innerText = 'Degree 2 (Balanced)';
+                fitStatus.innerText = 'Optimal Generalization';
+                fitStatus.className = 'px-2.5 py-1 bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 rounded-full text-xs font-bold';
+                desc.innerText = 'Balanced: Model captures true underlying pattern while ignoring noise. Generalizes well to unseen future data!';
+            } else if (val == 3) {
+                // Overfitting Wavy Path
+                curve.setAttribute('d', 'M 30 150 C 70 100, 70 160, 90 110 C 110 60, 120 160, 140 130 C 165 90, 175 100, 190 80 C 210 60, 225 120, 240 90 C 265 60, 275 30, 290 50 C 310 70, 325 80, 340 60');
+                valLabel.innerText = 'Degree 9 (Overfitting)';
+                fitStatus.innerText = 'High Variance (Overfit)';
+                fitStatus.className = 'px-2.5 py-1 bg-rose-500/20 text-rose-300 border border-rose-500/30 rounded-full text-xs font-bold';
+                desc.innerText = 'Overfitting: Model memorized every single training noise point. Perfect on past data, but completely fails on new real-world data.';
+            }
+        }
+
+        // Reflection Form Handler
+        function saveReflection() {
+            const biz = document.getElementById('biz-input').value.trim();
+            const data = document.getElementById('data-input').value.trim();
+            const output = document.getElementById('reflection-output');
+            const content = document.getElementById('summary-content');
+
+            if (!biz || !data) {
+                alert('Please fill in both Business Understanding and Data Understanding fields.');
+                return;
+            }
+
+            content.innerHTML = `
+                <p><strong>Business Problem:</strong> ${biz}</p>
+                <p><strong>Data Assessment:</strong> ${data}</p>
+            `;
+            output.classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>

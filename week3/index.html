@@ -1,0 +1,1795 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Week 3: MCI1104</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        darkBg: '#0b1120',
+                        cardBg: '#1e293b',
+                        accentViolet: '#8b5cf6',
+                        accentSky: '#0284c7',
+                        accentPink: '#ec4899',
+                        accentAmber: '#f59e0b',
+                        accentEmerald: '#10b981'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Smooth vertical scroll snap settings */
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background-color: #0b1120;
+            color: #f8fafc;
+        }
+
+        .scroll-container {
+            height: 100vh;
+            overflow-y: scroll;
+            scroll-snap-type: y mandatory;
+            scroll-behavior: smooth;
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        .scroll-container::-webkit-scrollbar {
+            display: none;
+        }
+
+        .page-section {
+            height: 100vh;
+            width: 100vw;
+            scroll-snap-align: start;
+            scroll-snap-stop: always;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-sizing: border-box;
+            padding: 2.5rem 5rem 2.5rem 3rem;
+        }
+
+        /* Nav dot indicators */
+        .nav-dot {
+            transition: all 0.3s ease;
+        }
+        .nav-dot.active {
+            background-color: #8b5cf6;
+            height: 1.75rem;
+            border-radius: 9999px;
+        }
+
+        /* Code Editor Simulation */
+        .code-font {
+            font-family: 'Fira Code', 'Courier New', Courier, monospace;
+        }
+
+        /* Fade-in animation */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in {
+            animation: fadeIn 0.35s ease-out forwards;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Vertical Floating Navigation Indicators -->
+    <nav class="fixed right-6 top-1/2 -translate-y-1/2 z-50 flex flex-col items-center gap-2.5 bg-slate-900/80 backdrop-blur-md p-3 rounded-full border border-slate-700 shadow-2xl">
+        <button onclick="scrollToPage(0)" title="1. EDA & Classification" class="nav-dot w-3 h-3 bg-slate-600 rounded-full hover:bg-violet-400 focus:outline-none"></button>
+        <button onclick="scrollToPage(1)" title="2. Composition Charts" class="nav-dot w-3 h-3 bg-slate-600 rounded-full hover:bg-violet-400 focus:outline-none"></button>
+        <button onclick="scrollToPage(2)" title="3. Comparison Charts" class="nav-dot w-3 h-3 bg-slate-600 rounded-full hover:bg-violet-400 focus:outline-none"></button>
+        <button onclick="scrollToPage(3)" title="4. Relationship Charts" class="nav-dot w-3 h-3 bg-slate-600 rounded-full hover:bg-violet-400 focus:outline-none"></button>
+        <button onclick="scrollToPage(4)" title="5. Distribution Charts" class="nav-dot w-3 h-3 bg-slate-600 rounded-full hover:bg-violet-400 focus:outline-none"></button>
+        <button onclick="scrollToPage(5)" title="6. Practical Lab" class="nav-dot w-3 h-3 bg-slate-600 rounded-full hover:bg-violet-400 focus:outline-none"></button>
+    </nav>
+
+    <!-- Main Vertical Scroll Container -->
+    <main id="scrollContainer" class="scroll-container">
+
+        <!-- PAGE 1: EDA INTRO & CLASSIFICATION -->
+        <section class="page-section bg-darkBg">
+            <div class="max-w-6xl w-full grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                <!-- Left Column: Concepts & Tukey Quote -->
+                <div class="lg:col-span-6 space-y-5">
+                    <div class="flex items-center gap-3">
+                        <span class="px-3 py-1 bg-violet-500/10 text-violet-400 border border-violet-500/30 rounded-full text-xs font-semibold tracking-wider uppercase">Topic 01</span>
+                        <span class="flex items-center gap-1 text-slate-400 text-xs font-medium">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                            Estimated Time: 20 Mins
+                        </span>
+                    </div>
+
+                    <h1 class="text-4xl font-extrabold text-white tracking-tight">Exploratory Data Analysis (EDA)</h1>
+
+                    <!-- Tukey Quote Banner -->
+                    <div class="p-4 bg-slate-900 border-l-4 border-violet-500 rounded-r-xl shadow-lg relative overflow-hidden">
+                        <blockquote class="text-slate-200 italic text-sm font-medium leading-relaxed">
+                            "Forcing the data to reveal its structural secrets."
+                        </blockquote>
+                        <div class="text-right text-xs text-violet-400 font-bold mt-1">— John Tukey, Pioneer of EDA</div>
+                    </div>
+
+                    <!-- Detective Mindset & Two-Phase Workflow -->
+                    <div class="p-4 bg-slate-950 border border-slate-800 rounded-xl text-xs space-y-3">
+                        <div class="flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-violet-400 animate-pulse"></span>
+                            <strong class="text-white">The Detective Mindset:</strong>
+                            <span class="text-slate-300">Investigate initial noise before forcing data into algorithms.</span>
+                        </div>
+                        
+                        <div class="grid grid-cols-2 gap-2 pt-1">
+                            <div class="p-2.5 bg-slate-900/80 rounded-lg border border-slate-800">
+                                <span class="text-[10px] text-violet-400 font-bold block uppercase tracking-wider">Phase 1: Non-Visual EDA</span>
+                                <p class="text-slate-400 text-[11px] mt-0.5 leading-normal">Means, medians, IQRs, missing values & baseline checks.</p>
+                            </div>
+                            <div class="p-2.5 bg-slate-900/80 rounded-lg border border-slate-800">
+                                <span class="text-[10px] text-sky-400 font-bold block uppercase tracking-wider">Phase 2: Visual EDA</span>
+                                <p class="text-slate-400 text-[11px] mt-0.5 leading-normal">Graphical representations to detect structural patterns.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column: Interactive Chart Selection Decision Tree -->
+                <div class="lg:col-span-6 bg-slate-900 p-6 rounded-2xl border border-slate-800 shadow-xl space-y-4">
+                    <div class="flex justify-between items-center">
+                        <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider">Chart Selection Flowchart</h3>
+                        <!-- <span class="text-[10px] text-violet-400 bg-violet-500/10 border border-violet-500/30 px-2 py-0.5 rounded font-mono">Interactive Navigator</span> -->
+                    </div>
+
+                    <p class="text-xs text-slate-300">What primary analytical question are you trying to answer?</p>
+
+                    <!-- Goal Selection Buttons -->
+                    <div class="grid grid-cols-2 gap-2 text-xs">
+                        <button onclick="selectGoal('composition')" id="btn-goal-composition" class="goal-btn p-3 bg-slate-800 hover:bg-violet-900/40 border border-slate-700 hover:border-violet-500 rounded-xl text-left transition-all ring-2 ring-violet-500 cursor-pointer">
+                            <div class="flex items-center justify-between mb-0.5">
+                                <span class="text-violet-400 font-bold text-xs">1. Composition</span>
+                                <span class="text-[10px] text-violet-300 bg-violet-950 px-1.5 py-0.5 rounded border border-violet-800">Parts</span>
+                            </div>
+                            <span class="text-[11px] text-slate-400 block">How a whole is divided?</span>
+                        </button>
+
+                        <button onclick="selectGoal('comparison')" id="btn-goal-comparison" class="goal-btn p-3 bg-slate-800 hover:bg-violet-900/40 border border-slate-700 hover:border-violet-500 rounded-xl text-left transition-all cursor-pointer">
+                            <div class="flex items-center justify-between mb-0.5">
+                                <span class="text-sky-400 font-bold text-xs">2. Comparison</span>
+                                <span class="text-[10px] text-sky-300 bg-sky-950 px-1.5 py-0.5 rounded border border-sky-800">Values</span>
+                            </div>
+                            <span class="text-[11px] text-slate-400 block">Item values across categories/time?</span>
+                        </button>
+
+                        <button onclick="selectGoal('relationship')" id="btn-goal-relationship" class="goal-btn p-3 bg-slate-800 hover:bg-violet-900/40 border border-slate-700 hover:border-violet-500 rounded-xl text-left transition-all cursor-pointer">
+                            <div class="flex items-center justify-between mb-0.5">
+                                <span class="text-pink-400 font-bold text-xs">3. Relationship</span>
+                                <span class="text-[10px] text-pink-300 bg-pink-950 px-1.5 py-0.5 rounded border border-pink-800">Correlate</span>
+                            </div>
+                            <span class="text-[11px] text-slate-400 block">Variable interaction & correlation?</span>
+                        </button>
+
+                        <button onclick="selectGoal('distribution')" id="btn-goal-distribution" class="goal-btn p-3 bg-slate-800 hover:bg-violet-900/40 border border-slate-700 hover:border-violet-500 rounded-xl text-left transition-all cursor-pointer">
+                            <div class="flex items-center justify-between mb-0.5">
+                                <span class="text-emerald-400 font-bold text-xs">4. Distribution</span>
+                                <span class="text-[10px] text-emerald-300 bg-emerald-950 px-1.5 py-0.5 rounded border border-emerald-800">Spread</span>
+                            </div>
+                            <span class="text-[11px] text-slate-400 block">Frequency, skewness & anomalies?</span>
+                        </button>
+                    </div>
+
+                    <!-- Recommended Output Card (Loaded by Default) -->
+                    <div id="tree-recommendation" class="p-4 bg-slate-950 border border-slate-800 rounded-xl min-h-[110px] flex items-center justify-center">
+                        <div class="w-full text-left space-y-2 animate-fade-in">
+                            <div class="flex items-center justify-between">
+                                <strong class="text-violet-400 font-bold text-sm">Composition Charts</strong>
+                                <span class="text-[10px] text-slate-500">4 Recommended Visuals</span>
+                            </div>
+                            <p class="text-slate-300 text-xs">Shows how a total entity is divided into its constituent parts.</p>
+                            <div class="flex flex-wrap gap-1.5 pt-1">
+                                <span class="px-2 py-0.5 bg-violet-950/60 border border-violet-500/40 text-violet-200 rounded text-[10px] font-medium">Stacked Bar (Best Practice)</span>
+                                <span class="px-2 py-0.5 bg-slate-900 border border-slate-700 text-slate-300 rounded text-[10px]">Treemap</span>
+                                <span class="px-2 py-0.5 bg-slate-900 border border-slate-700 text-slate-300 rounded text-[10px]">Donut Chart</span>
+                                <span class="px-2 py-0.5 bg-slate-900 border border-slate-700 text-slate-300 rounded text-[10px]">Pie Chart</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PAGE 2: COMPOSITION CHARTS -->
+        <section class="page-section bg-slate-900">
+            <div class="max-w-6xl w-full grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                <div class="lg:col-span-5 space-y-5">
+                    <div class="flex items-center gap-3">
+                        <span class="px-3 py-1 bg-violet-500/10 text-violet-400 border border-violet-500/30 rounded-full text-xs font-semibold tracking-wider uppercase">Topic 02</span>
+                        <span class="flex items-center gap-1 text-slate-400 text-xs font-medium">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                            Estimated Time: 20 Mins
+                        </span>
+                    </div>
+
+                    <h2 class="text-3xl font-extrabold text-white tracking-tight">1. Composition Charts</h2>
+
+                    <div class="p-4 bg-slate-950 border-l-4 border-violet-500 rounded-r-lg shadow-md">
+                        <p class="text-slate-300 text-sm leading-relaxed">
+                            <strong class="text-violet-300">Core Concept:</strong> Composition charts show how a total whole is broken down into its constituent parts <em>(e.g., "What percentage of our $10M total revenue comes from Software vs Hardware or Services?")</em>.
+                        </p>
+                    </div>
+
+                    <!-- Mathematical Baseline Breakdown Summary -->
+                    <div class="p-3 bg-slate-950 border border-slate-800 rounded-xl text-xs text-slate-300 space-y-2">
+                        <div class="flex justify-between items-center border-b border-slate-800 pb-1.5">
+                            <strong class="text-violet-400 font-semibold">Dataset Baseline ($10.0M Total):</strong>
+                            <span class="text-[10px] text-slate-400 font-mono">100% Sum</span>
+                        </div>
+                        <div class="grid grid-cols-2 gap-1.5 text-[11px] font-mono">
+                            <div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-violet-500"></span>Software: <strong>45% ($4.5M)</strong></div>
+                            <div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-cyan-400"></span>Hardware: <strong>30% ($3.0M)</strong></div>
+                            <div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-pink-500"></span>Services: <strong>15% ($1.5M)</strong></div>
+                            <div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-amber-500"></span>Consulting: <strong>10% ($1.0M)</strong></div>
+                        </div>
+                    </div>
+
+                    <div class="p-3 bg-amber-500/10 border border-amber-500/30 rounded-xl text-xs text-amber-200 leading-relaxed">
+                        ⚠️ <strong>Perceptual Limitation:</strong> Human eyes struggle to judge angles and arc areas. Prefer Stacked Bars or Treemaps over Pie Charts when precision matters!
+                    </div>
+                </div>
+
+                <!-- Interactive Composition Switcher -->
+                <div class="lg:col-span-7 bg-slate-950 p-6 rounded-2xl border border-slate-800 shadow-xl space-y-4">
+                    <div class="flex justify-between items-center">
+                        <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider">Interactive Composition Visualizer</h3>
+                        <span id="comp-tag" class="text-[10px] text-violet-300 bg-violet-950 border border-violet-500/30 px-2.5 py-1 rounded font-semibold">100% Stacked Bar (Best Practice)</span>
+                    </div>
+
+                    <!-- Dynamic SVG Canvas -->
+                    <div id="comp-canvas" class="w-full h-56 bg-slate-900 rounded-xl border border-slate-800 flex items-center justify-center p-3 overflow-hidden relative">
+                        <!-- Rendered by JS -->
+                    </div>
+
+                    <!-- Type Selector Buttons -->
+                    <div class="grid grid-cols-4 gap-2 text-xs">
+                        <button onclick="renderComposition('stacked')" id="comp-btn-stacked" class="comp-btn p-2.5 bg-violet-900/40 border border-violet-500 rounded-lg text-violet-200 font-bold text-center transition-all cursor-pointer">Stacked Bar</button>
+                        <button onclick="renderComposition('treemap')" id="comp-btn-treemap" class="comp-btn p-2.5 bg-slate-800 border border-slate-700 rounded-lg text-slate-300 hover:text-white text-center transition-all cursor-pointer">Treemap</button>
+                        <button onclick="renderComposition('donut')" id="comp-btn-donut" class="comp-btn p-2.5 bg-slate-800 border border-slate-700 rounded-lg text-slate-300 hover:text-white text-center transition-all cursor-pointer">Donut Chart</button>
+                        <button onclick="renderComposition('pie')" id="comp-btn-pie" class="comp-btn p-2.5 bg-slate-800 border border-slate-700 rounded-lg text-slate-300 hover:text-white text-center transition-all cursor-pointer">Pie Chart</button>
+                    </div>
+
+                    <p id="comp-description" class="text-xs text-slate-400 p-3 bg-slate-900 rounded-lg border border-slate-800 min-h-[52px] leading-relaxed">
+                        Loading chart description...
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- PAGE 3: COMPARISON CHARTS -->
+        <section class="page-section bg-darkBg">
+            <div class="max-w-6xl w-full grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                <!-- Left Column: Core Concept & Interactive Baseline Rule Card -->
+                <div class="lg:col-span-5 space-y-5">
+                    <div class="flex items-center gap-3">
+                        <span class="px-3 py-1 bg-sky-500/10 text-sky-400 border border-sky-500/30 rounded-full text-xs font-semibold tracking-wider uppercase">Topic 03</span>
+                        <span class="flex items-center gap-1 text-slate-400 text-xs font-medium">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                            Estimated Time: 25 Mins
+                        </span>
+                    </div>
+
+                    <h2 class="text-3xl font-extrabold text-white tracking-tight">2. Comparison Charts</h2>
+
+                    <div class="p-4 bg-slate-900 border-l-4 border-sky-500 rounded-r-lg shadow-md">
+                        <p class="text-slate-300 text-sm leading-relaxed">
+                            <strong class="text-sky-300">Core Concept:</strong> Evaluate multiple discrete items against each other or track a single item over time <em>(e.g., "Product A vs Product B over 12 months")</em>.
+                        </p>
+                    </div>
+
+                    <!-- Zero Baseline Misleading Axis Interactive Demo -->
+                    <div class="p-3.5 bg-slate-900 rounded-xl border border-slate-800 space-y-2.5 text-xs">
+                        <div class="flex items-center justify-between">
+                            <strong class="text-sky-300 font-semibold">Zero Baseline Rule Demo:</strong>
+                            <button onclick="toggleZeroBaseline()" id="baseline-btn" class="px-2.5 py-1 bg-sky-600 hover:bg-sky-500 text-white font-bold rounded text-[10px] transition-colors cursor-pointer shadow">Y-Axis Starts at 0 (Valid)</button>
+                        </div>
+                        <p id="baseline-text" class="text-slate-400 text-[11px] leading-relaxed">
+                            Bar/Column height encodes raw magnitude. Truncating the Y-axis distorts proportions and misleads stakeholders!
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Right Column: Interactive Comparison Switcher -->
+                <div class="lg:col-span-7 bg-slate-900 p-6 rounded-2xl border border-slate-700 shadow-xl space-y-4">
+                    <div class="flex justify-between items-center">
+                        <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider">Comparison Visualizer</h3>
+                        <span id="comp-type-label" class="text-[10px] text-sky-300 bg-sky-950 border border-sky-500/30 px-2.5 py-1 rounded font-semibold">Vertical Column Chart</span>
+                    </div>
+
+                    <!-- SVG Chart Canvas (Expanded Height h-56) -->
+                    <div id="comparison-canvas" class="w-full h-56 bg-slate-950 rounded-xl border border-slate-800 flex items-center justify-center p-3 relative overflow-hidden">
+                        <!-- Rendered by JS -->
+                    </div>
+
+                    <!-- Navigation Buttons -->
+                    <div class="grid grid-cols-4 gap-2 text-xs">
+                        <button onclick="renderComparison('column')" id="comp-btn-column" class="comp-nav-btn p-2.5 bg-sky-900/40 border border-sky-500 rounded-lg text-sky-200 font-bold text-center transition-all cursor-pointer">Column Chart</button>
+                        <button onclick="renderComparison('bar')" id="comp-btn-bar" class="comp-nav-btn p-2.5 bg-slate-800 border border-slate-700 rounded-lg text-slate-300 hover:text-white text-center transition-all cursor-pointer">Bar Chart</button>
+                        <button onclick="renderComparison('grouped')" id="comp-btn-grouped" class="comp-nav-btn p-2.5 bg-slate-800 border border-slate-700 rounded-lg text-slate-300 hover:text-white text-center transition-all cursor-pointer">Grouped Bar</button>
+                        <button onclick="renderComparison('line')" id="comp-btn-line" class="comp-nav-btn p-2.5 bg-slate-800 border border-slate-700 rounded-lg text-slate-300 hover:text-white text-center transition-all cursor-pointer">Line Chart</button>
+                    </div>
+
+                    <p id="comparison-desc" class="text-xs text-slate-400 p-3 bg-slate-950 rounded-lg border border-slate-800 leading-relaxed min-h-[52px]">
+                        Standard tool for comparing discrete categories. Always keep Y-axis at zero!
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- PAGE 4: RELATIONSHIP CHARTS -->
+        <section class="page-section bg-slate-900">
+            <div class="max-w-6xl w-full grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                <!-- Left Column: Core Concept & Correlation Scale -->
+                <div class="lg:col-span-5 space-y-5">
+                    <div class="flex items-center gap-3">
+                        <span class="px-3 py-1 bg-pink-500/10 text-pink-400 border border-pink-500/30 rounded-full text-xs font-semibold tracking-wider uppercase">Topic 04</span>
+                        <span class="flex items-center gap-1 text-slate-400 text-xs font-medium">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                            Estimated Time: 30 Mins
+                        </span>
+                    </div>
+
+                    <h2 class="text-3xl font-extrabold text-white tracking-tight">3. Relationship Charts</h2>
+
+                    <div class="p-4 bg-slate-950 border-l-4 border-pink-500 rounded-r-lg shadow-md">
+                        <p class="text-slate-300 text-sm leading-relaxed">
+                            <strong class="text-pink-300">Core Concept:</strong> In predictive analytics, identifying relationships is crucial. You determine if changing one variable directly impacts another <em>(e.g., "Does increasing Ad Spend correlate with higher Revenue?")</em>.
+                        </p>
+                    </div>
+
+                    <!-- Pearson Correlation Scale Indicator -->
+                    <div class="p-3.5 bg-slate-950 border border-slate-800 rounded-xl space-y-2.5 text-xs">
+                        <div class="flex justify-between items-center">
+                            <strong class="text-pink-400 font-semibold">Pearson Correlation Coefficient ($r$):</strong>
+                            <span id="corr-val-badge" class="px-2 py-0.5 bg-emerald-950 text-emerald-300 border border-emerald-500/30 rounded text-[10px] font-mono font-bold">+0.88 (Strong Positive)</span>
+                        </div>
+
+                        <!-- Gradient Spectrum Bar -->
+                        <div class="w-full h-2.5 rounded-full bg-gradient-to-r from-sky-500 via-slate-700 to-pink-500 relative">
+                            <div id="corr-marker" class="w-3 h-3 bg-white border-2 border-slate-900 rounded-full absolute -top-0.25 shadow left-[94%] -translate-x-1/2 transition-all duration-300"></div>
+                        </div>
+
+                        <div class="flex justify-between text-[10px] text-slate-400 font-mono pt-0.5">
+                            <span class="text-sky-400">-1.0 (Inverse)</span>
+                            <span class="text-slate-500">0.0 (No Linear Trend)</span>
+                            <span class="text-pink-400">+1.0 (Direct)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column: Interactive Relationship Explorer -->
+                <div class="lg:col-span-7 bg-slate-950 p-6 rounded-2xl border border-slate-800 shadow-xl space-y-4">
+                    <div class="flex justify-between items-center">
+                        <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider">Relationship Explorer</h3>
+                        <span id="rel-type-label" class="text-[10px] text-pink-300 bg-pink-950 border border-pink-500/30 px-2.5 py-1 rounded font-semibold">Scatter Plot</span>
+                    </div>
+
+                    <!-- SVG Canvas (Expanded Height h-56) -->
+                    <div id="rel-canvas" class="w-full h-56 bg-slate-900 rounded-xl border border-slate-800 flex items-center justify-center p-3 relative overflow-hidden">
+                        <!-- Rendered by JS -->
+                    </div>
+
+                    <!-- Navigation Buttons -->
+                    <div class="grid grid-cols-4 gap-2 text-xs">
+                        <button onclick="renderRelationship('scatter')" id="rel-btn-scatter" class="rel-nav-btn p-2.5 bg-pink-900/40 border border-pink-500 rounded-lg text-pink-200 font-bold text-center transition-all cursor-pointer">Scatter Plot</button>
+                        <button onclick="renderRelationship('bubble')" id="rel-btn-bubble" class="rel-nav-btn p-2.5 bg-slate-800 border border-slate-700 rounded-lg text-slate-300 hover:text-white text-center transition-all cursor-pointer">Bubble Chart</button>
+                        <button onclick="renderRelationship('connected')" id="rel-btn-connected" class="rel-nav-btn p-2.5 bg-slate-800 border border-slate-700 rounded-lg text-slate-300 hover:text-white text-center transition-all cursor-pointer">Connected Scatter</button>
+                        <button onclick="renderRelationship('heatmap')" id="rel-btn-heatmap" class="rel-nav-btn p-2.5 bg-slate-800 border border-slate-700 rounded-lg text-slate-300 hover:text-white text-center transition-all cursor-pointer">Correlation Matrix</button>
+                    </div>
+
+                    <p id="rel-desc" class="text-xs text-slate-400 p-3 bg-slate-900 rounded-lg border border-slate-800 leading-relaxed min-h-[52px]">
+                        Loading relationship chart...
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- PAGE 5: DISTRIBUTION CHARTS -->
+        <section class="page-section bg-darkBg">
+            <div class="max-w-6xl w-full grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                <!-- Left Column: Core Concept & Statistical Reference Card -->
+                <div class="lg:col-span-5 space-y-5">
+                    <div class="flex items-center gap-3">
+                        <span class="px-3 py-1 bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 rounded-full text-xs font-semibold tracking-wider uppercase">Topic 05</span>
+                        <span class="flex items-center gap-1 text-slate-400 text-xs font-medium">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                            Estimated Time: 25 Mins
+                        </span>
+                    </div>
+
+                    <h2 class="text-3xl font-extrabold text-white tracking-tight">4. Distribution Charts</h2>
+
+                    <div class="p-4 bg-slate-900 border-l-4 border-emerald-500 rounded-r-lg shadow-md">
+                        <p class="text-slate-300 text-sm leading-relaxed">
+                            <strong class="text-emerald-300">Core Concept:</strong> Understand single variables in isolation. Inspect how data spread is shaped, locate central tendency, and detect extreme anomalies.
+                        </p>
+                    </div>
+
+                    <!-- Statistical Quick-Reference Box (No LaTeX Math Delimiters) -->
+                    <div class="p-3.5 bg-slate-900 rounded-xl border border-slate-800 space-y-2 text-xs">
+                        <div class="flex justify-between items-center border-b border-slate-800 pb-1.5">
+                            <strong class="text-emerald-400 font-semibold">5-Number Summary &amp; Outliers:</strong>
+                            <span class="text-[10px] text-slate-400 font-mono">Tukey Boxplot Rule</span>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-2 text-[11px]">
+                            <div class="p-2 bg-slate-950 rounded border border-slate-800 space-y-1">
+                                <span class="text-[10px] text-slate-400 font-bold uppercase block">IQR Range</span>
+                                <p class="text-slate-200 font-mono text-[10px]">
+                                    IQR = <i>Q</i><sub>3</sub> &minus; <i>Q</i><sub>1</sub>
+                                </p>
+                                <p class="text-slate-400 text-[10px]">Middle 50% of spread</p>
+                            </div>
+
+                            <div class="p-2 bg-slate-950 rounded border border-slate-800 space-y-1">
+                                <span class="text-[10px] text-rose-400 font-bold uppercase block">Outlier Threshold</span>
+                                <p class="text-rose-300 font-mono text-[10px]">
+                                    &gt; <i>Q</i><sub>3</sub> + 1.5 &times; IQR
+                                </p>
+                                <p class="text-slate-400 text-[10px]">Anomalous values</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column: Interactive Distribution Switcher -->
+                <div class="lg:col-span-7 bg-slate-900 p-6 rounded-2xl border border-slate-700 shadow-xl space-y-4">
+                    <div class="flex justify-between items-center">
+                        <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider">Distribution Inspector</h3>
+                        <span id="dist-type-label" class="text-[10px] text-emerald-300 bg-emerald-950 border border-emerald-500/30 px-2.5 py-1 rounded font-semibold">Histogram</span>
+                    </div>
+
+                    <!-- SVG Canvas (Expanded Height h-56) -->
+                    <div id="dist-canvas" class="w-full h-56 bg-slate-950 rounded-xl border border-slate-800 flex items-center justify-center p-3 relative overflow-hidden">
+                        <!-- Rendered by JS -->
+                    </div>
+
+                    <!-- Navigation Buttons -->
+                    <div class="grid grid-cols-4 gap-2 text-xs">
+                        <button onclick="renderDistribution('histogram')" id="dist-btn-histogram" class="dist-nav-btn p-2.5 bg-emerald-900/40 border border-emerald-500 rounded-lg text-emerald-200 font-bold text-center transition-all cursor-pointer">Histogram</button>
+                        <button onclick="renderDistribution('density')" id="dist-btn-density" class="dist-nav-btn p-2.5 bg-slate-800 border border-slate-700 rounded-lg text-slate-300 hover:text-white text-center transition-all cursor-pointer">Density Plot</button>
+                        <button onclick="renderDistribution('boxplot')" id="dist-btn-boxplot" class="dist-nav-btn p-2.5 bg-slate-800 border border-slate-700 rounded-lg text-slate-300 hover:text-white text-center transition-all cursor-pointer">Box Plot</button>
+                        <button onclick="renderDistribution('violin')" id="dist-btn-violin" class="dist-nav-btn p-2.5 bg-slate-800 border border-slate-700 rounded-lg text-slate-300 hover:text-white text-center transition-all cursor-pointer">Violin Plot</button>
+                    </div>
+
+                    <p id="dist-desc" class="text-xs text-slate-400 p-3 bg-slate-950 rounded-lg border border-slate-800 leading-relaxed min-h-[52px]">
+                        Loading distribution chart...
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- PAGE 6: PRACTICAL LAB -->
+        <section class="page-section bg-darkBg">
+            <div class="max-w-5xl w-full bg-[#1e1e1e] p-1 rounded-2xl border border-slate-700 shadow-2xl overflow-hidden flex flex-col h-[85vh]">
+                
+                <!-- Mock IDE Header -->
+                <div class="w-full bg-[#2d2d2d] py-2 px-4 flex items-center justify-between border-b border-[#3c3c3c]">
+                    <div class="flex gap-2">
+                        <div class="w-3 h-3 rounded-full bg-rose-500"></div>
+                        <div class="w-3 h-3 rounded-full bg-amber-500"></div>
+                        <div class="w-3 h-3 rounded-full bg-emerald-500"></div>
+                    </div>
+                    <div class="text-[11px] text-slate-400 font-mono">Week3_Lab_Seaborn.ipynb</div>
+                    <div class="text-[10px] px-2 py-1 bg-violet-600 text-white rounded font-sans font-bold">Jupyter / Python 3</div>
+                </div>
+
+                <!-- IDE Content Area -->
+                <div class="flex-1 flex flex-col md:flex-row overflow-hidden bg-[#1e1e1e]">
+                    
+                    <!-- Instructions & Parameter Cheat-Sheet Sidebar -->
+                    <div class="w-full md:w-1/3 bg-[#252526] border-r border-[#3c3c3c] p-4 overflow-y-auto space-y-4">
+                        <div class="flex items-center gap-2">
+                            <span class="px-2 py-0.5 bg-violet-500/20 text-violet-400 rounded text-[10px] font-bold uppercase tracking-wider">4 Hours</span>
+                            <h2 class="text-sm font-bold text-white">Practical Lab Walkthrough</h2>
+                        </div>
+                        
+                        <p class="text-xs text-slate-300 leading-relaxed">
+                            Translate visual EDA concepts into production Python code using <strong class="text-violet-400">Matplotlib</strong> and <strong class="text-violet-400">Seaborn</strong>:
+                        </p>
+                        
+                        <!-- Detailed Step Explanations -->
+                        <div class="space-y-3 text-xs">
+                            <!-- Step 1 Info -->
+                            <div class="p-3 bg-[#1e1e1e] rounded-lg border border-slate-800 space-y-1">
+                                <div class="flex items-center gap-2">
+                                    <span class="w-5 h-5 rounded-full bg-violet-500/20 text-violet-400 text-[10px] font-bold flex items-center justify-center shrink-0">1</span>
+                                    <strong class="text-white text-xs">Setup &amp; Theme</strong>
+                                </div>
+                                <p class="text-slate-400 text-[11px] leading-normal">
+                                    Import libraries and apply <code class="text-violet-300 font-mono">sns.set_theme()</code> to standardize chart grids and color palettes.
+                                </p>
+                            </div>
+
+                            <!-- Step 2 Info -->
+                            <div class="p-3 bg-[#1e1e1e] rounded-lg border border-slate-800 space-y-1">
+                                <div class="flex items-center gap-2">
+                                    <span class="w-5 h-5 rounded-full bg-emerald-500/20 text-emerald-400 text-[10px] font-bold flex items-center justify-center shrink-0">2</span>
+                                    <strong class="text-white text-xs">Univariate EDA</strong>
+                                </div>
+                                <ul class="text-slate-400 text-[11px] space-y-1 pl-1">
+                                    <li>• <code class="text-violet-300 font-mono">kde=True</code>: Overlays Kernel Density curve to inspect skewness.</li>
+                                    <li>• <code class="text-violet-300 font-mono">sns.boxplot()</code>: Isolates anomalies outside 1.5 &times; IQR fences.</li>
+                                </ul>
+                            </div>
+
+                            <!-- Step 3 Info -->
+                            <div class="p-3 bg-[#1e1e1e] rounded-lg border border-slate-800 space-y-1">
+                                <div class="flex items-center gap-2">
+                                    <span class="w-5 h-5 rounded-full bg-pink-500/20 text-pink-400 text-[10px] font-bold flex items-center justify-center shrink-0">3</span>
+                                    <strong class="text-white text-xs">Multivariate Correlations</strong>
+                                </div>
+                                <ul class="text-slate-400 text-[11px] space-y-1 pl-1">
+                                    <li>• <code class="text-violet-300 font-mono">annot=True</code>: Displays numerical Pearson <i>r</i> coefficients in cells.</li>
+                                    <li>• <code class="text-violet-300 font-mono">cmap='coolwarm'</code>: Color-scales inverse (blue) vs direct (red) links.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Code Editor & Interactive Output Terminal -->
+                    <div class="w-full md:w-2/3 flex flex-col h-full bg-[#1e1e1e]">
+                        
+                        <!-- Code Editor Container -->
+                        <div class="flex-1 p-4 overflow-y-auto code-font text-xs leading-relaxed space-y-3">
+                            <!-- Block 1 -->
+                            <div class="p-2.5 bg-[#252526]/60 rounded border-l-2 border-violet-500">
+                                <div class="text-[#6a9955] text-[11px] font-sans font-semibold mb-1"># Step 1: Import modules & set rendering aesthetics</div>
+                                <div><span class="text-[#c586c0]">import</span> matplotlib.pyplot <span class="text-[#c586c0]">as</span> plt</div>
+                                <div><span class="text-[#c586c0]">import</span> seaborn <span class="text-[#c586c0]">as</span> sns</div>
+                                <div>sns.set_theme(style=<span class="text-[#ce9178]">'darkgrid'</span>)</div>
+                                <div>df = sns.load_dataset(<span class="text-[#ce9178]">'housing'</span>)</div>
+                            </div>
+
+                            <!-- Block 2 -->
+                            <div class="p-2.5 bg-[#252526]/60 rounded border-l-2 border-emerald-500">
+                                <div class="text-[#6a9955] text-[11px] font-sans font-semibold mb-1"># Step 2: Plot distribution skewness & boxplot outliers side-by-side</div>
+                                <div>fig, axes = plt.subplots(<span class="text-[#b5cea8]">1</span>, <span class="text-[#b5cea8]">2</span>, figsize=(<span class="text-[#b5cea8]">10</span>, <span class="text-[#b5cea8]">4</span>))</div>
+                                <div>sns.histplot(df[<span class="text-[#ce9178]">'price'</span>], kde=<span class="text-[#569cd6]">True</span>, ax=axes[<span class="text-[#b5cea8]">0</span>], color=<span class="text-[#ce9178]">'#8b5cf6'</span>)</div>
+                                <div>sns.boxplot(x=df[<span class="text-[#ce9178]">'price'</span>], ax=axes[<span class="text-[#b5cea8]">1</span>], color=<span class="text-[#ce9178]">'#10b981'</span>)</div>
+                            </div>
+
+                            <!-- Block 3 -->
+                            <div class="p-2.5 bg-[#252526]/60 rounded border-l-2 border-pink-500">
+                                <div class="text-[#6a9955] text-[11px] font-sans font-semibold mb-1"># Step 3: Compute pairwise correlation matrix & display heatmap</div>
+                                <div>plt.figure(figsize=(<span class="text-[#b5cea8]">6</span>, <span class="text-[#b5cea8]">4</span>))</div>
+                                <div>corr_matrix = df.select_dtypes(<span class="text-[#ce9178]'number'</span>).corr()</div>
+                                <div>sns.heatmap(corr_matrix, annot=<span class="text-[#569cd6]">True</span>, cmap=<span class="text-[#ce9178]'coolwarm'</span>, fmt=<span class="text-[#ce9178]'.2f'</span>)</div>
+                                <div>plt.show()</div>
+                            </div>
+                        </div>
+
+                        <!-- Run Control Bar -->
+                        <div class="bg-[#2d2d2d] p-2.5 px-4 border-t border-b border-[#3c3c3c] flex justify-between items-center">
+                            <span class="text-[10px] text-slate-400 font-mono">In [1]: Visual EDA Notebook</span>
+                            <button onclick="runLabCode()" class="px-4 py-1.5 bg-violet-700 hover:bg-violet-600 text-white text-xs font-semibold rounded flex items-center gap-2 transition-colors focus:outline-none cursor-pointer shadow">
+                                <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg> Run Code Cell
+                            </button>
+                        </div>
+
+                        <!-- Console Output Terminal -->
+                        <div class="h-1/2 bg-[#1e1e1e] p-3 overflow-y-auto code-font text-[11px] text-slate-300 relative">
+                            <div id="terminal-placeholder" class="text-[#6a9955] italic p-2"># Console output... Click "Run Code Cell" above to execute Seaborn pipeline.</div>
+                            
+                            <div id="terminal-output" class="hidden space-y-2.5 animate-fade-in">
+                                <!-- Navigation Tabs & Non-Visual Summary Bar -->
+                                <div class="flex items-center justify-between border-b border-slate-800 pb-2">
+                                    <div class="flex items-center gap-2">
+                                        <span class="text-xs font-bold text-white font-sans">Figures:</span>
+                                        <button onclick="switchLabTab('dist')" id="lab-tab-dist" class="px-2.5 py-1 bg-violet-900/60 text-violet-200 rounded text-[10px] font-bold border border-violet-500/50 cursor-pointer">1. Distribution &amp; Outliers</button>
+                                        <button onclick="switchLabTab('corr')" id="lab-tab-corr" class="px-2 py-1 bg-slate-800 text-slate-400 hover:text-white rounded text-[10px] cursor-pointer">2. Correlation Heatmap</button>
+                                    </div>
+                                    <!-- <span class="text-[10px] text-slate-500 font-mono hidden sm:inline">Execution time: 0.42s</span> -->
+                                </div>
+
+                                <!-- TAB 1: Distribution & Boxplot Figures -->
+                                <div id="lab-fig-dist" class="space-y-2">
+                                    <!-- Non-visual EDA Metrics Printed to Console -->
+                                    <div class="p-2 bg-slate-950 rounded border border-slate-800 flex justify-between items-center text-[10px] text-slate-300 font-mono">
+                                        <span><strong>Price Metric Summary:</strong> Mean = $542K | Median = $480K</span>
+                                        <span class="text-amber-400">Skewness = +1.42 (Right-Skewed)</span>
+                                        <span class="text-rose-400">Outliers = 14 rows (&gt;$980K)</span>
+                                    </div>
+
+                                    <!-- High-Detail SVG Plot Split View -->
+                                    <div class="grid grid-cols-2 gap-3 bg-slate-950 p-3 rounded-lg border border-slate-800 items-center">
+                                        <!-- Histplot + KDE Curve -->
+                                        <div class="text-center space-y-1">
+                                            <span class="text-[10px] text-violet-400 font-bold block font-sans">sns.histplot(df['price'], kde=True)</span>
+                                            <svg class="w-full h-24" viewBox="0 0 200 100">
+                                                <!-- Grid & Axes -->
+                                                <line x1="20" y1="85" x2="190" y2="85" stroke="#334155" stroke-width="1"/>
+                                                <line x1="20" y1="15" x2="20" y2="85" stroke="#334155" stroke-width="1"/>
+
+                                                <!-- Bars -->
+                                                <rect x="25" y="60" width="20" height="25" fill="#8b5cf6" fill-opacity="0.6" stroke="#8b5cf6"/>
+                                                <rect x="48" y="25" width="20" height="60" fill="#8b5cf6" fill-opacity="0.6" stroke="#8b5cf6"/>
+                                                <rect x="71" y="40" width="20" height="45" fill="#8b5cf6" fill-opacity="0.6" stroke="#8b5cf6"/>
+                                                <rect x="94" y="65" width="20" height="20" fill="#8b5cf6" fill-opacity="0.6" stroke="#8b5cf6"/>
+                                                <rect x="117" y="75" width="20" height="10" fill="#8b5cf6" fill-opacity="0.6" stroke="#8b5cf6"/>
+                                                <rect x="140" y="80" width="20" height="5" fill="#8b5cf6" fill-opacity="0.6" stroke="#8b5cf6"/>
+
+                                                <!-- KDE Smooth Line -->
+                                                <path d="M 22 75 C 40 15, 60 20, 80 45 C 100 65, 130 80, 185 84" stroke="#ec4899" stroke-width="2" fill="none"/>
+                                                
+                                                <!-- Axis Ticks -->
+                                                <text x="25" y="94" fill="#64748b" font-size="7" text-anchor="middle">$200K</text>
+                                                <text x="71" y="94" fill="#64748b" font-size="7" text-anchor="middle">$600K</text>
+                                                <text x="140" y="94" fill="#64748b" font-size="7" text-anchor="middle">$1M</text>
+                                            </svg>
+                                        </div>
+
+                                        <!-- Boxplot Visual -->
+                                        <div class="text-center space-y-1 border-l border-slate-800 pl-2">
+                                            <span class="text-[10px] text-emerald-400 font-bold block font-sans">sns.boxplot(x=df['price'])</span>
+                                            <svg class="w-full h-24" viewBox="0 0 200 100">
+                                                <!-- Axis -->
+                                                <line x1="20" y1="85" x2="190" y2="85" stroke="#334155" stroke-width="1"/>
+
+                                                <!-- Whiskers -->
+                                                <line x1="35" y1="45" x2="60" y2="45" stroke="#94a3b8" stroke-width="1.5"/>
+                                                <line x1="35" y1="35" x2="35" y2="55" stroke="#94a3b8" stroke-width="1.5"/>
+
+                                                <line x1="120" y1="45" x2="155" y2="45" stroke="#94a3b8" stroke-width="1.5"/>
+                                                <line x1="155" y1="35" x2="155" y2="55" stroke="#94a3b8" stroke-width="1.5"/>
+
+                                                <!-- Box (Q1 to Q3) -->
+                                                <rect x="60" y="25" width="60" height="40" fill="#10b981" fill-opacity="0.25" stroke="#10b981" stroke-width="2" rx="2"/>
+                                                <line x1="85" y1="25" x2="85" y2="65" stroke="#34d399" stroke-width="2.5"/> <!-- Median -->
+
+                                                <!-- Outliers (> Q3 + 1.5*IQR) -->
+                                                <circle cx="168" cy="45" r="3" fill="#f43f5e"/>
+                                                <circle cx="178" cy="45" r="3" fill="#f43f5e"/>
+                                                <circle cx="186" cy="45" r="3" fill="#f43f5e"/>
+
+                                                <!-- Labels -->
+                                                <text x="85" y="18" fill="#34d399" font-size="7" font-weight="bold" text-anchor="middle">Median: $480K</text>
+                                                <text x="178" y="32" fill="#f43f5e" font-size="7" font-weight="bold" text-anchor="middle">Outliers</text>
+                                                <text x="35" y="94" fill="#64748b" font-size="7" text-anchor="middle">$200K</text>
+                                                <text x="85" y="94" fill="#64748b" font-size="7" text-anchor="middle">$500K</text>
+                                                <text x="155" y="94" fill="#64748b" font-size="7" text-anchor="middle">$980K Fence</text>
+                                            </svg>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- TAB 2: Correlation Heatmap Figure -->
+                                <div id="lab-fig-corr" class="hidden space-y-2">
+                                    <!-- Matrix Console Insight Note -->
+                                    <div class="p-2 bg-slate-950 rounded border border-slate-800 flex justify-between items-center text-[10px] text-slate-300 font-mono">
+                                        <span><strong>Pairwise Findings:</strong> Strongest Target Predictor = <strong class="text-pink-400">SqFt (r = +0.85)</strong></span>
+                                        <span class="text-sky-400">Bedrooms &lt;-&gt; Price (r = +0.42)</span>
+                                    </div>
+
+                                    <!-- High-Detail SVG Heatmap Matrix -->
+                                    <div class="flex justify-center bg-slate-950 p-3 rounded-lg border border-slate-800">
+                                        <svg class="w-72 h-32" viewBox="0 0 280 120">
+                                            <g transform="translate(50, 10)">
+                                                <!-- Column Headers -->
+                                                <text x="30" y="10" fill="#cbd5e1" font-size="8" font-weight="bold" text-anchor="middle">Price</text>
+                                                <text x="85" y="10" fill="#cbd5e1" font-size="8" font-weight="bold" text-anchor="middle">SqFt</text>
+                                                <text x="140" y="10" fill="#cbd5e1" font-size="8" font-weight="bold" text-anchor="middle">Bedrooms</text>
+
+                                                <!-- Row 1: Price -->
+                                                <text x="-8" y="32" fill="#cbd5e1" font-size="8" font-weight="bold" text-anchor="end">Price</text>
+                                                <rect x="5" y="18" width="50" height="26" fill="#be185d" rx="2"/><text x="30" y="34" fill="#fff" font-size="9" font-weight="bold" text-anchor="middle">1.00</text>
+                                                <rect x="60" y="18" width="50" height="26" fill="#db2777" rx="2"/><text x="85" y="34" fill="#fff" font-size="9" font-weight="bold" text-anchor="middle">+0.85</text>
+                                                <rect x="115" y="18" width="50" height="26" fill="#f472b6" rx="2"/><text x="140" y="34" fill="#0f172a" font-size="9" font-weight="bold" text-anchor="middle">+0.42</text>
+
+                                                <!-- Row 2: SqFt -->
+                                                <text x="-8" y="60" fill="#cbd5e1" font-size="8" font-weight="bold" text-anchor="end">SqFt</text>
+                                                <rect x="5" y="46" width="50" height="26" fill="#db2777" rx="2"/><text x="30" y="62" fill="#fff" font-size="9" font-weight="bold" text-anchor="middle">+0.85</text>
+                                                <rect x="60" y="46" width="50" height="26" fill="#be185d" rx="2"/><text x="85" y="62" fill="#fff" font-size="9" font-weight="bold" text-anchor="middle">1.00</text>
+                                                <rect x="115" y="46" width="50" height="26" fill="#e879f9" rx="2"/><text x="140" y="62" fill="#0f172a" font-size="9" font-weight="bold" text-anchor="middle">+0.58</text>
+
+                                                <!-- Row 3: Bedrooms -->
+                                                <text x="-8" y="88" fill="#cbd5e1" font-size="8" font-weight="bold" text-anchor="end">Bedrooms</text>
+                                                <rect x="5" y="74" width="50" height="26" fill="#f472b6" rx="2"/><text x="30" y="90" fill="#0f172a" font-size="9" font-weight="bold" text-anchor="middle">+0.42</text>
+                                                <rect x="60" y="74" width="50" height="26" fill="#e879f9" rx="2"/><text x="85" y="90" fill="#0f172a" font-size="9" font-weight="bold" text-anchor="middle">+0.58</text>
+                                                <rect x="115" y="74" width="50" height="26" fill="#be185d" rx="2"/><text x="140" y="90" fill="#fff" font-size="9" font-weight="bold" text-anchor="middle">1.00</text>
+
+                                                <!-- Side Color Bar Gradient Scale -->
+                                                <g transform="translate(178, 18)">
+                                                    <defs>
+                                                        <linearGradient id="coolwarmGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                                                            <stop offset="0%" stop-color="#be185d"/>
+                                                            <stop offset="50%" stop-color="#334155"/>
+                                                            <stop offset="100%" stop-color="#0284c7"/>
+                                                        </linearGradient>
+                                                    </defs>
+                                                    <rect x="0" y="0" width="8" height="82" fill="url(#coolwarmGrad)" rx="1"/>
+                                                    <text x="12" y="8" fill="#be185d" font-size="7" font-weight="bold">+1.0</text>
+                                                    <text x="12" y="44" fill="#94a3b8" font-size="7">0.0</text>
+                                                    <text x="12" y="80" fill="#0284c7" font-size="7" font-weight="bold">-1.0</text>
+                                                </g>
+                                            </g>
+                                        </svg>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- MathJax CDN for rendering $ LaTeX math in browser -->
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']]
+            }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <!-- Interactive Scripts -->
+    <script>
+        // Page Scroll Navigation Logic
+        const container = document.getElementById('scrollContainer');
+        const dots = document.querySelectorAll('.nav-dot');
+        const totalPages = 6;
+
+        function getCurrentPageIndex() {
+            return Math.round(container.scrollTop / window.innerHeight);
+        }
+
+        function scrollToPage(index) {
+            if (index < 0) index = 0;
+            if (index >= totalPages) index = totalPages - 1;
+            container.scrollTo({
+                top: index * window.innerHeight,
+                behavior: 'smooth'
+            });
+            updateDots(index);
+        }
+
+        function navigatePage(direction) {
+            const current = getCurrentPageIndex();
+            scrollToPage(current + direction);
+        }
+
+        function updateDots(activeIndex) {
+            dots.forEach((dot, idx) => {
+                if (idx === activeIndex) {
+                    dot.classList.add('active');
+                } else {
+                    dot.classList.remove('active');
+                }
+            });
+        }
+
+        container.addEventListener('scroll', () => {
+            const index = getCurrentPageIndex();
+            updateDots(index);
+        });
+
+        window.addEventListener('keydown', (e) => {
+            if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+            if (e.key === 'ArrowDown' || e.key === 'PageDown') {
+                e.preventDefault();
+                navigatePage(1);
+            } else if (e.key === 'ArrowUp' || e.key === 'PageUp') {
+                e.preventDefault();
+                navigatePage(-1);
+            }
+        });
+
+        updateDots(0);
+
+        // Page 1: Decision Tree Handler
+        const goalsData = {
+            composition: {
+                title: "Composition Charts",
+                desc: "Shows how a total entity is divided into its constituent parts.",
+                charts: ["Stacked Bar (Best Practice)", "Treemap", "Donut Chart", "Pie Chart"],
+                color: "text-violet-400",
+                best: "Stacked Bar (Best Practice)"
+            },
+            comparison: {
+                title: "Comparison Charts",
+                desc: "Evaluates discrete items against each other or tracks values over time.",
+                charts: ["Column Chart (Vertical)", "Bar Chart (Horizontal)", "Grouped Bar Chart", "Line Chart (Time Series)"],
+                color: "text-sky-400",
+                best: "Column Chart (Vertical)"
+            },
+            relationship: {
+                title: "Relationship Charts",
+                desc: "Visualizes pairwise correlation and mathematical interaction between numeric variables.",
+                charts: ["Scatter Plot", "Bubble Chart", "Connected Scatter Plot", "Correlation Matrix Heatmap"],
+                color: "text-pink-400",
+                best: "Scatter Plot"
+            },
+            distribution: {
+                title: "Distribution Charts",
+                desc: "Examines single-variable frequency, central tendency, skewness, and extreme outliers.",
+                charts: ["Histogram", "Density Plot (KDE)", "Box Plot (Box & Whisker)", "Violin Plot"],
+                color: "text-emerald-400",
+                best: "Histogram"
+            }
+        };
+
+        function selectGoal(key) {
+            const data = goalsData[key];
+            const recBox = document.getElementById('tree-recommendation');
+            
+            // Reset active button highlights
+            document.querySelectorAll('.goal-btn').forEach(b => {
+                b.classList.remove('ring-2', 'ring-violet-500', 'ring-sky-500', 'ring-pink-500', 'ring-emerald-500');
+            });
+
+            // Add active ring matching category color
+            const ringColors = {
+                composition: 'ring-violet-500',
+                comparison: 'ring-sky-500',
+                relationship: 'ring-pink-500',
+                distribution: 'ring-emerald-500'
+            };
+            document.getElementById(`btn-goal-${key}`).classList.add('ring-2', ringColors[key]);
+
+            // Render detailed recommendation box
+            recBox.innerHTML = `
+                <div class="w-full text-left space-y-2 animate-fade-in">
+                    <div class="flex items-center justify-between">
+                        <strong class="${data.color} font-bold text-sm">${data.title}</strong>
+                        <span class="text-[10px] text-slate-500">4 Recommended Visuals</span>
+                    </div>
+                    <p class="text-slate-300 text-xs">${data.desc}</p>
+                    <div class="flex flex-wrap gap-1.5 pt-1">
+                        ${data.charts.map(c => {
+                            const isBest = c === data.best;
+                            const badgeStyle = isBest 
+                                ? 'bg-slate-800 border-slate-600 text-white font-bold' 
+                                : 'bg-slate-900 border-slate-800 text-slate-400';
+                            return `<span class="px-2 py-0.5 border ${badgeStyle} rounded text-[10px]">${c}</span>`;
+                        }).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        // Page 2: Composition Visualizer
+        const compData = {
+            stacked: {
+                title: "100% Stacked Bar Chart (Best Practice)",
+                desc: "Best choice for comparing relative part-to-whole proportions across multiple categories or time periods. Q1 perfectly matches our $10M baseline breakdown (45%, 30%, 15%, 10%).",
+                svg: `<svg class="w-full h-full" viewBox="0 0 460 200">
+                    <!-- Grid Lines & Y-Axis Scale -->
+                    <line x1="45" y1="25" x2="440" y2="25" stroke="#334155" stroke-dasharray="3" stroke-width="1"/>
+                    <line x1="45" y1="62" x2="440" y2="62" stroke="#334155" stroke-dasharray="3" stroke-width="1"/>
+                    <line x1="45" y1="100" x2="440" y2="100" stroke="#334155" stroke-dasharray="3" stroke-width="1"/>
+                    <line x1="45" y1="137" x2="440" y2="137" stroke="#334155" stroke-dasharray="3" stroke-width="1"/>
+                    <line x1="45" y1="175" x2="440" y2="175" stroke="#475569" stroke-width="1.5"/>
+
+                    <text x="38" y="28" fill="#64748b" font-size="9" text-anchor="end">100%</text>
+                    <text x="38" y="65" fill="#64748b" font-size="9" text-anchor="end">75%</text>
+                    <text x="38" y="103" fill="#64748b" font-size="9" text-anchor="end">50%</text>
+                    <text x="38" y="140" fill="#64748b" font-size="9" text-anchor="end">25%</text>
+                    <text x="38" y="178" fill="#64748b" font-size="9" text-anchor="end">0%</text>
+
+                    <!-- Stacked Bar 1: Q1 Baseline (45% Soft, 30% Hard, 15% Serv, 10% Cons) -->
+                    <g>
+                        <rect x="75" y="25" width="70" height="67.5" fill="#8b5cf6" rx="1"/>
+                        <rect x="75" y="92.5" width="70" height="45" fill="#06b6d4" rx="1"/>
+                        <rect x="75" y="137.5" width="70" height="22.5" fill="#ec4899" rx="1"/>
+                        <rect x="75" y="160" width="70" height="15" fill="#f59e0b" rx="1"/>
+                        
+                        <text x="110" y="62" fill="#fff" font-size="10" font-weight="bold" text-anchor="middle">45%</text>
+                        <text x="110" y="118" fill="#fff" font-size="10" font-weight="bold" text-anchor="middle">30%</text>
+                        <text x="110" y="152" fill="#fff" font-size="8" font-weight="bold" text-anchor="middle">15%</text>
+                        <text x="110" y="188" fill="#94a3b8" font-size="10" font-weight="bold" text-anchor="middle">Q1 (Baseline)</text>
+                    </g>
+
+                    <!-- Stacked Bar 2: Q2 (50% Soft, 25% Hard, 15% Serv, 10% Cons) -->
+                    <g>
+                        <rect x="195" y="25" width="70" height="75" fill="#8b5cf6" rx="1"/>
+                        <rect x="195" y="100" width="70" height="37.5" fill="#06b6d4" rx="1"/>
+                        <rect x="195" y="137.5" width="70" height="22.5" fill="#ec4899" rx="1"/>
+                        <rect x="195" y="160" width="70" height="15" fill="#f59e0b" rx="1"/>
+                        
+                        <text x="230" y="65" fill="#fff" font-size="10" font-weight="bold" text-anchor="middle">50%</text>
+                        <text x="230" y="122" fill="#fff" font-size="10" font-weight="bold" text-anchor="middle">25%</text>
+                        <text x="230" y="152" fill="#fff" font-size="8" font-weight="bold" text-anchor="middle">15%</text>
+                        <text x="230" y="188" fill="#94a3b8" font-size="10" font-weight="bold" text-anchor="middle">Q2</text>
+                    </g>
+
+                    <!-- Stacked Bar 3: Q3 (40% Soft, 35% Hard, 15% Serv, 10% Cons) -->
+                    <g>
+                        <rect x="315" y="25" width="70" height="60" fill="#8b5cf6" rx="1"/>
+                        <rect x="315" y="85" width="70" height="52.5" fill="#06b6d4" rx="1"/>
+                        <rect x="315" y="137.5" width="70" height="22.5" fill="#ec4899" rx="1"/>
+                        <rect x="315" y="160" width="70" height="15" fill="#f59e0b" rx="1"/>
+                        
+                        <text x="350" y="58" fill="#fff" font-size="10" font-weight="bold" text-anchor="middle">40%</text>
+                        <text x="350" y="114" fill="#fff" font-size="10" font-weight="bold" text-anchor="middle">35%</text>
+                        <text x="350" y="152" fill="#fff" font-size="8" font-weight="bold" text-anchor="middle">15%</text>
+                        <text x="350" y="188" fill="#94a3b8" font-size="10" font-weight="bold" text-anchor="middle">Q3</text>
+                    </g>
+
+                    <!-- Top Legend -->
+                    <g transform="translate(50, 6)">
+                        <rect x="20" y="0" width="8" height="8" fill="#8b5cf6" rx="1"/>
+                        <text x="32" y="7" fill="#cbd5e1" font-size="9">Software</text>
+
+                        <rect x="105" y="0" width="8" height="8" fill="#06b6d4" rx="1"/>
+                        <text x="117" y="7" fill="#cbd5e1" font-size="9">Hardware</text>
+
+                        <rect x="190" y="0" width="8" height="8" fill="#ec4899" rx="1"/>
+                        <text x="202" y="7" fill="#cbd5e1" font-size="9">Services</text>
+
+                        <rect x="270" y="0" width="8" height="8" fill="#f59e0b" rx="1"/>
+                        <text x="282" y="7" fill="#cbd5e1" font-size="9">Consulting</text>
+                    </g>
+                </svg>`
+            },
+            treemap: {
+                title: "Hierarchical Treemap",
+                desc: "Displays large hierarchical data. Parent blocks equal total sector shares: Software ($4.5M / 45%), Hardware ($3.0M / 30%), and Services & Consulting ($2.5M / 25%).",
+                svg: `<svg class="w-full h-full" viewBox="0 0 460 200">
+                    <!-- Software Parent Block (45% = $4.5M) -->
+                    <g>
+                        <rect x="10" y="10" width="210" height="180" fill="#8b5cf6" fill-opacity="0.2" stroke="#8b5cf6" stroke-width="1.5" rx="4"/>
+                        <text x="20" y="26" fill="#c4b5fd" font-size="10" font-weight="bold">SOFTWARE: $4.5M (45%)</text>
+
+                        <!-- Sub-blocks: Cloud SaaS $3.0M (30%) + Licenses $1.5M (15%) -->
+                        <rect x="16" y="34" width="130" height="150" fill="#8b5cf6" fill-opacity="0.7" rx="3"/>
+                        <text x="81" y="105" fill="#fff" font-size="11" font-weight="bold" text-anchor="middle">Cloud SaaS</text>
+                        <text x="81" y="120" fill="#ddd6fe" font-size="9" text-anchor="middle">$3.0M (30%)</text>
+
+                        <rect x="150" y="34" width="64" height="150" fill="#7c3aed" fill-opacity="0.8" rx="3"/>
+                        <text x="182" y="105" fill="#fff" font-size="10" font-weight="bold" text-anchor="middle">Licenses</text>
+                        <text x="182" y="120" fill="#ddd6fe" font-size="9" text-anchor="middle">$1.5M (15%)</text>
+                    </g>
+
+                    <!-- Hardware Parent Block (30% = $3.0M) -->
+                    <g>
+                        <rect x="228" y="10" width="222" height="98" fill="#06b6d4" fill-opacity="0.2" stroke="#06b6d4" stroke-width="1.5" rx="4"/>
+                        <text x="238" y="24" fill="#a5f3fc" font-size="10" font-weight="bold">HARDWARE: $3.0M (30%)</text>
+
+                        <!-- Sub-blocks: Servers $2.0M (20%) + Storage $1.0M (10%) -->
+                        <rect x="234" y="30" width="138" height="72" fill="#06b6d4" fill-opacity="0.7" rx="3"/>
+                        <text x="303" y="62" fill="#fff" font-size="10" font-weight="bold" text-anchor="middle">Servers</text>
+                        <text x="303" y="75" fill="#cffafe" font-size="9" text-anchor="middle">$2.0M (20%)</text>
+
+                        <rect x="376" y="30" width="68" height="72" fill="#0891b2" fill-opacity="0.8" rx="3"/>
+                        <text x="410" y="62" fill="#fff" font-size="9" font-weight="bold" text-anchor="middle">Storage</text>
+                        <text x="410" y="75" fill="#cffafe" font-size="8" text-anchor="middle">$1.0M (10%)</text>
+                    </g>
+
+                    <!-- Services & Consulting Block (25% = $2.5M) -->
+                    <g>
+                        <rect x="228" y="114" width="130" height="76" fill="#ec4899" fill-opacity="0.7" rx="3"/>
+                        <text x="293" y="148" fill="#fff" font-size="10" font-weight="bold" text-anchor="middle">Services</text>
+                        <text x="293" y="161" fill="#fbcfe8" font-size="9" text-anchor="middle">$1.5M (15%)</text>
+
+                        <rect x="364" y="114" width="86" height="76" fill="#f59e0b" fill-opacity="0.8" rx="3"/>
+                        <text x="407" y="148" fill="#fff" font-size="9" font-weight="bold" text-anchor="middle">Consulting</text>
+                        <text x="407" y="161" fill="#fef3c7" font-size="8" text-anchor="middle">$1.0M (10%)</text>
+                    </g>
+                </svg>`
+            },
+            donut: {
+                title: "Donut Chart with Arc Focus",
+                desc: "A variation of the pie chart with the center removed. Arcs directly map to $4.5M (45%), $3.0M (30%), $1.5M (15%), and $1.0M (10%).",
+                svg: `<svg class="w-full h-full" viewBox="0 0 460 200">
+                    <!-- Donut Arcs Group -->
+                    <g transform="translate(0,0)">
+                        <!-- Software 45% -->
+                        <circle cx="140" cy="100" r="60" fill="none" stroke="#8b5cf6" stroke-width="26" 
+                                stroke-dasharray="170 207" stroke-dashoffset="0" />
+                        <!-- Hardware 30% -->
+                        <circle cx="140" cy="100" r="60" fill="none" stroke="#06b6d4" stroke-width="26" 
+                                stroke-dasharray="113 264" stroke-dashoffset="-173" />
+                        <!-- Services 15% -->
+                        <circle cx="140" cy="100" r="60" fill="none" stroke="#ec4899" stroke-width="26" 
+                                stroke-dasharray="57 320" stroke-dashoffset="-289" />
+                        <!-- Consulting 10% -->
+                        <circle cx="140" cy="100" r="60" fill="none" stroke="#f59e0b" stroke-width="26" 
+                                stroke-dasharray="38 339" stroke-dashoffset="-349" />
+
+                        <!-- Center Callout -->
+                        <circle cx="140" cy="100" r="44" fill="#0f172a" />
+                        <text x="140" y="96" fill="#94a3b8" font-size="9" text-anchor="middle" font-weight="bold">TOTAL REVENUE</text>
+                        <text x="140" y="112" fill="#fff" font-size="13" font-weight="extrabold" text-anchor="middle">$10.0M</text>
+                    </g>
+
+                    <!-- Callout Lines -->
+                    <g>
+                        <polyline points="190,60 215,45 230,45" stroke="#8b5cf6" stroke-width="1.5" fill="none"/>
+                        <text x="235" y="48" fill="#8b5cf6" font-size="11" font-weight="bold">Software: 45% ($4.5M)</text>
+
+                        <polyline points="120,160 120,175 230,175" stroke="#06b6d4" stroke-width="1.5" fill="none"/>
+                        <text x="235" y="178" fill="#06b6d4" font-size="11" font-weight="bold">Hardware: 30% ($3.0M)</text>
+
+                        <polyline points="80,110 50,110 50,125" stroke="#ec4899" stroke-width="1.5" fill="none"/>
+                        <text x="50" y="138" fill="#ec4899" font-size="10" font-weight="bold" text-anchor="middle">Services: 15%</text>
+
+                        <polyline points="110,48 90,30 230,30" stroke="#f59e0b" stroke-width="1.5" fill="none"/>
+                        <text x="235" y="32" fill="#f59e0b" font-size="11" font-weight="bold">Consulting: 10% ($1.0M)</text>
+                    </g>
+
+                    <!-- Side Legend -->
+                    <g transform="translate(280, 70)">
+                        <rect x="0" y="0" width="160" height="75" fill="#020617" fill-opacity="0.6" stroke="#1e293b" rx="6"/>
+                        
+                        <circle cx="15" cy="18" r="4" fill="#8b5cf6"/>
+                        <text x="26" y="21" fill="#cbd5e1" font-size="10">Software Sector</text>
+
+                        <circle cx="15" cy="33" r="4" fill="#06b6d4"/>
+                        <text x="26" y="36" fill="#cbd5e1" font-size="10">Hardware Sector</text>
+
+                        <circle cx="15" cy="48" r="4" fill="#ec4899"/>
+                        <text x="26" y="51" fill="#cbd5e1" font-size="10">Services Division</text>
+
+                        <circle cx="15" cy="63" r="4" fill="#f59e0b"/>
+                        <text x="26" y="66" fill="#cbd5e1" font-size="10">Consulting Practice</text>
+                    </g>
+                </svg>`
+            },
+            pie: {
+                title: "Pie Chart (Perceptually Flawed)",
+                desc: "Popular but perceptually flawed. Human vision struggles to estimate angles accurately—15% ($1.5M) and 10% ($1.0M) slices look nearly identical.",
+                svg: `<svg class="w-full h-full" viewBox="0 0 460 200">
+                    <!-- Pie Slices (Centered at cx=140, cy=100, radius=65) -->
+                    <g>
+                        <!-- Software 45% (0 to 162 deg) -->
+                        <path d="M 140 100 L 140 35 A 65 65 0 0 1 159.8 161.9 Z" fill="#8b5cf6" stroke="#0f172a" stroke-width="1.5"/>
+                        
+                        <!-- Hardware 30% (162 to 270 deg) -->
+                        <path d="M 140 100 L 159.8 161.9 A 65 65 0 0 1 75 100 Z" fill="#06b6d4" stroke="#0f172a" stroke-width="1.5"/>
+                        
+                        <!-- Services 15% (270 to 324 deg) -->
+                        <path d="M 140 100 L 75 100 A 65 65 0 0 1 101.8 47.4 Z" fill="#ec4899" stroke="#0f172a" stroke-width="1.5"/>
+                        
+                        <!-- Consulting 10% (324 to 360 deg) -->
+                        <g transform="translate(4, -4)">
+                            <path d="M 140 100 L 101.8 47.4 A 65 65 0 0 1 140 35 Z" fill="#f59e0b" stroke="#0f172a" stroke-width="1.5"/>
+                        </g>
+                    </g>
+
+                    <!-- Warning Callout -->
+                    <g transform="translate(250, 20)">
+                        <rect x="0" y="0" width="195" height="60" fill="#450a0a" fill-opacity="0.4" stroke="#f87171" stroke-width="1" rx="6"/>
+                        <text x="10" y="18" fill="#fca5a5" font-size="10" font-weight="bold">⚠️ Perceptual Limitation Warning</text>
+                        <text x="10" y="34" fill="#fecdd3" font-size="9">Angles are hard to judge accurately.</text>
+                        <text x="10" y="47" fill="#fecdd3" font-size="9">15% ($1.5M) vs 10% ($1.0M) look identical!</text>
+                    </g>
+
+                    <!-- Side Legend -->
+                    <g transform="translate(250, 95)">
+                        <rect x="0" y="0" width="195" height="85" fill="#020617" fill-opacity="0.6" stroke="#1e293b" rx="6"/>
+                        
+                        <rect x="12" y="12" width="10" height="10" fill="#8b5cf6" rx="2"/>
+                        <text x="28" y="21" fill="#e2e8f0" font-size="10" font-weight="bold">Software: 45% ($4.5M)</text>
+
+                        <rect x="12" y="30" width="10" height="10" fill="#06b6d4" rx="2"/>
+                        <text x="28" y="39" fill="#e2e8f0" font-size="10" font-weight="bold">Hardware: 30% ($3.0M)</text>
+
+                        <rect x="12" y="48" width="10" height="10" fill="#ec4899" rx="2"/>
+                        <text x="28" y="57" fill="#e2e8f0" font-size="10" font-weight="bold">Services: 15% ($1.5M)</text>
+
+                        <rect x="12" y="66" width="10" height="10" fill="#f59e0b" rx="2"/>
+                        <text x="28" y="75" fill="#e2e8f0" font-size="10" font-weight="bold">Consulting: 10% ($1.0M)</text>
+                    </g>
+                </svg>`
+            }
+        };
+
+        function renderComposition(key) {
+            const data = compData[key];
+            document.getElementById('comp-canvas').innerHTML = data.svg;
+            document.getElementById('comp-tag').innerText = data.title;
+            document.getElementById('comp-description').innerText = data.desc;
+
+            document.querySelectorAll('.comp-btn').forEach(b => {
+                b.className = "comp-btn p-2 bg-slate-800 border border-slate-700 rounded-lg text-slate-300 hover:text-white text-center transition-all";
+            });
+            document.getElementById(`comp-btn-${key}`).className = "comp-btn p-2 bg-violet-900/40 border border-violet-500 rounded-lg text-violet-200 font-bold text-center transition-all";
+        }
+
+        // Page 3: Comparison Visualizer & Baseline Toggle
+        let zeroBaselineActive = true;
+
+        function toggleZeroBaseline() {
+            zeroBaselineActive = !zeroBaselineActive;
+            const btn = document.getElementById('baseline-btn');
+            const txt = document.getElementById('baseline-text');
+
+            if (zeroBaselineActive) {
+                btn.innerText = "Y-Axis Starts at 0 (Valid)";
+                btn.className = "px-2.5 py-1 bg-sky-600 hover:bg-sky-500 text-white font-bold rounded text-[10px] transition-colors cursor-pointer shadow";
+                txt.innerHTML = "Bar/Column height encodes raw magnitude. Truncating the Y-axis distorts proportions and misleads stakeholders!";
+            } else {
+                btn.innerText = "Y-Axis Truncated at $80K (Misleading!)";
+                btn.className = "px-2.5 py-1 bg-rose-600 hover:bg-rose-500 text-white font-bold rounded text-[10px] transition-colors cursor-pointer shadow";
+                txt.innerHTML = "<strong class='text-rose-400'>Distortion Warning:</strong> Starting axis at $80K makes Product B ($100K) look <strong class='text-white'>500% taller</strong> than Product A ($84K), when it is actually only 19% larger!";
+            }
+            renderComparison('column');
+        }
+
+        const compTypes = {
+            column: {
+                title: "Vertical Column Chart",
+                desc: "Best for comparing a small number of discrete categorical items. Use the toggle switch on the left to see how truncating the Y-axis misleads human perception.",
+                getSvg: () => {
+                    if (zeroBaselineActive) {
+                        // Honest 0-Baseline Chart ($0 to $120K)
+                        return `<svg class="w-full h-full" viewBox="0 0 440 200">
+                            <!-- Horizontal Grid Lines -->
+                            <line x1="45" y1="25" x2="420" y2="25" stroke="#334155" stroke-dasharray="3" stroke-width="1"/>
+                            <line x1="45" y1="62" x2="420" y2="62" stroke="#334155" stroke-dasharray="3" stroke-width="1"/>
+                            <line x1="45" y1="100" x2="420" y2="100" stroke="#334155" stroke-dasharray="3" stroke-width="1"/>
+                            <line x1="45" y1="137" x2="420" y2="137" stroke="#334155" stroke-dasharray="3" stroke-width="1"/>
+                            <line x1="45" y1="175" x2="420" y2="175" stroke="#475569" stroke-width="1.5"/>
+
+                            <!-- Y-Axis Labels -->
+                            <text x="38" y="28" fill="#64748b" font-size="9" text-anchor="end">$120K</text>
+                            <text x="38" y="65" fill="#64748b" font-size="9" text-anchor="end">$90K</text>
+                            <text x="38" y="103" fill="#64748b" font-size="9" text-anchor="end">$60K</text>
+                            <text x="38" y="140" fill="#64748b" font-size="9" text-anchor="end">$30K</text>
+                            <text x="38" y="178" fill="#38bdf8" font-size="9" text-anchor="end" font-weight="bold">$0</text>
+
+                            <!-- Product A ($84K) -->
+                            <rect x="75" y="70" width="70" height="105" fill="#0284c7" rx="2"/>
+                            <text x="110" y="62" fill="#38bdf8" font-size="10" font-weight="bold" text-anchor="middle">$84K</text>
+                            <text x="110" y="190" fill="#94a3b8" font-size="10" font-weight="bold" text-anchor="middle">Product A</text>
+
+                            <!-- Product B ($100K) -->
+                            <rect x="185" y="50" width="70" height="125" fill="#0284c7" rx="2"/>
+                            <text x="220" y="42" fill="#38bdf8" font-size="10" font-weight="bold" text-anchor="middle">$100K</text>
+                            <text x="220" y="190" fill="#94a3b8" font-size="10" font-weight="bold" text-anchor="middle">Product B</text>
+
+                            <!-- Product C ($65K) -->
+                            <rect x="295" y="93.75" width="70" height="81.25" fill="#0284c7" rx="2"/>
+                            <text x="330" y="85.75" fill="#38bdf8" font-size="10" font-weight="bold" text-anchor="middle">$65K</text>
+                            <text x="330" y="190" fill="#94a3b8" font-size="10" font-weight="bold" text-anchor="middle">Product C</text>
+                        </svg>`;
+                    } else {
+                        // Misleading Truncated Baseline ($80K to $105K)
+                        return `<svg class="w-full h-full" viewBox="0 0 440 200">
+                            <!-- Truncated Baseline Indicator Line -->
+                            <line x1="45" y1="175" x2="420" y2="175" stroke="#f43f5e" stroke-width="2"/>
+                            <line x1="45" y1="25" x2="420" y2="25" stroke="#334155" stroke-dasharray="3" stroke-width="1"/>
+                            <line x1="45" y1="100" x2="420" y2="100" stroke="#334155" stroke-dasharray="3" stroke-width="1"/>
+
+                            <!-- Misleading Y-Axis Labels -->
+                            <text x="38" y="28" fill="#f43f5e" font-size="9" text-anchor="end" font-weight="bold">$105K</text>
+                            <text x="38" y="103" fill="#64748b" font-size="9" text-anchor="end">$92.5K</text>
+                            <text x="38" y="178" fill="#f43f5e" font-size="9" text-anchor="end" font-weight="bold">$80K (Axis Cut!)</text>
+
+                            <!-- Product A ($84K -> Height = 24px) -->
+                            <rect x="85" y="151" width="70" height="24" fill="#f43f5e" rx="2"/>
+                            <text x="120" y="143" fill="#f87171" font-size="10" font-weight="bold" text-anchor="middle">$84K</text>
+                            <text x="120" y="190" fill="#f87171" font-size="10" font-weight="bold" text-anchor="middle">Product A</text>
+
+                            <!-- Product B ($100K -> Height = 120px) -->
+                            <rect x="225" y="55" width="70" height="120" fill="#f43f5e" rx="2"/>
+                            <text x="260" y="47" fill="#f87171" font-size="10" font-weight="bold" text-anchor="middle">$100K</text>
+                            <text x="260" y="190" fill="#f87171" font-size="10" font-weight="bold" text-anchor="middle">Product B</text>
+
+                            <!-- Callout Annotation -->
+                            <g transform="translate(315, 65)">
+                                <rect x="0" y="0" width="115" height="55" fill="#450a0a" fill-opacity="0.8" stroke="#f87171" rx="4"/>
+                                <text x="8" y="16" fill="#fca5a5" font-size="9" font-weight="bold">Visually 5x Taller!</text>
+                                <text x="8" y="32" fill="#fecdd3" font-size="8">Real diff is only 19%.</text>
+                                <text x="8" y="44" fill="#fecdd3" font-size="8">Truncation lies to eyes.</text>
+                            </g>
+                        </svg>`;
+                    }
+                }
+            },
+            bar: {
+                title: "Horizontal Bar Chart",
+                desc: "Highly recommended when category labels are long or when comparing many items. Horizontal layout leaves generous space for text readability.",
+                getSvg: () => `<svg class="w-full h-full" viewBox="0 0 440 200">
+                    <!-- Vertical Gridlines -->
+                    <line x1="160" y1="20" x2="160" y2="170" stroke="#334155" stroke-dasharray="3" stroke-width="1"/>
+                    <line x1="225" y1="20" x2="225" y2="170" stroke="#334155" stroke-dasharray="3" stroke-width="1"/>
+                    <line x1="290" y1="20" x2="290" y2="170" stroke="#334155" stroke-dasharray="3" stroke-width="1"/>
+                    <line x1="355" y1="20" x2="355" y2="170" stroke="#334155" stroke-dasharray="3" stroke-width="1"/>
+                    <line x1="160" y1="20" x2="160" y2="170" stroke="#475569" stroke-width="1.5"/>
+
+                    <text x="160" y="185" fill="#64748b" font-size="9" text-anchor="middle">$0</text>
+                    <text x="225" y="185" fill="#64748b" font-size="9" text-anchor="middle">$25K</text>
+                    <text x="290" y="185" fill="#64748b" font-size="9" text-anchor="middle">$50K</text>
+                    <text x="355" y="185" fill="#64748b" font-size="9" text-anchor="middle">$75K</text>
+                    <text x="420" y="185" fill="#64748b" font-size="9" text-anchor="middle">$100K</text>
+
+                    <!-- Row 1 -->
+                    <text x="152" y="38" fill="#cbd5e1" font-size="9" font-weight="bold" text-anchor="end">Enterprise Cloud Suite</text>
+                    <rect x="160" y="26" width="239.2" height="18" fill="#0284c7" rx="2"/>
+                    <text x="404" y="39" fill="#38bdf8" font-size="9" font-weight="bold">$92K</text>
+
+                    <!-- Row 2 -->
+                    <text x="152" y="73" fill="#cbd5e1" font-size="9" font-weight="bold" text-anchor="end">Hardware Infrastructure</text>
+                    <rect x="160" y="61" width="192.4" height="18" fill="#0284c7" rx="2"/>
+                    <text x="357" y="74" fill="#38bdf8" font-size="9" font-weight="bold">$74K</text>
+
+                    <!-- Row 3 -->
+                    <text x="152" y="108" fill="#cbd5e1" font-size="9" font-weight="bold" text-anchor="end">Professional Consulting</text>
+                    <rect x="160" y="96" width="124.8" height="18" fill="#0284c7" rx="2"/>
+                    <text x="289" y="109" fill="#38bdf8" font-size="9" font-weight="bold">$48K</text>
+
+                    <!-- Row 4 -->
+                    <text x="152" y="143" fill="#cbd5e1" font-size="9" font-weight="bold" text-anchor="end">Customer Support Ops</text>
+                    <rect x="160" y="131" width="80.6" height="18" fill="#0284c7" rx="2"/>
+                    <text x="245" y="144" fill="#38bdf8" font-size="9" font-weight="bold">$31K</text>
+                </svg>`
+            },
+            grouped: {
+                title: "Grouped Column Chart",
+                desc: "Compares sub-groups side-by-side within primary categories (e.g., Product Alpha vs Product Beta performance across four quarters).",
+                getSvg: () => `<svg class="w-full h-full" viewBox="0 0 440 200">
+                    <!-- Grid Lines -->
+                    <line x1="40" y1="30" x2="420" y2="30" stroke="#334155" stroke-dasharray="3" stroke-width="1"/>
+                    <line x1="40" y1="67.5" x2="420" y2="67.5" stroke="#334155" stroke-dasharray="3" stroke-width="1"/>
+                    <line x1="40" y1="105" x2="420" y2="105" stroke="#334155" stroke-dasharray="3" stroke-width="1"/>
+                    <line x1="40" y1="142.5" x2="420" y2="142.5" stroke="#334155" stroke-dasharray="3" stroke-width="1"/>
+                    <line x1="40" y1="180" x2="420" y2="180" stroke="#475569" stroke-width="1.5"/>
+
+                    <text x="32" y="33" fill="#64748b" font-size="8" text-anchor="end">$100K</text>
+                    <text x="32" y="108" fill="#64748b" font-size="8" text-anchor="end">$50K</text>
+                    <text x="32" y="183" fill="#64748b" font-size="8" text-anchor="end">$0</text>
+
+                    <!-- Q1 Group -->
+                    <g>
+                        <rect x="60" y="75" width="22" height="105" fill="#8b5cf6" rx="1"/> <!-- Alpha $70K -->
+                        <rect x="84" y="105" width="22" height="75" fill="#0284c7" rx="1"/> <!-- Beta $50K -->
+                        <text x="83" y="193" fill="#94a3b8" font-size="10" font-weight="bold" text-anchor="middle">Q1</text>
+                    </g>
+
+                    <!-- Q2 Group -->
+                    <g>
+                        <rect x="150" y="45" width="22" height="135" fill="#8b5cf6" rx="1"/> <!-- Alpha $90K -->
+                        <rect x="174" y="82.5" width="22" height="97.5" fill="#0284c7" rx="1"/> <!-- Beta $65K -->
+                        <text x="173" y="193" fill="#94a3b8" font-size="10" font-weight="bold" text-anchor="middle">Q2</text>
+                    </g>
+
+                    <!-- Q3 Group -->
+                    <g>
+                        <rect x="240" y="90" width="22" height="90" fill="#8b5cf6" rx="1"/> <!-- Alpha $60K -->
+                        <rect x="264" y="52.5" width="22" height="127.5" fill="#0284c7" rx="1"/> <!-- Beta $85K -->
+                        <text x="263" y="193" fill="#94a3b8" font-size="10" font-weight="bold" text-anchor="middle">Q3</text>
+                    </g>
+
+                    <!-- Q4 Group -->
+                    <g>
+                        <rect x="330" y="52.5" width="22" height="127.5" fill="#8b5cf6" rx="1"/> <!-- Alpha $85K -->
+                        <rect x="354" y="37.5" width="22" height="142.5" fill="#0284c7" rx="1"/> <!-- Beta $95K -->
+                        <text x="353" y="193" fill="#94a3b8" font-size="10" font-weight="bold" text-anchor="middle">Q4</text>
+                    </g>
+
+                    <!-- Top Legend -->
+                    <g transform="translate(140, 8)">
+                        <rect x="0" y="0" width="10" height="10" fill="#8b5cf6" rx="2"/>
+                        <text x="14" y="9" fill="#cbd5e1" font-size="9" font-weight="bold">Product Alpha</text>
+
+                        <rect x="100" y="0" width="10" height="10" fill="#0284c7" rx="2"/>
+                        <text x="114" y="9" fill="#cbd5e1" font-size="9" font-weight="bold">Product Beta</text>
+                    </g>
+                </svg>`
+            },
+            line: {
+                title: "Time Series Line Chart",
+                desc: "Definitive choice for continuous data across temporal sequences (Jan–Dec). Reveals trajectories, seasonality, and overall trends.",
+                getSvg: () => `<svg class="w-full h-full" viewBox="0 0 440 200">
+                    <!-- Grid Lines -->
+                    <line x1="35" y1="25" x2="425" y2="25" stroke="#334155" stroke-dasharray="3" stroke-width="1"/>
+                    <line x1="35" y1="62.5" x2="425" y2="62.5" stroke="#334155" stroke-dasharray="3" stroke-width="1"/>
+                    <line x1="35" y1="100" x2="425" y2="100" stroke="#334155" stroke-dasharray="3" stroke-width="1"/>
+                    <line x1="35" y1="137.5" x2="425" y2="137.5" stroke="#334155" stroke-dasharray="3" stroke-width="1"/>
+                    <line x1="35" y1="175" x2="425" y2="175" stroke="#475569" stroke-width="1.5"/>
+
+                    <text x="28" y="28" fill="#64748b" font-size="8" text-anchor="end">$120K</text>
+                    <text x="28" y="103" fill="#64748b" font-size="8" text-anchor="end">$60K</text>
+                    <text x="28" y="178" fill="#64748b" font-size="8" text-anchor="end">$0</text>
+
+                    <!-- Filled Area Path -->
+                    <path d="M 45 120 L 79 135 L 113 148 L 147 110 L 181 90 L 215 75 L 249 55 L 283 30 L 317 48 L 351 40 L 385 28 L 415 20 L 415 175 L 45 175 Z" fill="#0284c7" fill-opacity="0.15"/>
+
+                    <!-- Line Path -->
+                    <path d="M 45 120 L 79 135 L 113 148 L 147 110 L 181 90 L 215 75 L 249 55 L 283 30 L 317 48 L 351 40 L 385 28 L 415 20" stroke="#38bdf8" stroke-width="2.5" fill="none"/>
+
+                    <!-- Data Points & Labels -->
+                    <circle cx="45" cy="120" r="3" fill="#0284c7"/> <text x="45" y="187" fill="#64748b" font-size="8" text-anchor="middle">Jan</text>
+                    <circle cx="79" cy="135" r="3" fill="#0284c7"/> <text x="79" y="187" fill="#64748b" font-size="8" text-anchor="middle">Feb</text>
+                    <circle cx="113" cy="148" r="4" fill="#f43f5e"/> <text x="113" y="187" fill="#64748b" font-size="8" text-anchor="middle">Mar</text> <!-- Low Point -->
+                    <circle cx="147" cy="110" r="3" fill="#0284c7"/> <text x="147" y="187" fill="#64748b" font-size="8" text-anchor="middle">Apr</text>
+                    <circle cx="181" cy="90" r="3" fill="#0284c7"/> <text x="181" y="187" fill="#64748b" font-size="8" text-anchor="middle">May</text>
+                    <circle cx="215" cy="75" r="3" fill="#0284c7"/> <text x="215" y="187" fill="#64748b" font-size="8" text-anchor="middle">Jun</text>
+                    <circle cx="249" cy="55" r="3" fill="#0284c7"/> <text x="249" y="187" fill="#64748b" font-size="8" text-anchor="middle">Jul</text>
+                    <circle cx="283" cy="30" r="4" fill="#34d399"/> <text x="283" y="187" fill="#64748b" font-size="8" text-anchor="middle">Aug</text> <!-- Peak -->
+                    <circle cx="317" cy="48" r="3" fill="#0284c7"/> <text x="317" y="187" fill="#64748b" font-size="8" text-anchor="middle">Sep</text>
+                    <circle cx="351" cy="40" r="3" fill="#0284c7"/> <text x="351" y="187" fill="#64748b" font-size="8" text-anchor="middle">Oct</text>
+                    <circle cx="385" cy="28" r="3" fill="#0284c7"/> <text x="385" y="187" fill="#64748b" font-size="8" text-anchor="middle">Nov</text>
+                    <circle cx="415" cy="20" r="4" fill="#34d399"/> <text x="415" y="187" fill="#64748b" font-size="8" text-anchor="middle">Dec</text>
+
+                    <!-- Peak Callout -->
+                    <text x="283" y="18" fill="#34d399" font-size="8" font-weight="bold" text-anchor="middle">Peak ($116K)</text>
+                    <!-- Valley Callout -->
+                    <text x="113" y="165" fill="#f43f5e" font-size="8" font-weight="bold" text-anchor="middle">Low ($21K)</text>
+                </svg>`
+            }
+        };
+
+        function renderComparison(key) {
+            const data = compTypes[key];
+            document.getElementById('comparison-canvas').innerHTML = data.getSvg();
+            document.getElementById('comp-type-label').innerText = data.title;
+            document.getElementById('comparison-desc').innerText = data.desc;
+
+            document.querySelectorAll('.comp-nav-btn').forEach(b => {
+                b.className = "comp-nav-btn p-2.5 bg-slate-800 border border-slate-700 rounded-lg text-slate-300 hover:text-white text-center transition-all cursor-pointer";
+            });
+            document.getElementById(`comp-btn-${key}`).className = "comp-nav-btn p-2.5 bg-sky-900/40 border border-sky-500 rounded-lg text-sky-200 font-bold text-center transition-all cursor-pointer";
+        }
+
+        // Page 4: Relationship Visualizer
+        const relTypes = {
+            scatter: {
+                title: "Scatter Plot (2 Continuous Variables)",
+                desc: "The foundational tool for checking linear trends, clusters, or outliers between two continuous variables. Scatter points sloping upwards indicate a strong positive correlation ($r = +0.88$).",
+                rVal: "+0.88 (Strong Positive)",
+                rPos: "94%",
+                rBadgeClass: "px-2 py-0.5 bg-pink-950 text-pink-300 border border-pink-500/30 rounded text-[10px] font-mono font-bold",
+                svg: `<svg class="w-full h-full" viewBox="0 0 440 200">
+                    <!-- Axes & Grid -->
+                    <line x1="45" y1="20" x2="45" y2="165" stroke="#475569" stroke-width="1.5"/>
+                    <line x1="45" y1="165" x2="420" y2="165" stroke="#475569" stroke-width="1.5"/>
+                    <line x1="45" y1="120" x2="420" y2="120" stroke="#334155" stroke-dasharray="3" stroke-width="1"/>
+                    <line x1="45" y1="75" x2="420" y2="75" stroke="#334155" stroke-dasharray="3" stroke-width="1"/>
+                    <line x1="45" y1="30" x2="420" y2="30" stroke="#334155" stroke-dasharray="3" stroke-width="1"/>
+
+                    <!-- Axis Labels -->
+                    <text x="232" y="192" fill="#94a3b8" font-size="10" font-weight="bold" text-anchor="middle">Marketing Ad Spend ($K)</text>
+                    <text x="18" y="95" fill="#94a3b8" font-size="10" font-weight="bold" text-anchor="middle" transform="rotate(-90 18 95)">Acquisitions (#)</text>
+
+                    <!-- Trendline -->
+                    <line x1="55" y1="150" x2="400" y2="35" stroke="#ec4899" stroke-width="2" stroke-dasharray="4"/>
+
+                    <!-- Data Scatter Points -->
+                    <circle cx="70" cy="148" r="4.5" fill="#f472b6"/>
+                    <circle cx="100" cy="132" r="4.5" fill="#f472b6"/>
+                    <circle cx="125" cy="142" r="4.5" fill="#f472b6"/> <!-- Local noise -->
+                    <circle cx="150" cy="115" r="4.5" fill="#f472b6"/>
+                    <circle cx="180" cy="110" r="4.5" fill="#f472b6"/>
+                    <circle cx="210" cy="92" r="4.5" fill="#f472b6"/>
+                    <circle cx="240" cy="82" r="4.5" fill="#f472b6"/>
+                    <circle cx="270" cy="88" r="4.5" fill="#f472b6"/>
+                    <circle cx="300" cy="62" r="4.5" fill="#f472b6"/>
+                    <circle cx="330" cy="55" r="4.5" fill="#f472b6"/>
+                    <circle cx="360" cy="42" r="4.5" fill="#f472b6"/>
+                    <circle cx="390" cy="32" r="4.5" fill="#f472b6"/>
+
+                    <!-- Regression Formula Callout -->
+                    <g transform="translate(260, 115)">
+                        <rect x="0" y="0" width="135" height="42" fill="#020617" fill-opacity="0.8" stroke="#ec4899" stroke-width="1" rx="4"/>
+                        <text x="10" y="16" fill="#fbcfe8" font-size="9" font-weight="bold">Linear Fit: y = 2.4x + 12</text>
+                        <text x="10" y="30" fill="#f472b6" font-size="9" font-mono="true">Pearson r = +0.88</text>
+                    </g>
+                </svg>`
+            },
+            bubble: {
+                title: "Bubble Chart (3 Numeric Dimensions)",
+                desc: "An evolution of scatter plots that encodes a 3rd numeric dimension into bubble area size. Position shows Ad Spend vs Revenue, while bubble area shows Campaign Team Size.",
+                rVal: "+0.78 (Direct all 3D)",
+                rPos: "89%",
+                rBadgeClass: "px-2 py-0.5 bg-pink-950 text-pink-300 border border-pink-500/30 rounded text-[10px] font-mono font-bold",
+                svg: `<svg class="w-full h-full" viewBox="0 0 440 200">
+                    <!-- Axes -->
+                    <line x1="45" y1="20" x2="45" y2="160" stroke="#475569" stroke-width="1.5"/>
+                    <line x1="45" y1="160" x2="420" y2="160" stroke="#475569" stroke-width="1.5"/>
+
+                    <text x="232" y="188" fill="#94a3b8" font-size="9" font-weight="bold" text-anchor="middle">Ad Spend ($K)</text>
+                    <text x="18" y="90" fill="#94a3b8" font-size="9" font-weight="bold" text-anchor="middle" transform="rotate(-90 18 90)">Revenue ($K)</text>
+
+                    <!-- Bubbles (X, Y, Radius) -->
+                    <g>
+                        <circle cx="80" cy="135" r="9" fill="#ec4899" fill-opacity="0.4" stroke="#ec4899" stroke-width="1.5"/>
+                        <text x="80" y="138" fill="#fff" font-size="7" font-weight="bold" text-anchor="middle">2p</text>
+
+                        <circle cx="150" cy="110" r="16" fill="#ec4899" fill-opacity="0.4" stroke="#ec4899" stroke-width="1.5"/>
+                        <text x="150" y="113" fill="#fff" font-size="8" font-weight="bold" text-anchor="middle">5p</text>
+
+                        <circle cx="230" cy="80" r="24" fill="#ec4899" fill-opacity="0.4" stroke="#ec4899" stroke-width="1.5"/>
+                        <text x="230" y="83" fill="#fff" font-size="9" font-weight="bold" text-anchor="middle">12p</text>
+
+                        <circle cx="340" cy="40" r="32" fill="#ec4899" fill-opacity="0.4" stroke="#ec4899" stroke-width="1.5"/>
+                        <text x="340" y="43" fill="#fff" font-size="10" font-weight="bold" text-anchor="middle">25 people</text>
+                    </g>
+
+                    <!-- Bubble Size Legend Card -->
+                    <g transform="translate(270, 115)">
+                        <rect x="0" y="0" width="145" height="42" fill="#020617" fill-opacity="0.8" stroke="#334155" rx="4"/>
+                        <text x="10" y="15" fill="#94a3b8" font-size="8" font-weight="bold">3rd Dimension Scale:</text>
+                        <circle cx="20" cy="30" r="4" fill="#ec4899"/>
+                        <text x="28" y="33" fill="#cbd5e1" font-size="8">Small Team</text>
+                        <circle cx="85" cy="30" r="8" fill="#ec4899"/>
+                        <text x="97" y="33" fill="#cbd5e1" font-size="8">Large Team</text>
+                    </g>
+                </svg>`
+            },
+            connected: {
+                title: "Connected Scatter Plot (Temporal Path)",
+                desc: "A hybrid between a scatter plot and a line chart. It plots two numeric variables (Price vs Demand) and connects sequential points chronologically to trace relationship trajectory over time.",
+                rVal: "-0.92 (Strong Inverse)",
+                rPos: "4%",
+                rBadgeClass: "px-2 py-0.5 bg-sky-950 text-sky-300 border border-sky-500/30 rounded text-[10px] font-mono font-bold",
+                svg: `<svg class="w-full h-full" viewBox="0 0 440 200">
+                    <!-- Axes -->
+                    <line x1="45" y1="20" x2="45" y2="160" stroke="#475569" stroke-width="1.5"/>
+                    <line x1="45" y1="160" x2="420" y2="160" stroke="#475569" stroke-width="1.5"/>
+
+                    <text x="232" y="188" fill="#94a3b8" font-size="9" font-weight="bold" text-anchor="middle">Product Unit Price ($)</text>
+                    <text x="18" y="90" fill="#94a3b8" font-size="9" font-weight="bold" text-anchor="middle" transform="rotate(-90 18 90)">Units Sold (#)</text>
+
+                    <!-- Sequential Path -->
+                    <path d="M 70 40 L 130 55 L 180 85 L 260 100 L 330 135 L 390 148" stroke="#ec4899" stroke-width="2.5" fill="none"/>
+
+                    <!-- Labeled Timeline Points -->
+                    <g>
+                        <!-- Q1 '23 -->
+                        <circle cx="70" cy="40" r="5" fill="#0284c7" stroke="#fff" stroke-width="1.5"/>
+                        <text x="70" y="28" fill="#38bdf8" font-size="8" font-weight="bold" text-anchor="middle">Q1 '23 ($10)</text>
+
+                        <!-- Q2 '23 -->
+                        <circle cx="130" cy="55" r="4" fill="#ec4899"/>
+                        <text x="130" y="45" fill="#f472b6" font-size="8" text-anchor="middle">Q2 '23</text>
+
+                        <!-- Q3 '23 -->
+                        <circle cx="180" cy="85" r="4" fill="#ec4899"/>
+                        <text x="180" y="75" fill="#f472b6" font-size="8" text-anchor="middle">Q3 '23</text>
+
+                        <!-- Q4 '23 -->
+                        <circle cx="260" cy="100" r="4" fill="#ec4899"/>
+                        <text x="260" y="90" fill="#f472b6" font-size="8" text-anchor="middle">Q4 '23</text>
+
+                        <!-- Q1 '24 -->
+                        <circle cx="330" cy="135" r="4" fill="#ec4899"/>
+                        <text x="330" y="125" fill="#f472b6" font-size="8" text-anchor="middle">Q1 '24</text>
+
+                        <!-- Q2 '24 -->
+                        <circle cx="390" cy="148" r="5" fill="#f43f5e" stroke="#fff" stroke-width="1.5"/>
+                        <text x="390" y="138" fill="#f87171" font-size="8" font-weight="bold" text-anchor="middle">Q2 '24 ($45)</text>
+                    </g>
+
+                    <!-- Trajectory Note -->
+                    <g transform="translate(170, 118)">
+                        <rect x="0" y="0" width="140" height="34" fill="#020617" fill-opacity="0.85" stroke="#ec4899" rx="4"/>
+                        <text x="8" y="14" fill="#fbcfe8" font-size="8" font-weight="bold">Trajectory Insight:</text>
+                        <text x="8" y="26" fill="#cbd5e1" font-size="8">Price increases reduced demand</text>
+                    </g>
+                </svg>`
+            },
+            heatmap: {
+                title: "Correlation Matrix Heatmap",
+                desc: "Displays pairwise correlation coefficients ($r$) across all numerical variables simultaneously in a grid format, using color gradients to spot strong positive (pink) or strong negative (blue) links.",
+                rVal: "Multivariate Matrix",
+                rPos: "50%",
+                rBadgeClass: "px-2 py-0.5 bg-slate-800 text-slate-300 border border-slate-700 rounded text-[10px] font-mono font-bold",
+                svg: `<svg class="w-full h-full" viewBox="0 0 440 200">
+                    <g transform="translate(60, 15)">
+                        <!-- Column Labels -->
+                        <text x="75" y="12" fill="#cbd5e1" font-size="9" font-weight="bold" text-anchor="middle">Revenue</text>
+                        <text x="135" y="12" fill="#cbd5e1" font-size="9" font-weight="bold" text-anchor="middle">Ad Spend</text>
+                        <text x="195" y="12" fill="#cbd5e1" font-size="9" font-weight="bold" text-anchor="middle">Traffic</text>
+                        <text x="255" y="12" fill="#cbd5e1" font-size="9" font-weight="bold" text-anchor="middle">Churn</text>
+
+                        <!-- Row 1: Revenue -->
+                        <text x="40" y="38" fill="#cbd5e1" font-size="9" font-weight="bold" text-anchor="end">Revenue</text>
+                        <rect x="50" y="20" width="50" height="32" fill="#be185d" rx="2"/><text x="75" y="40" fill="#fff" font-size="10" font-weight="bold" text-anchor="middle">1.00</text>
+                        <rect x="110" y="20" width="50" height="32" fill="#db2777" rx="2"/><text x="135" y="40" fill="#fff" font-size="10" font-weight="bold" text-anchor="middle">+0.88</text>
+                        <rect x="170" y="20" width="50" height="32" fill="#f472b6" rx="2"/><text x="195" y="40" fill="#0f172a" font-size="10" font-weight="bold" text-anchor="middle">+0.65</text>
+                        <rect x="230" y="20" width="50" height="32" fill="#0284c7" rx="2"/><text x="255" y="40" fill="#fff" font-size="10" font-weight="bold" text-anchor="middle">-0.74</text>
+
+                        <!-- Row 2: Ad Spend -->
+                        <text x="40" y="73" fill="#cbd5e1" font-size="9" font-weight="bold" text-anchor="end">Ad Spend</text>
+                        <rect x="50" y="55" width="50" height="32" fill="#db2777" rx="2"/><text x="75" y="75" fill="#fff" font-size="10" font-weight="bold" text-anchor="middle">+0.88</text>
+                        <rect x="110" y="55" width="50" height="32" fill="#be185d" rx="2"/><text x="135" y="75" fill="#fff" font-size="10" font-weight="bold" text-anchor="middle">1.00</text>
+                        <rect x="170" y="55" width="50" height="32" fill="#db2777" rx="2"/><text x="195" y="75" fill="#fff" font-size="10" font-weight="bold" text-anchor="middle">+0.82</text>
+                        <rect x="230" y="55" width="50" height="32" fill="#334155" rx="2"/><text x="255" y="75" fill="#cbd5e1" font-size="10" font-weight="bold" text-anchor="middle">-0.05</text>
+
+                        <!-- Row 3: Traffic -->
+                        <text x="40" y="108" fill="#cbd5e1" font-size="9" font-weight="bold" text-anchor="end">Traffic</text>
+                        <rect x="50" y="90" width="50" height="32" fill="#f472b6" rx="2"/><text x="75" y="110" fill="#0f172a" font-size="10" font-weight="bold" text-anchor="middle">+0.65</text>
+                        <rect x="110" y="90" width="50" height="32" fill="#db2777" rx="2"/><text x="135" y="110" fill="#fff" font-size="10" font-weight="bold" text-anchor="middle">+0.82</text>
+                        <rect x="170" y="90" width="50" height="32" fill="#be185d" rx="2"/><text x="195" y="110" fill="#fff" font-size="10" font-weight="bold" text-anchor="middle">1.00</text>
+                        <rect x="230" y="90" width="50" height="32" fill="#0369a1" rx="2"/><text x="255" y="110" fill="#fff" font-size="10" font-weight="bold" text-anchor="middle">-0.42</text>
+
+                        <!-- Row 4: Churn -->
+                        <text x="40" y="143" fill="#cbd5e1" font-size="9" font-weight="bold" text-anchor="end">Churn</text>
+                        <rect x="50" y="125" width="50" height="32" fill="#0284c7" rx="2"/><text x="75" y="145" fill="#fff" font-size="10" font-weight="bold" text-anchor="middle">-0.74</text>
+                        <rect x="110" y="125" width="50" height="32" fill="#334155" rx="2"/><text x="135" y="145" fill="#cbd5e1" font-size="10" font-weight="bold" text-anchor="middle">-0.05</text>
+                        <rect x="170" y="125" width="50" height="32" fill="#0369a1" rx="2"/><text x="195" y="145" fill="#fff" font-size="10" font-weight="bold" text-anchor="middle">-0.42</text>
+                        <rect x="230" y="125" width="50" height="32" fill="#be185d" rx="2"/><text x="255" y="145" fill="#fff" font-size="10" font-weight="bold" text-anchor="middle">1.00</text>
+
+                        <!-- Side Color Bar Legend -->
+                        <g transform="translate(295, 20)">
+                            <defs>
+                                <linearGradient id="heatGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                                    <stop offset="0%" stop-color="#be185d"/>
+                                    <stop offset="50%" stop-color="#334155"/>
+                                    <stop offset="100%" stop-color="#0284c7"/>
+                                </linearGradient>
+                            </defs>
+                            <rect x="0" y="0" width="10" height="137" fill="url(#heatGrad)" rx="2"/>
+                            <text x="15" y="10" fill="#be185d" font-size="8" font-weight="bold">+1.0</text>
+                            <text x="15" y="72" fill="#94a3b8" font-size="8">0.0</text>
+                            <text x="15" y="135" fill="#0284c7" font-size="8" font-weight="bold">-1.0</text>
+                        </g>
+                    </g>
+                </svg>`
+            }
+        };
+
+        function renderRelationship(key) {
+            const data = relTypes[key];
+            document.getElementById('rel-canvas').innerHTML = data.svg;
+            document.getElementById('rel-type-label').innerText = data.title;
+            document.getElementById('rel-desc').innerText = data.desc;
+
+            // Update Pearson Correlation Indicator Widget
+            document.getElementById('corr-val-badge').innerText = data.rVal;
+            document.getElementById('corr-val-badge').className = data.rBadgeClass;
+            document.getElementById('corr-marker').style.left = data.rPos;
+
+            // Update Button Highlights
+            document.querySelectorAll('.rel-nav-btn').forEach(b => {
+                b.className = "rel-nav-btn p-2.5 bg-slate-800 border border-slate-700 rounded-lg text-slate-300 hover:text-white text-center transition-all cursor-pointer";
+            });
+            document.getElementById(`rel-btn-${key}`).className = "rel-nav-btn p-2.5 bg-pink-900/40 border border-pink-500 rounded-lg text-pink-200 font-bold text-center transition-all cursor-pointer";
+
+            // RE-TRIGGER MATHJAX TYPESETTING AFTER DOM UPDATE
+            if (window.MathJax && window.MathJax.typesetPromise) {
+                MathJax.typesetPromise();
+            }
+        }
+
+        // Page 5: Distribution Visualizer
+        const distTypes = {
+            histogram: {
+                title: "Histogram (Binned Data Frequency)",
+                desc: "Groups continuous numeric data into discrete interval bins along the X-axis. Shows frequency count per bin, allowing instant diagnosis of central tendency and right-skewness.",
+                svg: `<svg class="w-full h-full" viewBox="0 0 440 200">
+                    <!-- Grid Lines -->
+                    <line x1="45" y1="25" x2="420" y2="25" stroke="#334155" stroke-dasharray="3" stroke-width="1"/>
+                    <line x1="45" y1="62.5" x2="420" y2="62.5" stroke="#334155" stroke-dasharray="3" stroke-width="1"/>
+                    <line x1="45" y1="100" x2="420" y2="100" stroke="#334155" stroke-dasharray="3" stroke-width="1"/>
+                    <line x1="45" y1="137.5" x2="420" y2="137.5" stroke="#334155" stroke-dasharray="3" stroke-width="1"/>
+                    <line x1="45" y1="175" x2="420" y2="175" stroke="#475569" stroke-width="1.5"/>
+
+                    <!-- Y-Axis Labels (Frequency Count) -->
+                    <text x="38" y="28" fill="#64748b" font-size="8" text-anchor="end">80</text>
+                    <text x="38" y="65" fill="#64748b" font-size="8" text-anchor="end">60</text>
+                    <text x="38" y="103" fill="#64748b" font-size="8" text-anchor="end">40</text>
+                    <text x="38" y="140" fill="#64748b" font-size="8" text-anchor="end">20</text>
+                    <text x="38" y="178" fill="#64748b" font-size="8" text-anchor="end">0</text>
+
+                    <!-- Binned Histogram Columns -->
+                    <!-- Bin 1 ($20k-$40k, count=25) -->
+                    <rect x="55" y="128.1" width="42" height="46.9" fill="#10b981" fill-opacity="0.8" stroke="#0f172a" stroke-width="1"/>
+                    <text x="76" y="122" fill="#34d399" font-size="8" font-weight="bold" text-anchor="middle">25</text>
+
+                    <!-- Bin 2 ($40k-$60k, count=72) -->
+                    <rect x="99" y="40" width="42" height="135" fill="#10b981" fill-opacity="0.8" stroke="#0f172a" stroke-width="1"/>
+                    <text x="120" y="34" fill="#34d399" font-size="8" font-weight="bold" text-anchor="middle">72</text>
+
+                    <!-- Bin 3 ($60k-$80k, count=55) -->
+                    <rect x="143" y="71.8" width="42" height="103.2" fill="#10b981" fill-opacity="0.8" stroke="#0f172a" stroke-width="1"/>
+                    <text x="164" y="65" fill="#34d399" font-size="8" font-weight="bold" text-anchor="middle">55</text>
+
+                    <!-- Bin 4 ($80k-$100k, count=30) -->
+                    <rect x="187" y="118.7" width="42" height="56.3" fill="#10b981" fill-opacity="0.8" stroke="#0f172a" stroke-width="1"/>
+                    <text x="208" y="112" fill="#34d399" font-size="8" font-weight="bold" text-anchor="middle">30</text>
+
+                    <!-- Bin 5 ($100k-$120k, count=14) -->
+                    <rect x="231" y="148.7" width="42" height="26.3" fill="#10b981" fill-opacity="0.8" stroke="#0f172a" stroke-width="1"/>
+                    <text x="252" y="142" fill="#34d399" font-size="8" font-weight="bold" text-anchor="middle">14</text>
+
+                    <!-- Bin 6 ($120k-$140k, count=5) -->
+                    <rect x="275" y="165.6" width="42" height="9.4" fill="#10b981" fill-opacity="0.8" stroke="#0f172a" stroke-width="1"/>
+                    <text x="296" y="159" fill="#34d399" font-size="8" font-weight="bold" text-anchor="middle">5</text>
+
+                    <!-- X-Axis Bin Range Labels -->
+                    <text x="55" y="188" fill="#64748b" font-size="8" text-anchor="middle">$20K</text>
+                    <text x="99" y="188" fill="#64748b" font-size="8" text-anchor="middle">$40K</text>
+                    <text x="143" y="188" fill="#64748b" font-size="8" text-anchor="middle">$60K</text>
+                    <text x="187" y="188" fill="#64748b" font-size="8" text-anchor="middle">$80K</text>
+                    <text x="231" y="188" fill="#64748b" font-size="8" text-anchor="middle">$100K</text>
+                    <text x="275" y="188" fill="#64748b" font-size="8" text-anchor="middle">$120K</text>
+                    <text x="317" y="188" fill="#64748b" font-size="8" text-anchor="middle">$140K</text>
+
+                    <!-- Right-Skew Indicator Callout -->
+                    <g transform="translate(325, 45)">
+                        <rect x="0" y="0" width="105" height="42" fill="#020617" fill-opacity="0.8" stroke="#10b981" rx="4"/>
+                        <text x="8" y="16" fill="#a7f3d0" font-size="8" font-weight="bold">Right-Skewed Tail</text>
+                        <text x="8" y="30" fill="#cbd5e1" font-size="7.5">Long tail extends right</text>
+                    </g>
+                </svg>`
+            },
+            density: {
+                title: "Density Plot / Kernel Density Estimate (KDE)",
+                desc: "A smoothed, continuous estimation of a variable's probability density function. Eliminates visual artifacts caused by arbitrary histogram bin boundary selections.",
+                svg: `<svg class="w-full h-full" viewBox="0 0 440 200">
+                    <!-- Grid Lines -->
+                    <line x1="45" y1="25" x2="420" y2="25" stroke="#334155" stroke-dasharray="3" stroke-width="1"/>
+                    <line x1="45" y1="100" x2="420" y2="100" stroke="#334155" stroke-dasharray="3" stroke-width="1"/>
+                    <line x1="45" y1="175" x2="420" y2="175" stroke="#475569" stroke-width="1.5"/>
+
+                    <text x="38" y="178" fill="#64748b" font-size="8" text-anchor="end">0.00</text>
+                    <text x="38" y="103" fill="#64748b" font-size="8" text-anchor="end">0.02</text>
+                    <text x="38" y="28" fill="#64748b" font-size="8" text-anchor="end">0.04</text>
+
+                    <!-- KDE Curve Shaded Area -->
+                    <path d="M 50 175 C 80 175, 100 35, 130 35 C 170 35, 200 110, 240 145 C 290 170, 360 173, 410 175 L 410 175 L 50 175 Z" fill="#10b981" fill-opacity="0.25"/>
+
+                    <!-- KDE Boundary Line -->
+                    <path d="M 50 175 C 80 175, 100 35, 130 35 C 170 35, 200 110, 240 145 C 290 170, 360 173, 410 175" stroke="#34d399" stroke-width="2.5" fill="none"/>
+
+                    <!-- Median Line ($58K) -->
+                    <line x1="130" y1="35" x2="130" y2="175" stroke="#38bdf8" stroke-width="1.5" stroke-dasharray="3"/>
+                    <text x="130" y="25" fill="#38bdf8" font-size="8" font-weight="bold" text-anchor="middle">Median ($58K)</text>
+
+                    <!-- Mean Line ($67K) -->
+                    <line x1="165" y1="62" x2="165" y2="175" stroke="#f43f5e" stroke-width="1.5" stroke-dasharray="3"/>
+                    <text x="165" y="52" fill="#f43f5e" font-size="8" font-weight="bold" text-anchor="middle">Mean ($67K)</text>
+
+                    <!-- Skew Gap Note -->
+                    <g transform="translate(260, 60)">
+                        <rect x="0" y="0" width="145" height="42" fill="#020617" fill-opacity="0.85" stroke="#334155" rx="4"/>
+                        <text x="8" y="15" fill="#a7f3d0" font-size="8" font-weight="bold">Positive Skew Effect:</text>
+                        <text x="8" y="29" fill="#cbd5e1" font-size="7.5">Mean is pulled right by high</text>
+                        <text x="8" y="38" fill="#cbd5e1" font-size="7.5">outliers ($100K+ income).</text>
+                    </g>
+                </svg>`
+            },
+            boxplot: {
+                title: "Box Plot (Tukey Box & Whisker)",
+                desc: "Provides explicit 5-number summary statistics (Min, <i>Q</i><sub>1</sub>, Median, <i>Q</i><sub>3</sub>, Max) visualized via the box and whiskers, while isolating extreme statistical outliers beyond 1.5 &times; Interquartile Range (IQR). <br><br><i style='font-size: 0.9em;'>1.5 is sweet spot for outlier detection (John Tukey, 1977), but can be adjusted for sensitivity.</i>",
+                svg: `<svg class="w-full h-full" viewBox="0 0 440 200">
+                    <!-- Horizontal Axis Line -->
+                    <line x1="40" y1="165" x2="420" y2="165" stroke="#475569" stroke-width="1.5"/>
+
+                    <text x="60" y="180" fill="#64748b" font-size="8" text-anchor="middle">$20K</text>
+                    <text x="140" y="180" fill="#64748b" font-size="8" text-anchor="middle">$40K (Q1)</text>
+                    <text x="210" y="180" fill="#64748b" font-size="8" text-anchor="middle">$60K (Med)</text>
+                    <text x="290" y="180" fill="#64748b" font-size="8" text-anchor="middle">$80K (Q3)</text>
+                    <text x="350" y="180" fill="#64748b" font-size="8" text-anchor="middle">$100K</text>
+
+                    <!-- Lower Whisker -->
+                    <line x1="70" y1="95" x2="140" y2="95" stroke="#94a3b8" stroke-width="2"/>
+                    <line x1="70" y1="75" x2="70" y2="115" stroke="#94a3b8" stroke-width="2"/>
+                    <text x="70" y="65" fill="#94a3b8" font-size="8" text-anchor="middle">Min ($22K)</text>
+
+                    <!-- Box (IQR from Q1=$40K to Q3=$80K) -->
+                    <rect x="140" y="60" width="150" height="70" fill="#10b981" fill-opacity="0.2" stroke="#10b981" stroke-width="2" rx="2"/>
+
+                    <!-- Median Line ($58K) -->
+                    <line x1="210" y1="60" x2="210" y2="130" stroke="#34d399" stroke-width="3"/>
+                    <text x="210" y="50" fill="#34d399" font-size="9" font-weight="bold" text-anchor="middle">Median: $58K</text>
+
+                    <!-- Upper Whisker (1.5x IQR Boundary = $105K) -->
+                    <line x1="290" y1="95" x2="360" y2="95" stroke="#94a3b8" stroke-width="2"/>
+                    <line x1="360" y1="75" x2="360" y2="115" stroke="#94a3b8" stroke-width="2"/>
+                    <text x="360" y="65" fill="#94a3b8" font-size="8" text-anchor="middle">Upper Whisker</text>
+
+                    <!-- Outlier Points (> Q3 + 1.5*IQR) -->
+                    <circle cx="390" cy="95" r="4.5" fill="#f43f5e" stroke="#fff" stroke-width="1"/>
+                    <circle cx="410" cy="95" r="4.5" fill="#f43f5e" stroke="#fff" stroke-width="1"/>
+
+                    <!-- Outlier Callout -->
+                    <text x="400" y="78" fill="#f43f5e" font-size="8" font-weight="bold" text-anchor="middle">Outliers</text>
+
+                    <!-- IQR Annotation Bracket -->
+                    <text x="215" y="145" fill="#a7f3d0" font-size="8" font-weight="bold" text-anchor="middle">&larr; Interquartile Range (IQR = $40K) &rarr;</text>
+                </svg>`
+            },
+            violin: {
+                title: "Violin Plot (Multimodal Structure)",
+                desc: "Combines box plot summary metrics with a mirrored density plot. Essential for detecting multimodal data (multiple peaks or cluster subgroups) that standard box plots completely hide.",
+                svg: `<svg class="w-full h-full" viewBox="0 0 440 200">
+                    <!-- Axis -->
+                    <line x1="40" y1="165" x2="420" y2="165" stroke="#475569" stroke-width="1.5"/>
+                    <text x="60" y="180" fill="#64748b" font-size="8" text-anchor="middle">Group 1 Peak</text>
+                    <text x="280" y="180" fill="#64748b" font-size="8" text-anchor="middle">Group 2 Peak</text>
+
+                    <!-- Bimodal Mirrored Violin Contour -->
+                    <path d="M 50 95 C 70 40, 100 40, 130 85 C 160 120, 200 120, 230 85 C 260 30, 310 30, 350 95 C 310 160, 260 160, 230 105 C 200 70, 160 70, 130 105 C 100 150, 70 150, 50 95 Z" fill="#10b981" fill-opacity="0.25" stroke="#34d399" stroke-width="2"/>
+
+                    <!-- Internal Mini Box Plot -->
+                    <line x1="80" y1="95" x2="330" y2="95" stroke="#020617" stroke-width="4"/>
+                    <rect x="110" y="90" width="160" height="10" fill="#fff" rx="2"/>
+                    <circle cx="180" cy="95" r="3" fill="#f43f5e"/> <!-- Median Marker -->
+
+                    <!-- Peak Annotations -->
+                    <g transform="translate(60, 20)">
+                        <rect x="0" y="0" width="100" height="26" fill="#020617" fill-opacity="0.8" stroke="#34d399" rx="3"/>
+                        <text x="50" y="16" fill="#a7f3d0" font-size="8" font-weight="bold" text-anchor="middle">Peak 1: Entry Level</text>
+                    </g>
+
+                    <g transform="translate(250, 15)">
+                        <rect x="0" y="0" width="115" height="26" fill="#020617" fill-opacity="0.8" stroke="#34d399" rx="3"/>
+                        <text x="57" y="16" fill="#a7f3d0" font-size="8" font-weight="bold" text-anchor="middle">Peak 2: Senior Execs</text>
+                    </g>
+
+                    <!-- Insight Note -->
+                    <text x="220" y="148" fill="#cbd5e1" font-size="8" font-weight="bold" text-anchor="middle">Violin uncovers 2 distinct sub-populations that Box Plots merge into one!</text>
+                </svg>`
+            }
+        };
+
+        function renderDistribution(key) {
+            const data = distTypes[key];
+            document.getElementById('dist-canvas').innerHTML = data.svg;
+            document.getElementById('dist-type-label').innerText = data.title;
+            document.getElementById('dist-desc').innerHTML = data.desc;
+
+            document.querySelectorAll('.dist-nav-btn').forEach(b => {
+                b.className = "dist-nav-btn p-2.5 bg-slate-800 border border-slate-700 rounded-lg text-slate-300 hover:text-white text-center transition-all cursor-pointer";
+            });
+            document.getElementById(`dist-btn-${key}`).className = "dist-nav-btn p-2.5 bg-emerald-900/40 border border-emerald-500 rounded-lg text-emerald-200 font-bold text-center transition-all cursor-pointer";
+        }
+
+        // Initialize default view renders
+        renderComposition('stacked');
+        renderComparison('column');
+        renderRelationship('scatter');
+        renderDistribution('histogram');
+
+        // Page 6: Lab Execution & Tabs
+        function runLabCode() {
+            document.getElementById('terminal-placeholder').classList.add('hidden');
+            const output = document.getElementById('terminal-output');
+            output.classList.remove('hidden');
+            
+            // Re-trigger CSS fade-in animation
+            output.classList.remove('animate-fade-in');
+            void output.offsetWidth; // reflow trigger
+            output.classList.add('animate-fade-in');
+        }
+
+        // Lab Output Figure Tab Switcher
+        function switchLabTab(tabKey) {
+            const figDist = document.getElementById('lab-fig-dist');
+            const figCorr = document.getElementById('lab-fig-corr');
+            const tabDistBtn = document.getElementById('lab-tab-dist');
+            const tabCorrBtn = document.getElementById('lab-tab-corr');
+
+            if (tabKey === 'dist') {
+                figDist.classList.remove('hidden');
+                figCorr.classList.add('hidden');
+                tabDistBtn.className = "px-2.5 py-1 bg-violet-900/60 text-violet-200 rounded text-[10px] font-bold border border-violet-500/50 cursor-pointer";
+                tabCorrBtn.className = "px-2 py-1 bg-slate-800 text-slate-400 hover:text-white rounded text-[10px] cursor-pointer";
+            } else {
+                figDist.classList.add('hidden');
+                figCorr.classList.remove('hidden');
+                tabCorrBtn.className = "px-2.5 py-1 bg-violet-900/60 text-violet-200 rounded text-[10px] font-bold border border-violet-500/50 cursor-pointer";
+                tabDistBtn.className = "px-2 py-1 bg-slate-800 text-slate-400 hover:text-white rounded text-[10px] cursor-pointer";
+            }
+        }
+    </script>
+</body>
+</html>

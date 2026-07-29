@@ -90,16 +90,36 @@
 
     <!-- Vertical Floating Navigation Indicators -->
     <nav class="fixed right-6 top-1/2 -translate-y-1/2 z-50 flex flex-col items-center gap-2.5 bg-slate-900/80 backdrop-blur-md p-3 rounded-full border border-slate-700 shadow-2xl">
-        <button onclick="scrollToPage(0)" title="1. EDA & Classification" class="nav-dot w-3 h-3 bg-slate-600 rounded-full hover:bg-violet-400 focus:outline-none"></button>
-        <button onclick="scrollToPage(1)" title="2. Composition Charts" class="nav-dot w-3 h-3 bg-slate-600 rounded-full hover:bg-violet-400 focus:outline-none"></button>
-        <button onclick="scrollToPage(2)" title="3. Comparison Charts" class="nav-dot w-3 h-3 bg-slate-600 rounded-full hover:bg-violet-400 focus:outline-none"></button>
-        <button onclick="scrollToPage(3)" title="4. Relationship Charts" class="nav-dot w-3 h-3 bg-slate-600 rounded-full hover:bg-violet-400 focus:outline-none"></button>
-        <button onclick="scrollToPage(4)" title="5. Distribution Charts" class="nav-dot w-3 h-3 bg-slate-600 rounded-full hover:bg-violet-400 focus:outline-none"></button>
-        <button onclick="scrollToPage(5)" title="6. Practical Lab" class="nav-dot w-3 h-3 bg-slate-600 rounded-full hover:bg-violet-400 focus:outline-none"></button>
+        <button onclick="scrollToPage(1)" title="1. Title" class="nav-dot w-3 h-3 bg-slate-600 rounded-full hover:bg-violet-400 focus:outline-none"></button>
+        <button onclick="scrollToPage(1)" title="2. EDA & Classification" class="nav-dot w-3 h-3 bg-slate-600 rounded-full hover:bg-violet-400 focus:outline-none"></button>
+        <button onclick="scrollToPage(2)" title="3. Composition Charts" class="nav-dot w-3 h-3 bg-slate-600 rounded-full hover:bg-violet-400 focus:outline-none"></button>
+        <button onclick="scrollToPage(3)" title="4. Comparison Charts" class="nav-dot w-3 h-3 bg-slate-600 rounded-full hover:bg-violet-400 focus:outline-none"></button>
+        <button onclick="scrollToPage(4)" title="5. Relationship Charts" class="nav-dot w-3 h-3 bg-slate-600 rounded-full hover:bg-violet-400 focus:outline-none"></button>
+        <button onclick="scrollToPage(5)" title="6. Distribution Charts" class="nav-dot w-3 h-3 bg-slate-600 rounded-full hover:bg-violet-400 focus:outline-none"></button>
+        <button onclick="scrollToPage(6)" title="7. Practical Lab" class="nav-dot w-3 h-3 bg-slate-600 rounded-full hover:bg-violet-400 focus:outline-none"></button>
     </nav>
 
     <!-- Main Vertical Scroll Container -->
     <main id="scrollContainer" class="scroll-container">
+
+        <!-- INTRO -->
+        <section class="page-section bg-gradient-to-b from-slate-950 via-violet-950/40 to-slate-900">
+            <div class="max-w-5xl w-full text-center space-y-8">
+                <div class="flex items-center justify-center gap-3">
+                    <span class="px-4 py-1.5 bg-violet-500/10 text-violet-400 border border-violet-500/30 rounded-full text-sm font-bold tracking-wider uppercase shadow-[0_0_20px_rgba(167,139,250,0.15)]">
+                        Week 3
+                    </span>
+                </div>
+
+                <h1 class="text-5xl md:text-6xl font-bold text-white tracking-tight leading-tight">
+                    Data Representation
+                </h1>
+
+                <p class="text-lg text-slate-400">
+                    by <span class="text-xl font-bold text-violet-200">Abbas Saliimi Lokman</span>
+                </p>
+            </div>
+        </section>
 
         <!-- PAGE 1: EDA INTRO & CLASSIFICATION -->
         <section class="page-section bg-darkBg">
@@ -751,7 +771,7 @@
         // Page Scroll Navigation Logic
         const container = document.getElementById('scrollContainer');
         const dots = document.querySelectorAll('.nav-dot');
-        const totalPages = 6;
+        const totalPages = 7;
 
         function getCurrentPageIndex() {
             return Math.round(container.scrollTop / window.innerHeight);

@@ -238,6 +238,7 @@
         <!-- PAGE 2: CONCEPTS IN LEARNING -->
         <section class="page-section bg-slate-900">
             <div class="max-w-6xl w-full grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                <!-- Left Column: Core Concept & Paradigm Taxonomy -->
                 <div class="lg:col-span-5 space-y-5">
                     <div class="flex items-center gap-3">
                         <span class="px-3 py-1 bg-teal-500/10 text-teal-400 border border-teal-500/30 rounded-full text-xs font-semibold tracking-wider uppercase">Topic 02</span>
@@ -251,25 +252,65 @@
 
                     <div class="p-4 bg-slate-950 border-l-4 border-teal-500 rounded-r-lg shadow-md">
                         <p class="text-slate-300 text-sm leading-relaxed">
-                            <strong class="text-teal-300">Core Concept:</strong> The "concept" is the specific objective you want your algorithm to comprehend or output. It is the target of your analytical efforts.
+                            <strong class="text-teal-300">Core Concept:</strong> In machine learning, a "concept" is the explicit target function or structural goal you want an algorithm to comprehend, map, or output.
                         </p>
                     </div>
-                    
-                    <p class="text-xs text-slate-400 italic">Select a learning concept from the interactive panel to see how it operates.</p>
+
+                    <!-- Learning Paradigm Taxonomy Matrix -->
+                    <div class="p-3.5 bg-slate-950 border border-slate-800 rounded-xl space-y-2 text-xs">
+                        <div class="flex justify-between items-center border-b border-slate-800 pb-1.5">
+                            <strong class="text-teal-400 font-semibold">Learning Paradigms Overview:</strong>
+                            <span class="text-[10px] text-slate-500 font-mono">4 Target Goals</span>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-2 text-[11px]">
+                            <div class="p-2 bg-slate-900 rounded border border-slate-800 space-y-0.5">
+                                <span class="text-[10px] text-sky-400 font-bold uppercase block">Supervised</span>
+                                <p class="text-slate-300 text-[10px]">1. Classification (Discrete)</p>
+                                <p class="text-slate-300 text-[10px]">2. Prediction (Continuous)</p>
+                            </div>
+                            <div class="p-2 bg-slate-900 rounded border border-slate-800 space-y-0.5">
+                                <span class="text-[10px] text-amber-400 font-bold uppercase block">Unsupervised / Rules</span>
+                                <p class="text-slate-300 text-[10px]">3. Clustering (Grouping)</p>
+                                <p class="text-slate-300 text-[10px]">4. Association (Rules)</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
-                <!-- Interactive Concept Tabs -->
-                <div class="lg:col-span-7 bg-slate-950 p-6 rounded-2xl border border-slate-800 shadow-xl flex flex-col gap-4">
-                    <div class="grid grid-cols-2 gap-2 md:grid-cols-4">
-                        <button onclick="setConcept('classification')" class="concept-btn px-3 py-2 bg-slate-800 hover:bg-teal-900/40 border border-slate-700 hover:border-teal-500 rounded-lg text-xs font-bold text-slate-300 focus:outline-none transition-all active-tab-style">Classification</button>
-                        <button onclick="setConcept('association')" class="concept-btn px-3 py-2 bg-slate-800 hover:bg-teal-900/40 border border-slate-700 hover:border-teal-500 rounded-lg text-xs font-bold text-slate-300 focus:outline-none transition-all">Association</button>
-                        <button onclick="setConcept('clustering')" class="concept-btn px-3 py-2 bg-slate-800 hover:bg-teal-900/40 border border-slate-700 hover:border-teal-500 rounded-lg text-xs font-bold text-slate-300 focus:outline-none transition-all">Clustering</button>
-                        <button onclick="setConcept('prediction')" class="concept-btn px-3 py-2 bg-slate-800 hover:bg-teal-900/40 border border-slate-700 hover:border-teal-500 rounded-lg text-xs font-bold text-slate-300 focus:outline-none transition-all">Prediction</button>
+                <!-- Right Column: Interactive Concept Inspector -->
+                <div class="lg:col-span-7 bg-slate-950 p-6 rounded-2xl border border-slate-800 shadow-xl space-y-4">
+                    <div class="flex justify-between items-center">
+                        <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider">Interactive Paradigm Inspector</h3>
+                        <span id="concept-tag" class="text-[10px] text-sky-300 bg-sky-950 border border-sky-500/30 px-2.5 py-1 rounded font-semibold">Classification (Supervised)</span>
                     </div>
 
-                    <!-- Dynamic Content Area for Concepts -->
-                    <div id="concept-display" class="flex flex-col md:flex-row gap-6 bg-slate-900 p-6 rounded-xl border border-slate-800 items-center min-h-[220px]">
-                        <!-- Populated by JS -->
+                    <!-- Concept Button Grid (Supervised = Sky | Unsupervised/Rules = Amber) -->
+                    <div class="grid grid-cols-2 gap-2 md:grid-cols-4 text-xs">
+                        <!-- Supervised Buttons (Sky Blue Theme) -->
+                        <button onclick="setConcept('classification')" id="btn-concept-classification" class="concept-btn px-3 py-2 bg-slate-800 hover:bg-sky-900/40 border border-slate-700 hover:border-sky-500 rounded-lg text-xs font-bold text-sky-200 transition-all ring-2 ring-sky-500 cursor-pointer">1. Classification</button>
+                        <button onclick="setConcept('prediction')" id="btn-concept-prediction" class="concept-btn px-3 py-2 bg-slate-800 hover:bg-sky-900/40 border border-slate-700 hover:border-sky-500 rounded-lg text-xs font-bold text-slate-300 transition-all cursor-pointer">2. Prediction</button>
+                        
+                        <!-- Unsupervised / Rules Buttons (Amber Theme) -->
+                        <button onclick="setConcept('clustering')" id="btn-concept-clustering" class="concept-btn px-3 py-2 bg-slate-800 hover:bg-amber-900/40 border border-slate-700 hover:border-amber-500 rounded-lg text-xs font-bold text-slate-300 transition-all cursor-pointer">3. Clustering</button>
+                        <button onclick="setConcept('association')" id="btn-concept-association" class="concept-btn px-3 py-2 bg-slate-800 hover:bg-amber-900/40 border border-slate-700 hover:border-amber-500 rounded-lg text-xs font-bold text-slate-300 transition-all cursor-pointer">4. Association</button>
+                    </div>
+
+                    <!-- Dynamic Display Container -->
+                    <div id="concept-display" class="bg-slate-900 p-4 rounded-xl border border-slate-800 space-y-3">
+                        <div class="flex items-center justify-between border-b border-slate-800 pb-2">
+                            <strong class="text-sky-400 text-sm font-bold">Discrete Categorical Classification</strong>
+                            <span class="text-[10px] text-slate-400 bg-slate-950 px-2 py-0.5 rounded border border-slate-800 font-mono">Output: Categorical Label</span>
+                        </div>
+                        
+                        <!-- SVG Visualizer Canvas -->
+                        <div id="concept-svg-canvas" class="w-full h-52 bg-slate-950 rounded-lg border border-slate-800 flex items-center justify-center p-2">
+                            <!-- Loaded dynamically via JS -->
+                        </div>
+
+                        <p id="concept-desc-text" class="text-xs text-slate-400 leading-relaxed min-h-[40px]">
+                            Maps input features to discrete class labels (e.g., Pass vs. Fail, Spam vs. Not Spam) by fitting a decision boundary that divides data categories.
+                        </p>
                     </div>
                 </div>
             </div>
@@ -360,7 +401,7 @@
                             
                             <button onclick="showAttrDef('interval', this)" class="attr-node-btn w-[22%] py-2.5 bg-emerald-900/30 hover:bg-emerald-600/50 border border-emerald-500/30 rounded-lg text-emerald-200 transition-all shadow-md focus:outline-none">
                                 <span class="text-xs font-bold block">Interval</span>
-                                <span class="text-[9px] text-emerald-300/70 font-normal block">No True 0</span>
+                                <span class="text-[9px] text-emerald-300/70 font-normal block">No True Zero</span>
                             </button>
                             
                             <button onclick="showAttrDef('ratio', this)" class="attr-node-btn w-[22%] py-2.5 bg-emerald-900/30 hover:bg-emerald-600/50 border border-emerald-500/30 rounded-lg text-emerald-200 transition-all shadow-md focus:outline-none">
@@ -735,107 +776,201 @@
         }
 
         // Concepts in Learning Logic
-        const conceptData = {
+        const conceptsData = {
+            // 1. Supervised Learning: Discrete (Sky Theme)
             classification: {
-                title: "Classification",
-                badge: "bg-blue-500/20 text-blue-300 border-blue-500/50",
-                desc: "Assigning instances to predefined categories (labels).",
-                example: "\"Is this email Spam or Not Spam?\"",
-                visual: `
-                    <div class="flex items-center gap-4 w-full justify-center">
-                        <div class="p-2 border border-slate-600 rounded-lg"><div class="w-6 h-6 rounded-full bg-rose-500 mb-1"></div><div class="w-6 h-6 clip-triangle bg-blue-500"></div></div>
-                        <div class="text-slate-500">&rarr;</div>
-                        <div class="p-3 border-2 border-rose-500/50 rounded-xl bg-rose-500/10"><div class="w-6 h-6 rounded-full bg-rose-500"></div></div>
-                        <div class="p-3 border-2 border-blue-500/50 rounded-xl bg-blue-500/10"><div class="w-6 h-6 clip-triangle bg-blue-500" style="clip-path: polygon(50% 0%, 0% 100%, 100% 100%);"></div></div>
-                    </div>`
+                group: 'supervised',
+                titleColor: 'text-sky-400',
+                tag: 'Classification (Supervised)',
+                tagClass: 'text-[10px] text-sky-300 bg-sky-950 border border-sky-500/30 px-2.5 py-1 rounded font-semibold',
+                title: 'Discrete Categorical Classification',
+                badge: 'Output: Categorical Label',
+                desc: 'Maps input features to discrete class labels (e.g., Pass vs. Fail, Spam vs. Not Spam) by fitting a decision boundary that divides data categories.',
+                svg: `<svg class="w-full h-full" viewBox="0 0 440 180">
+                    <line x1="45" y1="20" x2="45" y2="150" stroke="#475569" stroke-width="1.5"/>
+                    <line x1="45" y1="150" x2="420" y2="150" stroke="#475569" stroke-width="1.5"/>
+                    <text x="232" y="172" fill="#94a3b8" font-size="9" font-weight="bold" text-anchor="middle">Feature X1 (e.g., Test Score)</text>
+                    <text x="18" y="85" fill="#94a3b8" font-size="9" font-weight="bold" text-anchor="middle" transform="rotate(-90 18 85)">Feature X2 (e.g., Attendance)</text>
+
+                    <line x1="70" y1="140" x2="380" y2="30" stroke="#38bdf8" stroke-width="2.5" stroke-dasharray="5"/>
+
+                    <g fill="#38bdf8">
+                        <circle cx="120" cy="50" r="5"/><circle cx="160" cy="40" r="5"/>
+                        <circle cx="210" cy="35" r="5"/><circle cx="250" cy="25" r="5"/>
+                        <circle cx="290" cy="45" r="5"/><circle cx="340" cy="30" r="5"/>
+                    </g>
+
+                    <g fill="#f43f5e">
+                        <circle cx="90" cy="120" r="5"/><circle cx="140" cy="130" r="5"/>
+                        <circle cx="180" cy="115" r="5"/><circle cx="230" cy="135" r="5"/>
+                        <circle cx="270" cy="110" r="5"/><circle cx="320" cy="125" r="5"/>
+                    </g>
+
+                    <text x="180" y="50" fill="#38bdf8" font-size="10" font-weight="bold">Class A: PASS</text>
+                    <text x="240" y="130" fill="#f43f5e" font-size="10" font-weight="bold">Class B: FAIL</text>
+                    <text x="310" y="70" fill="#38bdf8" font-size="8" font-mono="true">Decision Boundary</text>
+                </svg>`
             },
-            association: {
-                title: "Association",
-                badge: "bg-amber-500/20 text-amber-300 border-amber-500/50",
-                desc: "Learning rules that associate different attributes together.",
-                example: "\"Customers who buy bread are likely to buy butter.\"",
-                visual: `
-                    <div class="flex items-center gap-4 w-full justify-center text-3xl">
-                        <div class="p-4 bg-slate-800 rounded-xl shadow-lg border border-slate-700">🍞</div>
-                        <div class="text-amber-400 font-bold text-lg border-b-2 border-dashed border-amber-500/50 pb-1">buys &rarr;</div>
-                        <div class="p-4 bg-slate-800 rounded-xl shadow-lg border border-slate-700">🧈</div>
-                    </div>`
-            },
-            clustering: {
-                title: "Clustering",
-                badge: "bg-emerald-500/20 text-emerald-300 border-emerald-500/50",
-                desc: "Grouping similar instances together without predefined labels.",
-                example: "\"Segment our customer base into 3 distinct behaviors.\"",
-                visual: `
-                    <div class="relative w-48 h-28 mx-auto flex items-center justify-center">
-                        <!-- Cluster 1: High Spenders (Emerald - 5 items) -->
-                        <div class="absolute top-0 left-0 w-14 h-14 rounded-full border border-emerald-500/50 bg-emerald-500/10 flex flex-wrap items-center justify-center gap-1.5 p-2 shadow-sm">
-                            <div class="w-2 h-2 bg-emerald-400 rounded-full"></div>
-                            <div class="w-2 h-2 bg-emerald-400 rounded-full"></div>
-                            <div class="w-2 h-2 bg-emerald-400 rounded-full"></div>
-                            <div class="w-2 h-2 bg-emerald-400 rounded-full"></div>
-                            <div class="w-2 h-2 bg-emerald-400 rounded-full"></div>
-                        </div>
-                        <!-- Cluster 2: Frequent Browsers (Fuchsia - 4 items) -->
-                        <div class="absolute bottom-0 right-0 w-14 h-14 rounded-full border border-fuchsia-500/50 bg-fuchsia-500/10 flex flex-wrap items-center justify-center gap-1.5 p-2 shadow-sm">
-                            <div class="w-2 h-2 bg-fuchsia-400 rounded-full"></div>
-                            <div class="w-2 h-2 bg-fuchsia-400 rounded-full"></div>
-                            <div class="w-2 h-2 bg-fuchsia-400 rounded-full"></div>
-                            <div class="w-2 h-2 bg-fuchsia-400 rounded-full"></div>
-                        </div>
-                        <!-- Cluster 3: Occasional Buyers (Cyan - 4 items) -->
-                        <div class="absolute top-1 right-2 w-12 h-12 rounded-full border border-cyan-500/50 bg-cyan-500/10 flex flex-wrap items-center justify-center gap-1.5 p-2 shadow-sm">
-                            <div class="w-2 h-2 bg-cyan-400 rounded-full"></div>
-                            <div class="w-2 h-2 bg-cyan-400 rounded-full"></div>
-                            <div class="w-2 h-2 bg-cyan-400 rounded-full"></div>
-                            <div class="w-2 h-2 bg-cyan-400 rounded-full"></div>
-                        </div>
-                    </div>`
-            },
+
+            // 2. Supervised Learning: Continuous (Sky Theme)
             prediction: {
-                title: "Numeric Prediction",
-                badge: "bg-fuchsia-500/20 text-fuchsia-300 border-fuchsia-500/50",
-                desc: "Forecasting a continuous numerical value.",
-                example: "\"What will the temperature be tomorrow?\"",
-                visual: `
-                    <div class="w-full flex justify-center items-end h-20 gap-2 border-b-2 border-slate-700 pb-1">
-                        <div class="w-6 bg-slate-700 h-6 rounded-t"></div>
-                        <div class="w-6 bg-slate-600 h-10 rounded-t"></div>
-                        <div class="w-6 bg-slate-500 h-14 rounded-t"></div>
-                        <div class="text-fuchsia-400 font-bold ml-2 self-center animate-pulse">?</div>
-                    </div>`
+                group: 'supervised',
+                titleColor: 'text-sky-400',
+                tag: 'Prediction (Supervised)',
+                tagClass: 'text-[10px] text-sky-300 bg-sky-950 border border-sky-500/30 px-2.5 py-1 rounded font-semibold',
+                title: 'Continuous Numerical Regression',
+                badge: 'Output: Real-Valued Number',
+                desc: 'Models continuous relationships to predict numeric output values (e.g., Estimating Housing Prices, Temperature, or Future Revenue).',
+                svg: `<svg class="w-full h-full" viewBox="0 0 440 180">
+                    <line x1="45" y1="20" x2="45" y2="150" stroke="#475569" stroke-width="1.5"/>
+                    <line x1="45" y1="150" x2="420" y2="150" stroke="#475569" stroke-width="1.5"/>
+                    <text x="232" y="172" fill="#94a3b8" font-size="9" font-weight="bold" text-anchor="middle">Input X (e.g., Square Footage)</text>
+                    <text x="18" y="85" fill="#94a3b8" font-size="9" font-weight="bold" text-anchor="middle" transform="rotate(-90 18 85)">Predicted Y ($ Price)</text>
+
+                    <line x1="60" y1="135" x2="400" y2="30" stroke="#38bdf8" stroke-width="2.5"/>
+
+                    <circle cx="80" cy="132" r="4" fill="#38bdf8"/><circle cx="120" cy="112" r="4" fill="#38bdf8"/>
+                    <circle cx="150" cy="118" r="4" fill="#38bdf8"/><circle cx="190" cy="82" r="4" fill="#38bdf8"/>
+                    <circle cx="230" cy="88" r="4" fill="#38bdf8"/><circle cx="280" cy="60" r="4" fill="#38bdf8"/>
+                    <circle cx="330" cy="52" r="4" fill="#38bdf8"/><circle cx="370" cy="35" r="4" fill="#38bdf8"/>
+
+                    <line x1="280" y1="150" x2="280" y2="60" stroke="#f43f5e" stroke-dasharray="3" stroke-width="1.5"/>
+                    <circle cx="280" cy="64" r="5" fill="#f43f5e"/>
+                    <text x="290" y="80" fill="#f87171" font-size="8" font-weight="bold">Target Y = $540,000</text>
+                </svg>`
+            },
+
+            // 3. Unsupervised Learning: Grouping (Amber Theme)
+            clustering: {
+                group: 'unsupervised',
+                titleColor: 'text-amber-400',
+                tag: 'Clustering (Unsupervised)',
+                tagClass: 'text-[10px] text-amber-300 bg-amber-950 border border-amber-500/30 px-2.5 py-1 rounded font-semibold',
+                title: 'Unsupervised Spatial Clustering',
+                badge: 'Output: Group Clusters',
+                desc: 'Groups unlabeled data points into distinct natural clusters based on feature similarity metrics (e.g., Euclidean distance to centroid).',
+                svg: `<svg class="w-full h-full" viewBox="0 0 440 180">
+                    <line x1="45" y1="20" x2="45" y2="150" stroke="#475569" stroke-width="1.5"/>
+                    <line x1="45" y1="150" x2="420" y2="150" stroke="#475569" stroke-width="1.5"/>
+
+                    <g fill="#06b6d4">
+                        <circle cx="110" cy="50" r="4"/><circle cx="130" cy="40" r="4"/><circle cx="95" cy="65" r="4"/>
+                        <circle cx="140" cy="70" r="4"/><circle cx="115" cy="80" r="4"/>
+                        <polygon points="118,52 124,64 112,64" fill="#a5f3fc" stroke="#0891b2" stroke-width="1"/>
+                    </g>
+                    <path d="M 92 30 C 162 20, 172 90, 102 95 C 82 90, 82 40, 92 30 Z" fill="#06b6d4" fill-opacity="0.15" stroke="#06b6d4" stroke-dasharray="3"/>
+                    <text x="118" y="22" fill="#a5f3fc" font-size="8" font-weight="bold" text-anchor="middle">Cluster 1</text>
+
+                    <g fill="#a855f7">
+                        <circle cx="280" cy="45" r="4"/><circle cx="310" cy="35" r="4"/><circle cx="330" cy="60" r="4"/>
+                        <circle cx="290" cy="75" r="4"/><circle cx="345" cy="40" r="4"/>
+                        <polygon points="311,42 317,54 305,54" fill="#f0abfc" stroke="#7e22ce" stroke-width="1"/>
+                    </g>
+                    <path d="M 277 25 C 372 20, 372 85, 287 85 C 267 70, 267 35, 277 25 Z" fill="#a855f7" fill-opacity="0.15" stroke="#a855f7" stroke-dasharray="3"/>
+                    <text x="310" y="22" fill="#f0abfc" font-size="8" font-weight="bold" text-anchor="middle">Cluster 2</text>
+
+                    <g fill="#f59e0b">
+                        <circle cx="200" cy="115" r="4"/><circle cx="220" cy="135" r="4"/><circle cx="180" cy="125" r="4"/>
+                        <circle cx="240" cy="110" r="4"/><circle cx="210" cy="140" r="4"/>
+                    </g>
+                    <path d="M 182 105 C 267 95, 267 150, 187 148 Z" fill="#f59e0b" fill-opacity="0.15" stroke="#f59e0b" stroke-dasharray="3"/>
+                    <text x="210" y="100" fill="#fef3c7" font-size="8" font-weight="bold" text-anchor="middle">Cluster 3</text>
+                </svg>`
+            },
+
+            // 4. Rule Learning / Unsupervised: Association (Amber Theme)
+            association: {
+                group: 'unsupervised',
+                titleColor: 'text-amber-400',
+                tag: 'Association (Rule Learning)',
+                tagClass: 'text-[10px] text-amber-300 bg-amber-950 border border-amber-500/30 px-2.5 py-1 rounded font-semibold',
+                title: 'Association Rule Mining',
+                badge: 'Output: If-Then Rules (A -> B)',
+                desc: 'Discovers implicit relationships and frequent co-occurrence patterns between items in large transactional matrices (e.g., Market Basket Analysis).',
+                svg: `<svg class="w-full h-full" viewBox="0 0 440 180">
+                    <g transform="translate(60, 3)">
+                        <rect x="0" y="20" width="110" height="70" fill="#0f172a" stroke="#38bdf8" stroke-width="1.5" rx="6"/>
+                        <text x="55" y="42" fill="#38bdf8" font-size="10" font-weight="bold" text-anchor="middle">Itemset A</text>
+                        <text x="55" y="62" fill="#cbd5e1" font-size="9" text-anchor="middle">[ Bread, Butter ]</text>
+
+                        <line x1="120" y1="55" x2="210" y2="55" stroke="#f59e0b" stroke-width="3"/>
+                        <path d="M 200 50 L 210 55 L 200 60 Z" fill="#f59e0b"/>
+                        <text x="165" y="45" fill="#f59e0b" font-size="9" font-weight="bold" text-anchor="middle">IF-THEN RULE</text>
+
+                        <rect x="220" y="20" width="110" height="70" fill="#0f172a" stroke="#ec4899" stroke-width="1.5" rx="6"/>
+                        <text x="275" y="42" fill="#ec4899" font-size="10" font-weight="bold" text-anchor="middle">Itemset B</text>
+                        <text x="275" y="62" fill="#cbd5e1" font-size="9" text-anchor="middle">[ Milk ]</text>
+                    </g>
+
+                    <g transform="translate(50, 107)">
+                        <rect x="0" y="0" width="360" height="54" fill="#020617" rx="6"/>
+                        <text x="12" y="13" fill="#cbd5e1" font-size="9.5" font-weight="bold" font-mono="true">RULE STRENGTH CRITERIA (NOISE FILTERING)</text>
+                        <text x="12" y="32" fill="#38bdf8" font-size="9.5" font-weight="bold" font-mono="true">Support &ge; 5%</text>
+                        <text x="118" y="32" fill="#94a3b8" font-size="9">Frequency: Itemset {A,B} appears in &ge;5% of total carts</text>
+                        <text x="12" y="46" fill="#ec4899" font-size="9.5" font-weight="bold" font-mono="true">Confidence &ge; 80%</text>
+                        <text x="118" y="46" fill="#94a3b8" font-size="9">Certainty: 80% of buyers who bought A also bought B</text>
+                    </g>
+                </svg>`
             }
         };
 
         function setConcept(key) {
-            const btns = document.querySelectorAll('.concept-btn');
-            btns.forEach(b => {
-                b.classList.remove('bg-teal-900/60', 'border-teal-500');
-                b.classList.add('bg-slate-800', 'border-slate-700');
-            });
-            event.target.classList.add('bg-teal-900/60', 'border-teal-500');
-            event.target.classList.remove('bg-slate-800', 'border-slate-700');
+            const data = conceptsData[key];
 
-            const display = document.getElementById('concept-display');
-            const data = conceptData[key];
-            
-            display.innerHTML = `
-                <div class="w-full md:w-1/2 space-y-3 animate-fade-in">
-                    <span class="inline-block px-2 py-0.5 border rounded text-xs font-bold uppercase tracking-wider ${data.badge}">${data.title}</span>
-                    <p class="text-sm text-white">${data.desc}</p>
-                    <p class="text-xs text-slate-400 italic">Example: ${data.example}</p>
+            // 1. Update Tag Text & Class
+            const tagEl = document.getElementById('concept-tag');
+            tagEl.innerText = data.tag;
+            tagEl.className = data.tagClass;
+
+            // 2. Update Display Box Title, SVG Canvas & Description
+            document.getElementById('concept-display').innerHTML = `
+                <div class="flex items-center justify-between border-b border-slate-800 pb-2">
+                    <strong class="${data.titleColor} text-sm font-bold">${data.title}</strong>
+                    <span class="text-[10px] text-slate-400 bg-slate-950 px-2 py-0.5 rounded border border-slate-800 font-mono">${data.badge}</span>
                 </div>
-                <div class="w-full md:w-1/2 flex justify-center animate-fade-in border-l border-slate-800 pl-4">
-                    ${data.visual}
+                
+                <div id="concept-svg-canvas" class="w-full h-52 bg-slate-950 rounded-lg border border-slate-800 flex items-center justify-center p-2">
+                    ${data.svg}
                 </div>
+
+                <p class="text-xs text-slate-400 leading-relaxed min-h-[40px]">
+                    ${data.desc}
+                </p>
             `;
+
+            // 3. Reset Inactive Button States with Group-Specific Hover Colors
+            const supervisedKeys = ['classification', 'prediction'];
+            const unsupervisedKeys = ['clustering', 'association'];
+
+            supervisedKeys.forEach(k => {
+                const btn = document.getElementById(`btn-concept-${k}`);
+                if (btn) {
+                    btn.className = "concept-btn px-3 py-2 bg-slate-800 hover:bg-sky-900/40 border border-slate-700 hover:border-sky-500 rounded-lg text-xs font-bold text-slate-300 transition-all cursor-pointer";
+                }
+            });
+
+            unsupervisedKeys.forEach(k => {
+                const btn = document.getElementById(`btn-concept-${k}`);
+                if (btn) {
+                    btn.className = "concept-btn px-3 py-2 bg-slate-800 hover:bg-amber-900/40 border border-slate-700 hover:border-amber-500 rounded-lg text-xs font-bold text-slate-300 transition-all cursor-pointer";
+                }
+            });
+
+            // 4. Set Active Highlight Ring on Clicked Button
+            const activeBtn = document.getElementById(`btn-concept-${key}`);
+            if (activeBtn) {
+                if (data.group === 'supervised') {
+                    activeBtn.className = "concept-btn px-3 py-2 bg-slate-800 hover:bg-sky-900/40 border border-slate-700 hover:border-sky-500 rounded-lg text-xs font-bold text-sky-200 transition-all ring-2 ring-sky-500 cursor-pointer";
+                } else {
+                    activeBtn.className = "concept-btn px-3 py-2 bg-slate-800 hover:bg-amber-900/40 border border-slate-700 hover:border-amber-500 rounded-lg text-xs font-bold text-amber-200 transition-all ring-2 ring-amber-500 cursor-pointer";
+                }
+            }
         }
 
-        // Initialize first concept
-        window.onload = () => {
-            const firstBtn = document.querySelector('.concept-btn');
-            firstBtn.click();
-        };
+        // Initial default render
+        document.addEventListener("DOMContentLoaded", () => {
+            setConcept('classification');
+        });
 
         // Attribute Definitions Logic
         const attrDefs = {
@@ -849,7 +984,7 @@
                 title: "Ordinal Attribute",
                 type: "Categorical",
                 desc: "Categories with a <b>clear, logical order or rank</b>, but the exact mathematical distance between them is unknown or meaningless.",
-                example: "Customer Satisfaction: Low, Medium, High.<br>Education Level: High School, Bachelor's, Master's."
+                example: "Customer Satisfaction: Low, Medium, High.<br>Education Level: High School, Bachelor's, Master's, PhD."
             },
             interval: {
                 title: "Interval Attribute",

@@ -543,10 +543,10 @@
                             <div class="p-3 bg-[#1e1e1e] rounded-lg border border-slate-800 space-y-1">
                                 <div class="flex items-center gap-2">
                                     <span class="w-5 h-5 rounded-full bg-violet-500/20 text-violet-400 text-[10px] font-bold flex items-center justify-center shrink-0">1</span>
-                                    <strong class="text-white text-xs">Setup &amp; Environment</strong>
+                                    <strong class="text-white text-xs">Environment &amp; Data Preparation</strong>
                                 </div>
                                 <p class="text-slate-400 text-[11px] leading-normal">
-                                    Import core visualization frameworks, configure global figure aesthetics via <code class="text-violet-300 font-mono">sns.set_theme()</code>, and load target datasets.
+                                    Import core visualization libraries, establish uniform figure styling via <code class="text-violet-300 font-mono">sns.set_theme()</code>, and load target datasets for exploratory analysis.
                                 </p>
                             </div>
 
@@ -554,11 +554,11 @@
                             <div class="p-3 bg-[#1e1e1e] rounded-lg border border-slate-800 space-y-1">
                                 <div class="flex items-center gap-2">
                                     <span class="w-5 h-5 rounded-full bg-emerald-500/20 text-emerald-400 text-[10px] font-bold flex items-center justify-center shrink-0">2</span>
-                                    <strong class="text-white text-xs">Univariate EDA</strong>
+                                    <strong class="text-white text-xs">Univariate EDA &amp; Outliers</strong>
                                 </div>
                                 <ul class="text-slate-400 text-[11px] space-y-1 pl-1">
-                                    <li>• <code class="text-violet-300 font-mono">kde=True</code>: Overlays Kernel Density curve to inspect distribution skewness and modality.</li>
-                                    <li>• <code class="text-violet-300 font-mono">sns.boxplot()</code>: Isolates statistical anomalies sitting outside $1.5 \times \text{IQR}$ whisker fences.</li>
+                                    <li>• <code class="text-violet-300 font-mono">kde=True</code>: Overlays a continuous Kernel Density curve to evaluate shape, modality, and distribution skewness.</li>
+                                    <li>• <code class="text-violet-300 font-mono">sns.boxplot()</code>: Identifies statistical anomalies sitting outside the $1.5 \times \text{IQR}$ threshold whiskers.</li>
                                 </ul>
                             </div>
 
@@ -566,11 +566,11 @@
                             <div class="p-3 bg-[#1e1e1e] rounded-lg border border-slate-800 space-y-1">
                                 <div class="flex items-center gap-2">
                                     <span class="w-5 h-5 rounded-full bg-pink-500/20 text-pink-400 text-[10px] font-bold flex items-center justify-center shrink-0">3</span>
-                                    <strong class="text-white text-xs">Multivariate Correlations</strong>
+                                    <strong class="text-white text-xs">Multivariate Correlation Matrix</strong>
                                 </div>
                                 <ul class="text-slate-400 text-[11px] space-y-1 pl-1">
-                                    <li>• <code class="text-violet-300 font-mono">annot=True</code>: Renders numeric Pearson correlation coefficients ($r$) within each matrix cell.</li>
-                                    <li>• <code class="text-violet-300 font-mono">cmap='coolwarm'</code>: Applies a diverging color palette for inverse (blue) vs direct (red) links.</li>
+                                    <li>• <code class="text-violet-300 font-mono">annot=True</code>: Displays explicit Pearson correlation values ($r$) directly within each matrix cell.</li>
+                                    <li>• <code class="text-violet-300 font-mono">cmap='coolwarm'</code>: Applies a diverging color scale to contrast inverse (blue) vs. direct (red) feature links.</li>
                                 </ul>
                             </div>
                         </div>
@@ -582,29 +582,62 @@
                         <!-- Code Editor Container -->
                         <div class="flex-1 p-4 overflow-y-auto code-font text-xs leading-relaxed space-y-3">
                             <!-- Block 1 -->
-                            <div class="p-2.5 bg-[#252526]/60 rounded border-l-2 border-violet-500 space-y-1">
+                            <div class="p-2.5 bg-[#252526]/60 rounded border-l-2 border-violet-500 space-y-1.5">
                                 <div class="text-[#6a9955] text-[11px] font-sans font-semibold mb-1"># Step 1: Import modules &amp; set rendering aesthetics</div>
-                                <div><span class="text-[#c586c0]">import</span> matplotlib.pyplot <span class="text-[#c586c0]">as</span> plt <span class="text-[#6a9955] ml-2"># Primary canvas plotting engine</span></div>
-                                <div><span class="text-[#c586c0]">import</span> seaborn <span class="text-[#c586c0]">as</span> sns <span class="text-[#6a9955] ml-2"># High-level statistical graphics library</span></div>
-                                <div>sns.set_theme(style=<span class="text-[#ce9178]">'darkgrid'</span>) <span class="text-[#6a9955] ml-2"># Apply global grid layout theme</span></div>
-                                <div>df = sns.load_dataset(<span class="text-[#ce9178]">'housing'</span>) <span class="text-[#6a9955] ml-2"># Load sample dataset into DataFrame</span></div>
+                                <div>
+                                    <div class="text-[#6a9955] text-[10px] leading-tight"># Primary canvas plotting engine</div>
+                                    <div><span class="text-[#c586c0]">import</span> matplotlib.pyplot <span class="text-[#c586c0]">as</span> plt</div>
+                                </div>
+                                <div>
+                                    <div class="text-[#6a9955] text-[10px] leading-tight"># High-level statistical graphics library</div>
+                                    <div><span class="text-[#c586c0]">import</span> seaborn <span class="text-[#c586c0]">as</span> sns</div>
+                                </div>
+                                <div>
+                                    <div class="text-[#6a9955] text-[10px] leading-tight"># Apply global grid layout theme</div>
+                                    <div>sns.set_theme(style=<span class="text-[#ce9178]">'darkgrid'</span>)</div>
+                                </div>
+                                <div>
+                                    <div class="text-[#6a9955] text-[10px] leading-tight"># Load sample dataset into DataFrame</div>
+                                    <div>df = sns.load_dataset(<span class="text-[#ce9178]">'housing'</span>)</div>
+                                </div>
                             </div>
 
                             <!-- Block 2 -->
-                            <div class="p-2.5 bg-[#252526]/60 rounded border-l-2 border-emerald-500 space-y-1">
+                            <div class="p-2.5 bg-[#252526]/60 rounded border-l-2 border-emerald-500 space-y-1.5">
                                 <div class="text-[#6a9955] text-[11px] font-sans font-semibold mb-1"># Step 2: Plot distribution skewness &amp; boxplot outliers side-by-side</div>
-                                <div>fig, axes = plt.subplots(<span class="text-[#b5cea8]">1</span>, <span class="text-[#b5cea8]">2</span>, figsize=(<span class="text-[#b5cea8]">10</span>, <span class="text-[#b5cea8]">4</span>)) <span class="text-[#6a9955] ml-2"># Initialize 1x2 grid subplot canvas</span></div>
-                                <div>sns.histplot(df[<span class="text-[#ce9178]">'price'</span>], kde=<span class="text-[#569cd6]">True</span>, ax=axes[<span class="text-[#b5cea8]">0</span>], color=<span class="text-[#ce9178]">'#8b5cf6'</span>) <span class="text-[#6a9955] ml-2"># Histogram + KDE on subplot 0</span></div>
-                                <div>sns.boxplot(x=df[<span class="text-[#ce9178]">'price'</span>], ax=axes[<span class="text-[#b5cea8]">1</span>], color=<span class="text-[#ce9178]">'#10b981'</span>) <span class="text-[#6a9955] ml-2"># Boxplot for outliers on subplot 1</span></div>
+                                <div>
+                                    <div class="text-[#6a9955] text-[10px] leading-tight"># Initialize 1x2 grid subplot canvas</div>
+                                    <div>fig, axes = plt.subplots(<span class="text-[#b5cea8]">1</span>, <span class="text-[#b5cea8]">2</span>, figsize=(<span class="text-[#b5cea8]">10</span>, <span class="text-[#b5cea8]">4</span>))</div>
+                                </div>
+                                <div>
+                                    <div class="text-[#6a9955] text-[10px] leading-tight"># Histogram + KDE density estimation on subplot 0</div>
+                                    <div>sns.histplot(df[<span class="text-[#ce9178]">'price'</span>], kde=<span class="text-[#569cd6]">True</span>, ax=axes[<span class="text-[#b5cea8]">0</span>], color=<span class="text-[#ce9178]">'#8b5cf6'</span>)</div>
+                                </div>
+                                <div>
+                                    <div class="text-[#6a9955] text-[10px] leading-tight"># Render boxplot to identify statistical outliers on subplot 1</div>
+                                    <div>sns.boxplot(x=df[<span class="text-[#ce9178]">'price'</span>], ax=axes[<span class="text-[#b5cea8]">1</span>], color=<span class="text-[#ce9178]">'#10b981'</span>)</div>
+                                </div>
                             </div>
 
                             <!-- Block 3 -->
-                            <div class="p-2.5 bg-[#252526]/60 rounded border-l-2 border-pink-500 space-y-1">
+                            <div class="p-2.5 bg-[#252526]/60 rounded border-l-2 border-pink-500 space-y-1.5">
                                 <div class="text-[#6a9955] text-[11px] font-sans font-semibold mb-1"># Step 3: Compute pairwise correlation matrix &amp; display heatmap</div>
-                                <div>plt.figure(figsize=(<span class="text-[#b5cea8]">6</span>, <span class="text-[#b5cea8]">4</span>)) <span class="text-[#6a9955] ml-2"># Set canvas size for matrix display</span></div>
-                                <div>corr_matrix = df.select_dtypes(<span class="text-[#ce9178]'number'</span>).corr() <span class="text-[#6a9955] ml-2"># Calculate Pearson r coefficients</span></div>
-                                <div>sns.heatmap(corr_matrix, annot=<span class="text-[#569cd6]">True</span>, cmap=<span class="text-[#ce9178]'coolwarm'</span>, fmt=<span class="text-[#ce9178]'.2f'</span>) <span class="text-[#6a9955] ml-2"># Render heatmap with values</span></div>
-                                <div>plt.show() <span class="text-[#6a9955] ml-2"># Display active plots in output window</span></div>
+                                <div>
+                                    <div class="text-[#6a9955] text-[10px] leading-tight"># Set figure canvas dimensions for matrix display</div>
+                                    <div>plt.figure(figsize=(<span class="text-[#b5cea8]">6</span>, <span class="text-[#b5cea8]">4</span>))</div>
+                                </div>
+                                <div>
+                                    <div class="text-[#6a9955] text-[10px] leading-tight"># Compute Pearson correlation coefficients for numeric features</div>
+                                    <div>corr_matrix = df.select_dtypes(<span class="text-[#ce9178]'number'</span>).corr()</div>
+                                </div>
+                                <div>
+                                    <div class="text-[#6a9955] text-[10px] leading-tight"># Render annotated heatmap with diverging color scale</div>
+                                    <div>sns.heatmap(corr_matrix, annot=<span class="text-[#569cd6]">True</span>, cmap=<span class="text-[#ce9178]'coolwarm'</span>, fmt=<span class="text-[#ce9178]'.2f'</span>)</div>
+                                </div>
+                                <div>
+                                    <div class="text-[#6a9955] text-[10px] leading-tight"># Display all active plots in output frame</div>
+                                    <div>plt.show()</div>
+                                </div>
                             </div>
                         </div>
 

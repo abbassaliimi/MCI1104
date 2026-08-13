@@ -1,0 +1,1214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Week 5: MCI1104</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        darkBg: '#0b1120',
+                        cardBg: '#1e293b',
+                        accentViolet: '#8b5cf6',
+                        accentSky: '#0284c7',
+                        accentPink: '#ec4899',
+                        accentAmber: '#f59e0b',
+                        accentEmerald: '#10b981'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Smooth vertical scroll snap settings */
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background-color: #0b1120;
+            color: #f8fafc;
+        }
+
+        .scroll-container {
+            height: 100vh;
+            overflow-y: scroll;
+            scroll-snap-type: y mandatory;
+            scroll-behavior: smooth;
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        .scroll-container::-webkit-scrollbar {
+            display: none;
+        }
+
+        .page-section {
+            height: 100vh;
+            width: 100vw;
+            scroll-snap-align: start;
+            scroll-snap-stop: always;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-sizing: border-box;
+            padding: 2.5rem 5rem 2.5rem 3rem;
+        }
+
+        /* Nav dot indicators */
+        .nav-dot {
+            transition: all 0.3s ease;
+        }
+        .nav-dot.active {
+            background-color: #8b5cf6;
+            height: 1.75rem;
+            border-radius: 9999px;
+        }
+
+        /* Code Editor Simulation */
+        .code-font {
+            font-family: 'Fira Code', 'Courier New', Courier, monospace;
+        }
+
+        /* Fade-in animation */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in {
+            animation: fadeIn 0.35s ease-out forwards;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Vertical Floating Navigation Indicators -->
+    <nav class="fixed right-6 top-1/2 -translate-y-1/2 z-50 flex flex-col items-center gap-2.5 bg-slate-900/80 backdrop-blur-md p-3 rounded-full border border-slate-700 shadow-2xl">
+        <button onclick="scrollToPage(0)" title="1. Title" class="nav-dot w-3 h-3 bg-slate-600 rounded-full hover:bg-violet-400 focus:outline-none"></button>
+        <button onclick="scrollToPage(1)" title="2. Overview" class="nav-dot w-3 h-3 bg-slate-600 rounded-full hover:bg-violet-400 focus:outline-none"></button>
+        <button onclick="scrollToPage(2)" title="3. Paradigm Mismatch" class="nav-dot w-3 h-3 bg-slate-600 rounded-full hover:bg-violet-400 focus:outline-none"></button>
+        <button onclick="scrollToPage(3)" title="4. Sliding Window & Lags" class="nav-dot w-3 h-3 bg-slate-600 rounded-full hover:bg-violet-400 focus:outline-none"></button>
+        <button onclick="scrollToPage(4)" title="5. Forecasting Baselines" class="nav-dot w-3 h-3 bg-slate-600 rounded-full hover:bg-violet-400 focus:outline-none"></button>
+        <button onclick="scrollToPage(5)" title="6. Evaluation & Bridge" class="nav-dot w-3 h-3 bg-slate-600 rounded-full hover:bg-violet-400 focus:outline-none"></button>
+        <button onclick="scrollToPage(6)" title="7. Practical Lab" class="nav-dot w-3 h-3 bg-slate-600 rounded-full hover:bg-violet-400 focus:outline-none"></button>
+    </nav>
+
+    <!-- Main Vertical Scroll Container -->
+    <main id="scrollContainer" class="scroll-container">
+
+        <!-- INTRO PAGE -->
+        <section class="page-section bg-gradient-to-b from-slate-950 via-violet-950/40 to-slate-900">
+            <div class="max-w-5xl w-full text-center space-y-8">
+                <div class="flex items-center justify-center gap-3">
+                    <span class="px-4 py-1.5 bg-violet-500/10 text-violet-400 border border-violet-500/30 rounded-full text-sm font-bold tracking-wider uppercase shadow-[0_0_20px_rgba(167,139,250,0.15)]">
+                        Week 5
+                    </span>
+                </div>
+
+                <h1 class="text-5xl md:text-6xl font-bold text-white tracking-tight leading-tight">
+                    Time Series Data (Part 2)
+                </h1>
+
+                <p class="text-lg text-slate-400">
+                    by <span class="text-xl font-bold text-slate-300">Abbas Saliimi Lokman</span>
+                </p>
+
+                <!-- Overview Summary Card -->
+                <div class="max-w-2xl mx-auto pt-4 text-center">
+                    <div class="p-5 bg-slate-900/80 border border-slate-800 rounded-xl space-y-1.5 shadow-lg">
+                        <span class="text-xs font-bold text-violet-400 uppercase tracking-wider block">What you will learn</span>
+                        <p class="text-xs text-slate-200 leading-relaxed text-center">
+                            Re-framing chronological sequences into tabular supervised learning formats, engineering lag features, and establishing robust baseline forecasting models.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- BRIDGING SECTION: RECAP & THIS WEEK'S CHALLENGE -->
+        <section class="page-section bg-slate-950 border-y border-slate-800/80">
+            <!-- Subtle ambient glow -->
+            <div class="absolute inset-0 bg-gradient-to-r from-violet-950/20 via-transparent to-violet-950/20 pointer-events-none"></div>
+
+            <div class="max-w-5xl mx-auto px-4 sm:px-6 relative z-10 space-y-6">
+                <!-- Bridge Badge -->
+                <div class="flex items-center justify-center gap-3">
+                    <span class="h-px w-12 bg-gradient-to-r from-transparent to-amber-500/40"></span>
+                    <span class="text-[12px] font-bold text-amber-400 uppercase tracking-widest bg-amber-950/60 border border-amber-500/30 px-3 py-1 rounded-full">
+                        Module Bridge & Transition
+                    </span>
+                    <span class="h-px w-12 bg-gradient-to-l from-transparent to-amber-500/40"></span>
+                </div>
+
+                <!-- Two-Column Progression Layout -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- Left: Where You Came From -->
+                    <div class="p-5 bg-slate-900/70 border border-slate-800 rounded-xl space-y-2 backdrop-blur-sm relative overflow-hidden group">
+                        <div class="flex items-center gap-2">
+                            <div class="p-1.5 rounded-lg bg-slate-800/80 text-slate-400">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                            </div>
+                            <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Last Week: Foundation</span>
+                        </div>
+                        <p class="text-xs text-slate-300 leading-relaxed">
+                            You learned how to <strong class="text-slate-100">decompose and stabilize</strong> time series data to understand its underlying patterns and eliminate stationarity issues.
+                        </p>
+                    </div>
+
+                    <!-- Right: Where You Are Going -->
+                    <div class="p-5 bg-gradient-to-br from-violet-950/40 to-slate-900 border border-violet-500/30 rounded-xl space-y-2 backdrop-blur-sm shadow-[0_0_20px_rgba(167,139,250,0.05)]">
+                        <div class="flex items-center gap-2">
+                            <div class="p-1.5 rounded-lg bg-violet-500/20 text-violet-300">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                                </svg>
+                            </div>
+                            <span class="text-xs font-bold text-violet-400 uppercase tracking-wider">This Week: Machine Learning Integration</span>
+                        </div>
+                        <p class="text-xs text-slate-300 leading-relaxed">
+                            How do we feed chronological sequences into models like <strong class="text-violet-200">Random Forests</strong> or <strong class="text-violet-200">Neural Networks</strong>? You will master data engineering to reframe time into a supervised learning problem.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PAGE 1: MACHINE LEARNING PARADIGM MISMATCH -->
+        <section class="page-section bg-darkBg">
+            <div class="max-w-6xl w-full grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                <!-- Left Column: Core Concepts -->
+                <div class="lg:col-span-5 space-y-5">
+                    <div class="flex items-center gap-3">
+                        <span class="px-3 py-1 bg-violet-500/10 text-violet-400 border border-violet-500/30 rounded-full text-xs font-semibold tracking-wider uppercase">Topic 01</span>
+                        <span class="flex items-center gap-1 text-slate-400 text-xs font-medium">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                            Estimated Time: 30 Mins
+                        </span>
+                    </div>
+
+                    <h2 class="text-3xl font-extrabold text-white tracking-tight">Machine Learning Paradigm Mismatch</h2>
+
+                    <div class="p-4 bg-slate-900 border-l-4 border-violet-500 rounded-r-lg shadow-md">
+                        <p class="text-slate-300 text-xs leading-relaxed">
+                            <strong class="text-violet-300">Core Concept:</strong> Standard supervised learning requires an input feature matrix ($X$) and an output target vector ($y$). However, a raw time series is simply a 1-dimensional array of values recorded over time (e.g., $[10, 15, 12, 18, 20]$).
+                        </p>
+                    </div>
+
+                    <!-- Problem vs Solution Breakdown -->
+                    <div class="p-3.5 bg-slate-950 border border-slate-800 rounded-xl space-y-3 text-xs">
+                        <div class="p-2.5 bg-slate-900/80 rounded-lg border border-slate-800 space-y-1">
+                            <span class="text-rose-400 font-bold block uppercase text-[10px]">The Problem</span>
+                            <p class="text-slate-300 text-[11px] leading-relaxed">If your boss asks you to predict tomorrow's sales, and your data is just a single column of past sales, you don't have any independent "features" for a standard algorithm to learn from.</p>
+                        </div>
+                        <div class="p-2.5 bg-slate-900/80 rounded-lg border border-slate-800 space-y-1">
+                            <span class="text-emerald-400 font-bold block uppercase text-[10px]">The Solution</span>
+                            <p class="text-slate-300 text-[11px] leading-relaxed">Artificially create features out of the past. The core assumption is that history contains clues to the future (the data itself must become its own features).</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column: Interactive Structural Comparison Visualizer -->
+                <div class="lg:col-span-7 bg-slate-900 p-6 rounded-2xl border border-slate-800 shadow-xl space-y-4">
+                    <div class="flex justify-between items-center">
+                        <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider">Data Structure Visualizer</h3>
+                        <span id="paradigm-tag" class="text-[10px] text-violet-300 bg-violet-950 border border-violet-500/30 px-2.5 py-1 rounded font-semibold">Standard Tabular Supervised Format</span>
+                    </div>
+
+                    <!-- Interactive SVG Canvas -->
+                    <div id="paradigm-canvas" class="w-full h-56 bg-slate-950 rounded-xl border border-slate-800 flex items-center justify-center p-3 overflow-hidden relative">
+                        <!-- Rendered by JS -->
+                    </div>
+
+                    <!-- Selector Buttons -->
+                    <div class="grid grid-cols-2 gap-2 text-xs">
+                        <button onclick="renderParadigm('tabular')" id="p-btn-tabular" class="p-btn p-2.5 bg-violet-900/40 border border-violet-500 rounded-lg text-violet-200 font-bold text-center transition-all cursor-pointer">Standard Supervised ML Format</button>
+                        <button onclick="renderParadigm('timeseries')" id="p-btn-timeseries" class="p-btn p-2.5 bg-slate-800 border border-slate-700 rounded-lg text-slate-300 hover:text-white text-center transition-all cursor-pointer">Raw 1D Time Series Sequence</button>
+                    </div>
+
+                    <p id="paradigm-desc" class="text-xs text-slate-400 p-3 bg-slate-950 rounded-lg border border-slate-800 min-h-[52px] leading-relaxed">
+                        Loading paradigm comparison...
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- PAGE 2: SLIDING WINDOW STRATEGY & LAGS -->
+        <section class="page-section bg-slate-900">
+            <div class="max-w-6xl w-full grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                <!-- Left Column: Core Concept -->
+                <div class="lg:col-span-5 space-y-4">
+                    <div class="flex items-center gap-3">
+                        <span class="px-3 py-1 bg-sky-500/10 text-sky-400 border border-sky-500/30 rounded-full text-xs font-semibold tracking-wider uppercase">Topic 02</span>
+                        <span class="flex items-center gap-1 text-slate-400 text-xs font-medium">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                            Estimated Time: 30 Mins
+                        </span>
+                    </div>
+
+                    <h2 class="text-3xl font-extrabold text-white tracking-tight">Converting Time Series to Discrete Sequence Data</h2>
+
+                    <div class="p-3.5 bg-slate-950 border-l-4 border-sky-500 rounded-r-lg shadow-md">
+                        <p class="text-slate-300 text-xs leading-relaxed">
+                            <strong class="text-sky-300">Core Concept:</strong> To satisfy machine learning algorithms, we use the <strong>Sliding Window Strategy</strong> (lag feature engineering) to transform sequential data into discrete, tabular matrix rows.
+                        </p>
+                    </div>
+
+                    <!-- Key Definitions Grid -->
+                    <div class="grid grid-cols-2 gap-2 text-xs">
+                        <div class="p-2.5 bg-slate-950 rounded-xl border border-slate-800 space-y-1">
+                            <strong class="text-sky-400 block text-[11px]">Creating "Lags"</strong>
+                            <p class="text-slate-400 text-[10px]">Observation from a previous step. Today is $t$, yesterday is $t-1$, day before is $t-2$.</p>
+                        </div>
+                        <div class="p-2.5 bg-slate-950 rounded-xl border border-slate-800 space-y-1">
+                            <strong class="text-sky-400 block text-[11px]">The Window Size</strong>
+                            <p class="text-slate-400 text-[10px]">Past observations used as input features ($X$) to predict current target ($y$).</p>
+                        </div>
+                    </div>
+
+                    <div class="p-3 bg-amber-500/10 border border-amber-500/30 rounded-xl text-xs text-amber-200 leading-relaxed">
+                        💡 <strong>Choosing Window Size:</strong> Look-back window requires experimentation. Daily temperature may need 3–7 lags, while 365 lags add unnecessary noise.
+                    </div>
+                </div>
+
+                <!-- Right Column: Interactive Sliding Window Builder -->
+                <div class="lg:col-span-7 bg-slate-950 p-6 rounded-2xl border border-slate-800 shadow-xl space-y-4">
+                    <div class="flex justify-between items-center">
+                        <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider">Sliding Window Feature Matrix Construction</h3>
+                    </div>
+
+                    <!-- Interactive Window Visualizer Canvas -->
+                    <div id="window-canvas" class="w-full h-[250px] bg-slate-900 rounded-xl border border-slate-800 flex items-center justify-center p-3 relative overflow-hidden">
+                        <!-- Rendered by JS -->
+                    </div>
+
+                    <!-- Controls for Window Size -->
+                    <div class="grid grid-cols-3 gap-2 text-xs">
+                        <button onclick="renderWindow(1)" id="win-btn-1" class="win-btn p-2 bg-slate-800 border border-slate-700 rounded-lg text-slate-300 hover:text-white text-center transition-all cursor-pointer">1 Lag Feature: ($t-1$)</button>
+                        <button onclick="renderWindow(2)" id="win-btn-2" class="win-btn p-2 bg-slate-800 border border-slate-700 rounded-lg text-slate-300 hover:text-white text-center transition-all cursor-pointer">2 Lag Features: ($t-2, t-1$)</button>
+                        <button onclick="renderWindow(3)" id="win-btn-3" class="win-btn p-2 bg-sky-900/40 border border-sky-500 rounded-lg text-sky-200 font-bold text-center transition-all cursor-pointer">3 Lag Features: ($t-3..t-1$)</button>
+                    </div>
+
+                    <p id="window-desc" class="text-xs text-slate-400 p-3 bg-slate-900 rounded-lg border border-slate-800 leading-relaxed min-h-[52px]">
+                        Loading sliding window strategy...
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- PAGE 3: FORECASTING BASELINES -->
+        <section class="page-section bg-darkBg">
+            <div class="max-w-6xl w-full grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                <!-- Left Column: Core Concept -->
+                <div class="lg:col-span-5 space-y-5">
+                    <div class="flex items-center gap-3">
+                        <span class="px-3 py-1 bg-amber-500/10 text-amber-400 border border-amber-500/30 rounded-full text-xs font-semibold tracking-wider uppercase">Topic 03</span>
+                        <span class="flex items-center gap-1 text-slate-400 text-xs font-medium">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                            Estimated Time: 30 Mins
+                        </span>
+                    </div>
+
+                    <h2 class="text-3xl font-extrabold text-white tracking-tight">Time Series Forecasting and Baselines</h2>
+
+                    <div class="p-4 bg-slate-900 border-l-4 border-amber-500 rounded-r-lg shadow-md">
+                        <p class="text-slate-300 text-xs leading-relaxed">
+                            <strong class="text-amber-300">Core Concept:</strong> Forecasting extrapolates the future from the past. Before building complex Neural Networks, you must establish a simple baseline model. If an advanced model cannot beat a basic baseline, it is useless!
+                        </p>
+                    </div>
+
+                    <!-- Baseline Models Quick Summary -->
+                    <div class="p-3 bg-slate-950 border border-slate-800 rounded-xl space-y-2 text-xs">
+                        <div class="flex items-center gap-2 border-b border-slate-800 pb-1.5">
+                            <span class="w-2 h-2 rounded-full bg-amber-400"></span>
+                            <strong class="text-amber-300">Three Fundamental Baseline Strategies:</strong>
+                        </div>
+                        <ul class="text-slate-400 text-[11px] space-y-2 pl-2">
+                            <li>1. <strong>Naïve Forecast:</strong> Predicts tomorrow will equal today ($\hat{y}_t = y_{t-1}$). Notoriously hard to beat in stock markets.</li>
+                            <li>2. <strong>Seasonal Naïve:</strong> Predicts tomorrow will equal the exact same season in the last cycle (e.g. this Saturday = last Saturday).</li>
+                            <li>3. <strong>Moving Average:</strong> Predicts future by taking the simple average of the last $N$ rolling periods.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Right Column: Interactive Baseline Visualizer -->
+                <div class="lg:col-span-7 bg-slate-900 p-6 rounded-2xl border border-slate-700 shadow-xl space-y-4">
+                    <div class="flex justify-between items-center">
+                        <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider">Baseline Model Simulator</h3>
+                        <span id="base-type-label" class="text-[10px] text-amber-300 bg-amber-950 border border-amber-500/30 px-2.5 py-1 rounded font-semibold">Naïve Forecast</span>
+                    </div>
+
+                    <!-- SVG Canvas -->
+                    <div id="baseline-canvas" class="w-full h-56 bg-slate-950 rounded-xl border border-slate-800 flex items-center justify-center p-3 relative overflow-hidden">
+                        <!-- Rendered by JS -->
+                    </div>
+
+                    <!-- Baseline Buttons -->
+                    <div class="grid grid-cols-3 gap-2 text-xs">
+                        <button onclick="renderBaseline('naive')" id="base-btn-naive" class="base-nav-btn p-2.5 bg-amber-900/40 border border-amber-500 rounded-lg text-amber-200 font-bold text-center transition-all cursor-pointer">1. Naïve Baseline</button>
+                        <button onclick="renderBaseline('seasonal')" id="base-btn-seasonal" class="base-nav-btn p-2.5 bg-slate-800 border border-slate-700 rounded-lg text-slate-300 hover:text-white text-center transition-all cursor-pointer">2. Seasonal Naïve</button>
+                        <button onclick="renderBaseline('ma')" id="base-btn-ma" class="base-nav-btn p-2.5 bg-slate-800 border border-slate-700 rounded-lg text-slate-300 hover:text-white text-center transition-all cursor-pointer">3. Moving Average (N=3)</button>
+                    </div>
+
+                    <p id="baseline-desc" class="text-xs text-slate-400 p-3 bg-slate-950 rounded-lg border border-slate-800 leading-relaxed min-h-[52px]">
+                        Loading baseline forecast comparison...
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- PAGE 4: EVALUATION METRICS & THE BRIDGE -->
+        <section class="page-section bg-slate-900">
+            <div class="max-w-6xl w-full grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                <!-- Left Column: Core Concept & Mathematical Formulas -->
+                <div class="lg:col-span-5 space-y-4">
+                    <div class="flex items-center gap-3">
+                        <span class="px-3 py-1 bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 rounded-full text-xs font-semibold tracking-wider uppercase">Topic 04</span>
+                        <span class="flex items-center gap-1 text-slate-400 text-xs font-medium">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                            Estimated Time: 30 Mins
+                        </span>
+                    </div>
+
+                    <h2 class="text-3xl font-extrabold text-white tracking-tight">Evaluating Forecast Accuracy</h2>
+
+                    <div class="p-3.5 bg-slate-950 border-l-4 border-emerald-500 rounded-r-lg shadow-md">
+                        <p class="text-slate-300 text-xs leading-relaxed">
+                            <strong class="text-emerald-300">Core Concept:</strong> To know if your machine learning model beat the baseline, you need mathematical scoring metrics. You cannot just "eyeball" a line chart.
+                        </p>
+                    </div>
+
+                    <!-- Evaluation Metrics Formula Cards -->
+                    <div class="grid grid-cols-2 gap-2 text-xs">
+                        <div class="p-2.5 bg-slate-950 rounded-xl border border-slate-800 space-y-1">
+                            <strong class="text-emerald-400 font-semibold block text-[11px]">Mean Absolute Error (MAE)</strong>
+                            <p class="text-slate-300 font-mono text-[10px]">$$\text{MAE} = \frac{1}{n}\sum_{i=1}^{n}|y_i - \hat{y}_i|$$</p>
+                            <p class="text-slate-400 text-[10px]">Interpretable for business ("Off by average of 5 units").</p>
+                        </div>
+                        <div class="p-2.5 bg-slate-950 rounded-xl border border-slate-800 space-y-1">
+                            <strong class="text-emerald-400 font-semibold block text-[11px]">Root Mean Squared Error (RMSE)</strong>
+                            <p class="text-slate-300 font-mono text-[10px]">$$\text{RMSE} = \sqrt{\frac{1}{n}\sum_{i=1}^{n}(y_i - \hat{y}_i)^2}$$</p>
+                            <p class="text-slate-400 text-[10px]">Squares errors to heavily penalize large mistakes.</p>
+                        </div>
+                    </div>
+
+                    <!-- Bridge Section Callout -->
+                    <div class="p-3 bg-violet-950/40 border border-violet-500/30 rounded-xl space-y-1 text-xs">
+                        <strong class="text-violet-300 font-bold block text-[11px]">The Bridge to NEXT WEEK: From Prediction to Prescription</strong>
+                        <p class="text-slate-300 text-[11px] leading-relaxed">
+                            By the end of this week, models confidently answer: <em>"What will happen tomorrow?"</em> Next week, we cross into <strong>Prescriptive Analytics</strong> (calculating exact actions to optimize that predicted future).
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Right Column: Interactive MAE vs. RMSE Metric Evaluator -->
+                <div class="lg:col-span-7 bg-slate-950 p-6 rounded-2xl border border-slate-800 shadow-xl space-y-4">
+                    <div class="flex justify-between items-center">
+                        <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider">Accuracy Metric Evaluator</h3>
+                        <span id="metric-tag" class="text-[10px] text-emerald-300 bg-emerald-950 border border-emerald-500/30 px-2.5 py-1 rounded font-semibold">Profile A: Consistent Small Errors</span>
+                    </div>
+
+                    <!-- Metric SVG Canvas -->
+                    <div id="metric-canvas" class="w-full h-[280px] bg-slate-900 rounded-xl border border-slate-800 flex items-center justify-center p-3 relative overflow-hidden">
+                        <!-- Rendered by JS -->
+                    </div>
+
+                    <!-- Profile Selector Buttons -->
+                    <div class="grid grid-cols-2 gap-2 text-xs">
+                        <button onclick="renderMetric('steady')" id="metric-btn-steady" class="metric-nav-btn p-2.5 bg-emerald-900/40 border border-emerald-500 rounded-lg text-emerald-200 font-bold text-center transition-all cursor-pointer">Profile A: Consistent Small Errors</button>
+                        <button onclick="renderMetric('outlier')" id="metric-btn-outlier" class="metric-nav-btn p-2.5 bg-slate-800 border border-slate-700 rounded-lg text-slate-300 hover:text-white text-center transition-all cursor-pointer">Profile B: Single Outlier Error</button>
+                    </div>
+
+                    <p id="metric-desc" class="text-xs text-slate-400 p-3 bg-slate-900 rounded-lg border border-slate-800 leading-relaxed min-h-[52px]">
+                        Loading metric evaluation comparison...
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- PAGE 5: PRACTICAL LAB -->
+        <section class="page-section bg-darkBg">
+            <div class="max-w-5xl w-full bg-[#1e1e1e] p-1 rounded-2xl border border-slate-700 shadow-2xl overflow-hidden flex flex-col h-[85vh]">
+                
+                <!-- Mock IDE Header -->
+                <div class="w-full bg-[#2d2d2d] py-2 px-4 flex items-center justify-between border-b border-[#3c3c3c]">
+                    <div class="flex gap-2">
+                        <div class="w-3 h-3 rounded-full bg-rose-500"></div>
+                        <div class="w-3 h-3 rounded-full bg-amber-500"></div>
+                        <div class="w-3 h-3 rounded-full bg-emerald-500"></div>
+                    </div>
+                    <div class="text-[11px] text-slate-400 font-mono">Week5_Lab_FeatureEngineering.ipynb</div>
+                    <div class="text-[10px] px-2 py-1 bg-violet-600 text-white rounded font-sans font-bold">Jupyter / Python 3</div>
+                </div>
+
+                <!-- IDE Content Area -->
+                <div class="flex-1 flex flex-col md:flex-row overflow-hidden bg-[#1e1e1e]">
+                    
+                    <!-- Instructions Sidebar -->
+                    <div class="w-full md:w-1/3 bg-[#252526] border-r border-[#3c3c3c] p-4 overflow-y-auto space-y-4">
+                        <div class="flex items-center gap-2">
+                            <span class="px-2 py-0.5 bg-violet-500/20 text-violet-400 rounded text-[10px] font-bold uppercase tracking-wider">4 Hours</span>
+                            <h2 class="text-sm font-bold text-white">Practical Lab Walkthrough</h2>
+                        </div>
+                        
+                        <p class="text-xs text-slate-300 leading-relaxed">
+                            Act as a data engineer preparing chronological data for machine learning using <strong class="text-violet-400">Pandas</strong> and <strong class="text-violet-400">NumPy</strong>:
+                        </p>
+                        
+                        <!-- Lab Steps Explanations -->
+                        <div class="space-y-3 text-xs">
+                            <!-- Step 1 -->
+                            <div class="p-3 bg-[#1e1e1e] rounded-lg border border-slate-800 space-y-1">
+                                <div class="flex items-center gap-2">
+                                    <span class="w-5 h-5 rounded-full bg-violet-500/20 text-violet-400 text-[10px] font-bold flex items-center justify-center shrink-0">1</span>
+                                    <strong class="text-white text-xs">Lag Feature Creation</strong>
+                                </div>
+                                <p class="text-slate-400 text-[11px] leading-normal">
+                                    Use Pandas <code class="text-violet-300 font-mono">.shift()</code> function to construct columns for $t-1$, $t-2$, and $t-3$. Watch the matrix take shape!
+                                </p>
+                            </div>
+
+                            <!-- Step 2 -->
+                            <div class="p-3 bg-[#1e1e1e] rounded-lg border border-slate-800 space-y-1">
+                                <div class="flex items-center gap-2">
+                                    <span class="w-5 h-5 rounded-full bg-emerald-500/20 text-emerald-400 text-[10px] font-bold flex items-center justify-center shrink-0">2</span>
+                                    <strong class="text-white text-xs">Data Cleanup (NaN Removal)</strong>
+                                </div>
+                                <p class="text-slate-400 text-[11px] leading-normal">
+                                    Shifting creates unfillable <code class="text-violet-300 font-mono">NaN</code> gaps at the start of dataset. Safely drop them with <code class="text-violet-300 font-mono">.dropna()</code>.
+                                </p>
+                            </div>
+
+                            <!-- Step 3 -->
+                            <div class="p-3 bg-[#1e1e1e] rounded-lg border border-slate-800 space-y-1">
+                                <div class="flex items-center gap-2">
+                                    <span class="w-5 h-5 rounded-full bg-amber-500/20 text-amber-400 text-[10px] font-bold flex items-center justify-center shrink-0">3</span>
+                                    <strong class="text-white text-xs">Naïve Baseline MAE Evaluation</strong>
+                                </div>
+                                <p class="text-slate-400 text-[11px] leading-normal">
+                                    Calculate the baseline Mean Absolute Error (MAE) score that future ML models must beat.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Code Editor & Output Console -->
+                    <div class="w-full md:w-2/3 flex flex-col h-full bg-[#1e1e1e]">
+                        
+                        <!-- Code Editor Container -->
+                        <div class="flex-1 p-4 overflow-y-auto code-font text-xs leading-relaxed space-y-3">
+                            <!-- Block 1 -->
+                            <div class="p-2.5 bg-[#252526]/60 rounded border-l-2 border-violet-500 space-y-1.5">
+                                <div class="text-[#6a9955] text-[11px] font-sans font-semibold mb-1"># Step 1: Create Lag Features using Pandas .shift()</div>
+                                <div><span class="text-[#c586c0]">import</span> pandas <span class="text-[#c586c0]">as</span> pd</div>
+                                <div><span class="text-[#c586c0]">import</span> numpy <span class="text-[#c586c0]">as</span> np</div>
+                                <div class="pt-1">df = pd.DataFrame({<span class="text-[#ce9178]'Target_t'</span>: [<span class="text-[#b5cea8]">10</span>, <span class="text-[#b5cea8]">15</span>, <span class="text-[#b5cea8]">12</span>, <span class="text-[#b5cea8]">18</span>, <span class="text-[#b5cea8]">20</span>, <span class="text-[#b5cea8]">25</span>, <span class="text-[#b5cea8]">22</span>]})</div>
+                                <div>df[<span class="text-[#ce9178]'Lag_t-1'</span>] = df[<span class="text-[#ce9178]'Target_t'</span>].shift(<span class="text-[#b5cea8]">1</span>)</div>
+                                <div>df[<span class="text-[#ce9178]'Lag_t-2'</span>] = df[<span class="text-[#ce9178]'Target_t'</span>].shift(<span class="text-[#b5cea8]">2</span>)</div>
+                                <div>df[<span class="text-[#ce9178]'Lag_t-3'</span>] = df[<span class="text-[#ce9178]'Target_t'</span>].shift(<span class="text-[#b5cea8]">3</span>)</div>
+                            </div>
+
+                            <!-- Block 2 -->
+                            <div class="p-2.5 bg-[#252526]/60 rounded border-l-2 border-emerald-500 space-y-1.5">
+                                <div class="text-[#6a9955] text-[11px] font-sans font-semibold mb-1"># Step 2: Clean unfillable NaN gaps at dataset start</div>
+                                <div>df_clean = df.dropna().reset_index(drop=<span class="text-[#569cd6]">True</span>)</div>
+                            </div>
+
+                            <!-- Block 3 -->
+                            <div class="p-2.5 bg-[#252526]/60 rounded border-l-2 border-amber-500 space-y-1.5">
+                                <div class="text-[#6a9955] text-[11px] font-sans font-semibold mb-1"># Step 3: Compute Naïve Baseline MAE (Prediction = Lag t-1)</div>
+                                <div>mae_baseline = np.mean(np.abs(df_clean[<span class="text-[#ce9178]'Target_t'</span>] - df_clean[<span class="text-[#ce9178]'Lag_t-1'</span>]))</div>
+                                <div>print(<span class="text-[#ce9178]">f"Naïve Baseline MAE: {mae_baseline:.2f} units"</span>)</div>
+                            </div>
+                        </div>
+
+                        <!-- Run Control Bar -->
+                        <div class="bg-[#2d2d2d] p-2.5 px-4 border-t border-b border-[#3c3c3c] flex justify-between items-center">
+                            <span class="text-[10px] text-slate-400 font-mono">In [1]: TimeSeries_LagEngineering.ipynb</span>
+                            <button onclick="runLabCode()" class="px-4 py-1.5 bg-violet-900 hover:bg-violet-600 text-white text-xs font-semibold rounded flex items-center gap-2 transition-colors focus:outline-none cursor-pointer shadow">
+                                <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg> Run Code Cell
+                            </button>
+                        </div>
+
+                        <!-- Console Output Terminal -->
+                        <div class="h-1/3 bg-[#1e1e1e] p-3 overflow-y-auto code-font text-[11px] text-slate-300 relative">
+                            <div id="terminal-placeholder" class="text-[#6a9955] italic p-2"># Console output... Click "Run Code Cell" above to execute Pandas lag matrix transformation.</div>
+                            
+                            <div id="terminal-output" class="hidden space-y-2 animate-fade-in">
+                                <div class="flex items-center justify-between border-b border-slate-800 pb-1.5">
+                                    <div class="flex items-center gap-2">
+                                        <span class="text-xs font-bold text-white font-sans">Execution Output:</span>
+                                        <button onclick="switchLabTab('matrix')" id="lab-tab-matrix" class="px-2.5 py-1 bg-violet-900/60 text-violet-200 rounded text-[10px] font-bold border border-violet-500/50 cursor-pointer">1. Lag Feature Table</button>
+                                        <button onclick="switchLabTab('eval')" id="lab-tab-eval" class="px-2 py-1 bg-slate-800 text-slate-400 hover:text-white rounded text-[10px] cursor-pointer">2. Baseline MAE Score</button>
+                                    </div>
+                                </div>
+
+                                <!-- TAB 1: Lag Matrix Table -->
+                                <div id="lab-fig-matrix" class="space-y-1.5">
+                                    <div class="p-2 bg-slate-950 rounded border border-slate-800 text-[10px] text-slate-300 font-mono">
+                                        <table class="w-full text-center border-collapse">
+                                            <thead>
+                                                <tr class="text-violet-400 border-b border-slate-800">
+                                                    <th class="py-1">Index</th>
+                                                    <th class="py-1">Target ($y_t$)</th>
+                                                    <th class="py-1">Lag $t-1$ ($X_1$)</th>
+                                                    <th class="py-1">Lag $t-2$ ($X_2$)</th>
+                                                    <th class="py-1">Lag $t-3$ ($X_3$)</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr class="border-b border-slate-900"><td class="text-slate-500">0</td><td class="text-emerald-400">18</td><td>12</td><td>15</td><td>10</td></tr>
+                                                <tr class="border-b border-slate-900"><td class="text-slate-500">1</td><td class="text-emerald-400">20</td><td>18</td><td>12</td><td>15</td></tr>
+                                                <tr class="border-b border-slate-900"><td class="text-slate-500">2</td><td class="text-emerald-400">25</td><td>20</td><td>18</td><td>12</td></tr>
+                                                <tr><td class="text-slate-500">3</td><td class="text-emerald-400">22</td><td>25</td><td>20</td><td>18</td></tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+                                <!-- TAB 2: Evaluation Metrics Output -->
+                                <div id="lab-fig-eval" class="hidden space-y-2">
+                                    <div class="p-2.5 bg-slate-950 rounded border border-slate-800 font-mono text-[11px] space-y-1">
+                                        <div class="text-amber-400 font-bold">&gt;&gt;&gt; Naïve Baseline MAE Calculated: 3.75 Units</div>
+                                        <div class="text-slate-400 text-[10px]">Benchmark Established! Any Random Forest or LSTM model must score &lt; 3.75 MAE to add value.</div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- MathJax CDN for rendering LaTeX math in browser -->
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']]
+            }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <!-- Dynamic Visualizers & Application Logic -->
+    <script>
+        // Scroll Navigation Handling
+        const container = document.getElementById('scrollContainer');
+        const dots = document.querySelectorAll('.nav-dot');
+        const totalPages = 7;
+
+        function getCurrentPageIndex() {
+            return Math.round(container.scrollTop / window.innerHeight);
+        }
+
+        function scrollToPage(index) {
+            if (index < 0) index = 0;
+            if (index >= totalPages) index = totalPages - 1;
+            container.scrollTo({
+                top: index * window.innerHeight,
+                behavior: 'smooth'
+            });
+            updateDots(index);
+        }
+
+        function updateDots(activeIndex) {
+            dots.forEach((dot, idx) => {
+                if (idx === activeIndex) {
+                    dot.classList.add('active');
+                } else {
+                    dot.classList.remove('active');
+                }
+            });
+        }
+
+        container.addEventListener('scroll', () => {
+            updateDots(getCurrentPageIndex());
+        });
+
+        window.addEventListener('keydown', (e) => {
+            if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+            if (e.key === 'ArrowDown' || e.key === 'PageDown') {
+                e.preventDefault();
+                scrollToPage(getCurrentPageIndex() + 1);
+            } else if (e.key === 'ArrowUp' || e.key === 'PageUp') {
+                e.preventDefault();
+                scrollToPage(getCurrentPageIndex() - 1);
+            }
+        });
+
+        updateDots(0);
+
+        // PAGE 1: Paradigm Mismatch Visualizer
+        const paradigmData = {
+            tabular: {
+                title: "Standard Supervised Machine Learning Format",
+                desc: "Standard ML algorithms (e.g. Random Forest, XGBoost) require structured tabular data with independent feature columns (X1, X2, X3) and an explicit target output (y).",
+                svg: `<svg class="w-full h-full" viewBox="0 0 460 200">
+                    <g transform="translate(30, 20)">
+                        <!-- Feature Matrix X Header -->
+                        <rect x="0" y="0" width="240" height="28" fill="#8b5cf6" fill-opacity="0.2" stroke="#8b5cf6" stroke-width="1.5" rx="4"/>
+                        <text x="120" y="18" fill="#c4b5fd" font-size="11" font-weight="bold" text-anchor="middle">Input Feature Matrix (X)</text>
+
+                        <rect x="0" y="35" width="75" height="110" fill="#1e293b" stroke="#334155" rx="3"/>
+                        <text x="37" y="52" fill="#94a3b8" font-size="9" font-weight="bold" text-anchor="middle">X1 (Feature 1)</text>
+                        <text x="37" y="80" fill="#cbd5e1" font-size="10" text-anchor="middle">24.5</text>
+                        <text x="37" y="105" fill="#cbd5e1" font-size="10" text-anchor="middle">18.2</text>
+                        <text x="37" y="130" fill="#cbd5e1" font-size="10" text-anchor="middle">31.0</text>
+
+                        <rect x="82" y="35" width="75" height="110" fill="#1e293b" stroke="#334155" rx="3"/>
+                        <text x="120" y="52" fill="#94a3b8" font-size="9" font-weight="bold" text-anchor="middle">X2 (Feature 2)</text>
+                        <text x="120" y="80" fill="#cbd5e1" font-size="10" text-anchor="middle">102</text>
+                        <text x="120" y="105" fill="#cbd5e1" font-size="10" text-anchor="middle">95</text>
+                        <text x="120" y="130" fill="#cbd5e1" font-size="10" text-anchor="middle">118</text>
+
+                        <rect x="165" y="35" width="75" height="110" fill="#1e293b" stroke="#334155" rx="3"/>
+                        <text x="202" y="52" fill="#94a3b8" font-size="9" font-weight="bold" text-anchor="middle">X3 (Feature 3)</text>
+                        <text x="202" y="80" fill="#cbd5e1" font-size="10" text-anchor="middle">0.85</text>
+                        <text x="202" y="105" fill="#cbd5e1" font-size="10" text-anchor="middle">0.42</text>
+                        <text x="202" y="130" fill="#cbd5e1" font-size="10" text-anchor="middle">0.91</text>
+
+                        <!-- Target y Header -->
+                        <rect x="270" y="0" width="110" height="28" fill="#10b981" fill-opacity="0.2" stroke="#10b981" stroke-width="1.5" rx="4"/>
+                        <text x="325" y="18" fill="#a7f3d0" font-size="11" font-weight="bold" text-anchor="middle">Target Vector (y)</text>
+
+                        <rect x="270" y="35" width="110" height="110" fill="#1e293b" stroke="#10b981" stroke-width="1.5" rx="3"/>
+                        <text x="325" y="52" fill="#34d399" font-size="9" font-weight="bold" text-anchor="middle">Target (y)</text>
+                        <text x="325" y="80" fill="#fff" font-size="10" font-weight="bold" text-anchor="middle">$150</text>
+                        <text x="325" y="105" fill="#fff" font-size="10" font-weight="bold" text-anchor="middle">$120</text>
+                        <text x="325" y="130" fill="#fff" font-size="10" font-weight="bold" text-anchor="middle">$210</text>
+                    </g>
+                </svg>`
+        },
+        timeseries: {
+            title: "Raw 1D Sequential Time Series",
+            desc: "A raw time series has NO independent feature columns. It is simply a single continuous 1D array recorded sequentially over time. Standard ML cannot run directly on this.",
+            svg: `<svg class="w-full h-full" viewBox="0 0 460 200">
+                <g transform="translate(30, 30)">
+                    <rect x="0" y="0" width="400" height="30" fill="#f43f5e" fill-opacity="0.15" stroke="#f43f5e" stroke-width="1.5" rx="4"/>
+                    <text x="200" y="20" fill="#f87171" font-size="11" font-weight="bold" text-anchor="middle">Raw 1D Chronological Array (No Independent Features!)</text>
+
+                    <line x1="20" y1="90" x2="380" y2="90" stroke="#475569" stroke-width="2"/>
+
+                    <!-- Sequence Points -->
+                    <circle cx="40" cy="90" r="8" fill="#8b5cf6"/><text x="40" y="115" fill="#c4b5fd" font-size="10" text-anchor="middle">t=1 (10)</text>
+                    <circle cx="110" cy="90" r="8" fill="#8b5cf6"/><text x="110" y="115" fill="#c4b5fd" font-size="10" text-anchor="middle">t=2 (15)</text>
+                    <circle cx="180" cy="90" r="8" fill="#8b5cf6"/><text x="180" y="115" fill="#c4b5fd" font-size="10" text-anchor="middle">t=3 (12)</text>
+                    <circle cx="250" cy="90" r="8" fill="#8b5cf6"/><text x="250" y="115" fill="#c4b5fd" font-size="10" text-anchor="middle">t=4 (18)</text>
+                    <circle cx="360" cy="90" r="8" fill="#ec4899"/><text x="360" y="115" fill="#f472b6" font-size="10" font-weight="bold" text-anchor="middle">t=n (x)</text>
+
+                    <!-- Arrow -->
+                    <path d="M 270 90 L 340 90" stroke="#ec4899" stroke-width="2" marker-end="url(#arrow)"/>
+                </g>
+            </svg>`
+        }
+    };
+
+    function renderParadigm(key) {
+        const data = paradigmData[key];
+        document.getElementById('paradigm-canvas').innerHTML = data.svg;
+        document.getElementById('paradigm-tag').innerText = data.title;
+        document.getElementById('paradigm-desc').innerText = data.desc;
+
+        document.querySelectorAll('.p-btn').forEach(b => {
+            b.className = "p-btn p-2.5 bg-slate-800 border border-slate-700 rounded-lg text-slate-300 hover:text-white text-center transition-all cursor-pointer";
+        });
+        document.getElementById(`p-btn-${key}`).className = "p-btn p-2.5 bg-violet-900/40 border border-violet-500 rounded-lg text-violet-200 font-bold text-center transition-all cursor-pointer";
+    }
+
+    // PAGE 2: Sliding Window Strategy Visualizer
+    const windowConfigs = {
+        1: {
+            desc: "Predict target y (time t) using only yesterday's observation (t-1) as the input feature.",
+            svg: `<svg class="w-full h-full" viewBox="0 0 500 240">
+                <g transform="translate(10, 10)">
+                    <!-- 1D RAW TIME SERIES HEADER & SEQUENCE -->
+                    <text x="240" y="10" fill="#94a3b8" font-size="9" font-weight="bold" tracking="1" text-anchor="middle" letter-spacing="1">RAW 1D TIME SERIES SEQUENCE</text>
+                    
+                    <!-- Raw Data Cells -->
+                    <!-- Day 1 (Lag t-1) -->
+                    <rect x="75" y="22" width="62" height="32" fill="#0284c7" fill-opacity="0.25" stroke="#38bdf8" stroke-width="2" rx="4"/>
+                    <text x="106" y="36" fill="#38bdf8" font-size="9" font-weight="bold" text-anchor="middle">Day 1</text>
+                    <text x="106" y="48" fill="#fff" font-size="11" font-weight="bold" text-anchor="middle">10</text>
+                    
+                    <!-- Day 2 (Target t) -->
+                    <rect x="145" y="22" width="62" height="32" fill="#10b981" fill-opacity="0.25" stroke="#34d399" stroke-width="2" rx="4"/>
+                    <text x="176" y="36" fill="#34d399" font-size="9" font-weight="bold" text-anchor="middle">Day 2</text>
+                    <text x="176" y="48" fill="#fff" font-size="11" font-weight="bold" text-anchor="middle">15</text>
+                    
+                    <!-- Day 3 -->
+                    <rect x="215" y="22" width="62" height="32" fill="#1e293b" stroke="#334155" rx="4"/>
+                    <text x="246" y="36" fill="#64748b" font-size="9" text-anchor="middle">Day 3</text>
+                    <text x="246" y="48" fill="#cbd5e1" font-size="11" text-anchor="middle">12</text>
+                    
+                    <!-- Day 4 -->
+                    <rect x="285" y="22" width="62" height="32" fill="#1e293b" stroke="#334155" rx="4"/>
+                    <text x="316" y="36" fill="#64748b" font-size="9" text-anchor="middle">Day 4</text>
+                    <text x="316" y="48" fill="#cbd5e1" font-size="11" text-anchor="middle">18</text>
+                    
+                    <!-- Day 5 -->
+                    <rect x="355" y="22" width="62" height="32" fill="#1e293b" stroke="#334155" rx="4"/>
+                    <text x="386" y="36" fill="#64748b" font-size="9" text-anchor="middle">Day 5</text>
+                    <text x="386" y="48" fill="#cbd5e1" font-size="11" text-anchor="middle">20</text>
+
+                    <!-- Sliding Window Outer Bracket Highlight -->
+                    <rect x="71" y="18" width="140" height="40" fill="none" stroke="#a78bfa" stroke-width="1.5" stroke-dasharray="4,3" rx="6"/>
+                    <text x="141" y="73" fill="#a78bfa" font-size="9" font-weight="bold" text-anchor="middle">Sliding Window (Size = 2)</text>
+
+                    <!-- CONVERTED TABULAR STRUCTURE -->
+                    <!-- Table Headers -->
+                    <rect x="20" y="108" width="210" height="22" fill="#0284c7" fill-opacity="0.2" stroke="#0284c7" rx="3"/>
+                    <text x="125" y="123" fill="#38bdf8" font-size="10" font-weight="bold" text-anchor="middle">Feature Matrix X (Lag t-1)</text>
+
+                    <rect x="250" y="108" width="210" height="22" fill="#10b981" fill-opacity="0.2" stroke="#10b981" rx="3"/>
+                    <text x="355" y="123" fill="#34d399" font-size="10" font-weight="bold" text-anchor="middle">Target Vector y (Time t)</text>
+
+                    <!-- Row 1 (Mapped from Sliding Window 1) -->
+                    <rect x="20" y="136" width="210" height="26" fill="#0284c7" fill-opacity="0.1" stroke="#38bdf8" rx="3"/>
+                    <text x="125" y="153" fill="#38bdf8" font-size="11" font-weight="bold" text-anchor="middle">10 (Day 1)</text>
+                    <rect x="250" y="136" width="210" height="26" fill="#10b981" fill-opacity="0.1" stroke="#34d399" rx="3"/>
+                    <text x="355" y="153" fill="#34d399" font-size="11" font-weight="bold" text-anchor="middle">15 (Day 2)</text>
+
+                    <!-- Row 2 -->
+                    <rect x="20" y="168" width="210" height="26" fill="#1e293b" stroke="#334155" rx="3"/>
+                    <text x="125" y="185" fill="#cbd5e1" font-size="11" text-anchor="middle">15 (Day 2)</text>
+                    <rect x="250" y="168" width="210" height="26" fill="#1e293b" stroke="#334155" rx="3"/>
+                    <text x="355" y="185" fill="#cbd5e1" font-size="11" text-anchor="middle">12 (Day 3)</text>
+
+                    <!-- Row 3 -->
+                    <rect x="20" y="200" width="210" height="26" fill="#1e293b" stroke="#334155" rx="3"/>
+                    <text x="125" y="217" fill="#cbd5e1" font-size="11" text-anchor="middle">12 (Day 3)</text>
+                    <rect x="250" y="200" width="210" height="26" fill="#1e293b" stroke="#334155" rx="3"/>
+                    <text x="355" y="217" fill="#cbd5e1" font-size="11" text-anchor="middle">18 (Day 4)</text>
+                </g>
+            </svg>`
+        },
+        2: {
+            desc: "Use observations from t-2 and t-1 as independent input columns to predict target y at time t.",
+            svg: `<svg class="w-full h-full" viewBox="0 0 500 240">
+                <g transform="translate(10, 10)">
+                    <!-- 1D RAW TIME SERIES HEADER & SEQUENCE -->
+                    <text x="240" y="10" fill="#94a3b8" font-size="9" font-weight="bold" tracking="1" text-anchor="middle" letter-spacing="1">RAW 1D TIME SERIES SEQUENCE</text>
+                    
+                    <!-- Raw Data Cells -->
+                    <!-- Day 1 (Lag t-2) -->
+                    <rect x="75" y="22" width="62" height="32" fill="#0284c7" fill-opacity="0.25" stroke="#38bdf8" stroke-width="2" rx="4"/>
+                    <text x="106" y="36" fill="#38bdf8" font-size="9" font-weight="bold" text-anchor="middle">Day 1 (t-2)</text>
+                    <text x="106" y="48" fill="#fff" font-size="11" font-weight="bold" text-anchor="middle">10</text>
+                    
+                    <!-- Day 2 (Lag t-1) -->
+                    <rect x="145" y="22" width="62" height="32" fill="#0284c7" fill-opacity="0.25" stroke="#38bdf8" stroke-width="2" rx="4"/>
+                    <text x="176" y="36" fill="#38bdf8" font-size="9" font-weight="bold" text-anchor="middle">Day 2 (t-1)</text>
+                    <text x="176" y="48" fill="#fff" font-size="11" font-weight="bold" text-anchor="middle">15</text>
+                    
+                    <!-- Day 3 (Target t) -->
+                    <rect x="215" y="22" width="62" height="32" fill="#10b981" fill-opacity="0.25" stroke="#34d399" stroke-width="2" rx="4"/>
+                    <text x="246" y="36" fill="#34d399" font-size="9" font-weight="bold" text-anchor="middle">Day 3 (t)</text>
+                    <text x="246" y="48" fill="#fff" font-size="11" font-weight="bold" text-anchor="middle">12</text>
+                    
+                    <!-- Day 4 -->
+                    <rect x="285" y="22" width="62" height="32" fill="#1e293b" stroke="#334155" rx="4"/>
+                    <text x="316" y="36" fill="#64748b" font-size="9" text-anchor="middle">Day 4</text>
+                    <text x="316" y="48" fill="#cbd5e1" font-size="11" text-anchor="middle">18</text>
+                    
+                    <!-- Day 5 -->
+                    <rect x="355" y="22" width="62" height="32" fill="#1e293b" stroke="#334155" rx="4"/>
+                    <text x="386" y="36" fill="#64748b" font-size="9" text-anchor="middle">Day 5</text>
+                    <text x="386" y="48" fill="#cbd5e1" font-size="11" text-anchor="middle">20</text>
+
+                    <!-- Sliding Window Outer Bracket Highlight -->
+                    <rect x="71" y="18" width="210" height="40" fill="none" stroke="#a78bfa" stroke-width="1.5" stroke-dasharray="4,3" rx="6"/>
+                    <text x="176" y="73" fill="#a78bfa" font-size="9" font-weight="bold" text-anchor="middle">Sliding Window (Size = 3)</text>
+
+                    <!-- CONVERTED TABULAR STRUCTURE -->
+                    <!-- Table Headers -->
+                    <rect x="10" y="108" width="270" height="22" fill="#0284c7" fill-opacity="0.2" stroke="#0284c7" rx="3"/>
+                    <text x="145" y="123" fill="#38bdf8" font-size="10" font-weight="bold" text-anchor="middle">Feature Matrix X (Lag t-2, Lag t-1)</text>
+
+                    <rect x="290" y="108" width="180" height="22" fill="#10b981" fill-opacity="0.2" stroke="#10b981" rx="3"/>
+                    <text x="380" y="123" fill="#34d399" font-size="10" font-weight="bold" text-anchor="middle">Target Vector y (Time t)</text>
+
+                    <!-- Row 1 (Mapped from Sliding Window 1) -->
+                    <rect x="10" y="136" width="130" height="26" fill="#0284c7" fill-opacity="0.1" stroke="#38bdf8" rx="3"/>
+                    <text x="75" y="153" fill="#38bdf8" font-size="10" font-weight="bold" text-anchor="middle">10 (t-2)</text>
+                    <rect x="150" y="136" width="130" height="26" fill="#0284c7" fill-opacity="0.1" stroke="#38bdf8" rx="3"/>
+                    <text x="215" y="153" fill="#38bdf8" font-size="10" font-weight="bold" text-anchor="middle">15 (t-1)</text>
+                    
+                    <rect x="290" y="136" width="180" height="26" fill="#10b981" fill-opacity="0.1" stroke="#34d399" rx="3"/>
+                    <text x="380" y="153" fill="#34d399" font-size="11" font-weight="bold" text-anchor="middle">12 (Day 3)</text>
+
+                    <!-- Row 2 -->
+                    <rect x="10" y="168" width="130" height="26" fill="#1e293b" stroke="#334155" rx="3"/>
+                    <text x="75" y="185" fill="#cbd5e1" font-size="10" text-anchor="middle">15 (t-2)</text>
+                    <rect x="150" y="168" width="130" height="26" fill="#1e293b" stroke="#334155" rx="3"/>
+                    <text x="215" y="185" fill="#cbd5e1" font-size="10" text-anchor="middle">12 (t-1)</text>
+                    
+                    <rect x="290" y="168" width="180" height="26" fill="#1e293b" stroke="#334155" rx="3"/>
+                    <text x="380" y="185" fill="#cbd5e1" font-size="11" text-anchor="middle">18 (Day 4)</text>
+                </g>
+            </svg>`
+        },
+        3: {
+            desc: "Convert raw sequence into wide tabular matrix. Looking 3 steps back provides richer historical context for supervised learning algorithms.",
+            svg: `<svg class="w-full h-full" viewBox="0 0 500 240">
+                <g transform="translate(10, 10)">
+                    <!-- 1D RAW TIME SERIES HEADER & SEQUENCE -->
+                    <text x="240" y="10" fill="#94a3b8" font-size="9" font-weight="bold" tracking="1" text-anchor="middle" letter-spacing="1">RAW 1D TIME SERIES SEQUENCE</text>
+                    
+                    <!-- Raw Data Cells -->
+                    <!-- Day 1 (Lag t-3) -->
+                    <rect x="75" y="22" width="62" height="32" fill="#0284c7" fill-opacity="0.25" stroke="#38bdf8" stroke-width="2" rx="4"/>
+                    <text x="106" y="36" fill="#38bdf8" font-size="8" font-weight="bold" text-anchor="middle">Day 1 (t-3)</text>
+                    <text x="106" y="48" fill="#fff" font-size="11" font-weight="bold" text-anchor="middle">10</text>
+                    
+                    <!-- Day 2 (Lag t-2) -->
+                    <rect x="145" y="22" width="62" height="32" fill="#0284c7" fill-opacity="0.25" stroke="#38bdf8" stroke-width="2" rx="4"/>
+                    <text x="176" y="36" fill="#38bdf8" font-size="8" font-weight="bold" text-anchor="middle">Day 2 (t-2)</text>
+                    <text x="176" y="48" fill="#fff" font-size="11" font-weight="bold" text-anchor="middle">15</text>
+
+                    <!-- Day 3 (Lag t-1) -->
+                    <rect x="215" y="22" width="62" height="32" fill="#0284c7" fill-opacity="0.25" stroke="#38bdf8" stroke-width="2" rx="4"/>
+                    <text x="246" y="36" fill="#38bdf8" font-size="8" font-weight="bold" text-anchor="middle">Day 3 (t-1)</text>
+                    <text x="246" y="48" fill="#fff" font-size="11" font-weight="bold" text-anchor="middle">12</text>
+                    
+                    <!-- Day 4 (Target t) -->
+                    <rect x="285" y="22" width="62" height="32" fill="#10b981" fill-opacity="0.25" stroke="#34d399" stroke-width="2" rx="4"/>
+                    <text x="316" y="36" fill="#34d399" font-size="8" font-weight="bold" text-anchor="middle">Day 4 (t)</text>
+                    <text x="316" y="48" fill="#fff" font-size="11" font-weight="bold" text-anchor="middle">18</text>
+                    
+                    <!-- Day 5 -->
+                    <rect x="355" y="22" width="62" height="32" fill="#1e293b" stroke="#334155" rx="4"/>
+                    <text x="386" y="36" fill="#64748b" font-size="8" text-anchor="middle">Day 5</text>
+                    <text x="386" y="48" fill="#cbd5e1" font-size="11" text-anchor="middle">20</text>
+
+                    <!-- Sliding Window Outer Bracket Highlight -->
+                    <rect x="71" y="18" width="280" height="40" fill="none" stroke="#a78bfa" stroke-width="1.5" stroke-dasharray="4,3" rx="6"/>
+                    <text x="211" y="73" fill="#a78bfa" font-size="9" font-weight="bold" text-anchor="middle">Sliding Window (Size = 4)</text>
+
+                    <!-- CONVERTED TABULAR STRUCTURE -->
+                    <!-- Table Headers -->
+                    <rect x="10" y="108" width="310" height="22" fill="#0284c7" fill-opacity="0.2" stroke="#0284c7" rx="3"/>
+                    <text x="165" y="123" fill="#38bdf8" font-size="10" font-weight="bold" text-anchor="middle">Feature Matrix X (Lag t-3, Lag t-2, Lag t-1)</text>
+
+                    <rect x="330" y="108" width="140" height="22" fill="#10b981" fill-opacity="0.2" stroke="#10b981" rx="3"/>
+                    <text x="400" y="123" fill="#34d399" font-size="10" font-weight="bold" text-anchor="middle">Target y (Time t)</text>
+
+                    <!-- Row 1 (Mapped from Sliding Window 1) -->
+                    <rect x="10" y="136" width="95" height="26" fill="#0284c7" fill-opacity="0.1" stroke="#38bdf8" rx="3"/>
+                    <text x="57" y="153" fill="#38bdf8" font-size="10" font-weight="bold" text-anchor="middle">10 (t-3)</text>
+                    <rect x="117" y="136" width="95" height="26" fill="#0284c7" fill-opacity="0.1" stroke="#38bdf8" rx="3"/>
+                    <text x="164" y="153" fill="#38bdf8" font-size="10" font-weight="bold" text-anchor="middle">15 (t-2)</text>
+                    <rect x="225" y="136" width="95" height="26" fill="#0284c7" fill-opacity="0.1" stroke="#38bdf8" rx="3"/>
+                    <text x="272" y="153" fill="#38bdf8" font-size="10" font-weight="bold" text-anchor="middle">12 (t-1)</text>
+                    
+                    <rect x="330" y="136" width="140" height="26" fill="#10b981" fill-opacity="0.1" stroke="#34d399" rx="3"/>
+                    <text x="400" y="153" fill="#34d399" font-size="11" font-weight="bold" text-anchor="middle">18 (Day 4)</text>
+
+                    <!-- Row 2 -->
+                    <rect x="10" y="168" width="95" height="26" fill="#1e293b" stroke="#334155" rx="3"/>
+                    <text x="57" y="185" fill="#cbd5e1" font-size="10" text-anchor="middle">15 (t-3)</text>
+                    <rect x="117" y="168" width="95" height="26" fill="#1e293b" stroke="#334155" rx="3"/>
+                    <text x="164" y="185" fill="#cbd5e1" font-size="10" text-anchor="middle">12 (t-2)</text>
+                    <rect x="225" y="168" width="95" height="26" fill="#1e293b" stroke="#334155" rx="3"/>
+                    <text x="272" y="185" fill="#cbd5e1" font-size="10" text-anchor="middle">18 (t-1)</text>
+                    
+                    <rect x="330" y="168" width="140" height="26" fill="#1e293b" stroke="#334155" rx="3"/>
+                    <text x="400" y="185" fill="#cbd5e1" font-size="11" text-anchor="middle">20 (Day 5)</text>
+                </g>
+            </svg>`
+        }
+    };
+
+    function renderWindow(size) {
+        const data = windowConfigs[size];
+        document.getElementById('window-canvas').innerHTML = data.svg;
+        document.getElementById('window-desc').innerText = data.desc;
+
+        document.querySelectorAll('.win-btn').forEach(b => {
+            b.className = "win-btn p-2 bg-slate-800 border border-slate-700 rounded-lg text-slate-300 hover:text-white text-center transition-all cursor-pointer";
+        });
+        document.getElementById(`win-btn-${size}`).className = "win-btn p-2 bg-sky-900/40 border border-sky-500 rounded-lg text-sky-200 font-bold text-center transition-all cursor-pointer";
+    }
+
+    // PAGE 3: Baseline Models Visualizer
+    const baselineConfigs = {
+        naive: {
+            title: "Naïve Forecast (Tomorrow = Today)",
+            desc: "Assumes tomorrow's value will be identical to today's value (Shifted by 1 step). Extremely effective benchmark in highly volatile financial markets.",
+            svg: `<svg class="w-full h-full" viewBox="0 0 440 200">
+                <line x1="35" y1="25" x2="425" y2="25" stroke="#334155" stroke-dasharray="3"/>
+                <line x1="35" y1="100" x2="425" y2="100" stroke="#334155" stroke-dasharray="3"/>
+                <line x1="35" y1="175" x2="425" y2="175" stroke="#475569" stroke-width="1.5"/>
+
+                <!-- Actual Line -->
+                <path d="M 45 120 L 90 60 L 135 140 L 180 80 L 225 130 L 270 50 L 315 110 L 360 40 L 405 90" stroke="#8b5cf6" stroke-width="2.5" fill="none"/>
+                
+                <!-- Naive Forecast Line (Shifted 1 step) -->
+                <path d="M 90 120 L 135 60 L 180 140 L 225 80 L 270 130 L 315 50 L 360 110 L 405 40" stroke="#f59e0b" stroke-width="2" stroke-dasharray="4" fill="none"/>
+
+                <!-- Legend -->
+                <g transform="translate(120, 10)">
+                    <line x1="0" y1="5" x2="20" y2="5" stroke="#8b5cf6" stroke-width="2.5"/><text x="25" y="8" fill="#cbd5e1" font-size="9">Actual Value</text>
+                    <line x1="110" y1="5" x2="130" y2="5" stroke="#f59e0b" stroke-width="2" stroke-dasharray="4"/><text x="135" y="8" fill="#cbd5e1" font-size="9">Naïve Forecast (t-1)</text>
+                </g>
+            </svg>`
+        },
+        seasonal: {
+            title: "Seasonal Naïve Forecast (Same Period Last Cycle)",
+            desc: "Predicts that future values match the exact same period from the previous seasonal cycle (e.g. this Saturday equals last Saturday).",
+            svg: `<svg class="w-full h-full" viewBox="0 0 440 200">
+                <line x1="35" y1="175" x2="425" y2="175" stroke="#475569" stroke-width="1.5"/>
+
+                <!-- Cycle 1 -->
+                <path d="M 45 140 L 80 50 L 115 140 L 150 160" stroke="#06b6d4" stroke-width="2" fill="none"/>
+                <!-- Cycle 2 Actual -->
+                <path d="M 180 135 L 215 45 L 250 138 L 285 155" stroke="#8b5cf6" stroke-width="2.5" fill="none"/>
+                <!-- Cycle 2 Seasonal Forecast (Copies Cycle 1) -->
+                <path d="M 180 140 L 215 50 L 250 140 L 285 160" stroke="#f59e0b" stroke-width="2" stroke-dasharray="4" fill="none"/>
+
+                <text x="97" y="188" fill="#06b6d4" font-size="9" text-anchor="middle">Cycle 1 (History)</text>
+                <text x="232" y="188" fill="#f59e0b" font-size="9" text-anchor="middle">Cycle 2 (Seasonal Copy)</text>
+            </svg>`
+        },
+        ma: {
+            title: "Moving Average Baseline (Rolling Window N=3)",
+            desc: "Smooths out volatile random noise by taking the mathematical average of the last N time steps.",
+            svg: `<svg class="w-full h-full" viewBox="0 0 440 200">
+                <line x1="35" y1="175" x2="425" y2="175" stroke="#475569" stroke-width="1.5"/>
+
+                <!-- Volatile Actual Line -->
+                <path d="M 45 130 L 80 40 L 115 150 L 150 50 L 185 140 L 220 30 L 255 160 L 290 60 L 325 130 L 360 40 L 395 110" stroke="#8b5cf6" stroke-width="2" fill="none"/>
+
+                <!-- Smoothed Moving Average Line -->
+                <path d="M 115 106 L 150 80 L 185 113 L 220 73 L 255 110 L 290 83 L 325 116 L 360 76 L 395 93" stroke="#f59e0b" stroke-width="3" fill="none"/>
+
+                <!-- Legend -->
+                <g transform="translate(100, 10)">
+                    <line x1="0" y1="5" x2="20" y2="5" stroke="#8b5cf6" stroke-width="2"/><text x="25" y="8" fill="#cbd5e1" font-size="9">Volatile Actual Data</text>
+                    <line x1="130" y1="5" x2="150" y2="5" stroke="#f59e0b" stroke-width="3"/><text x="155" y="8" fill="#cbd5e1" font-size="9">Moving Avg Baseline (N=3)</text>
+                </g>
+            </svg>`
+        }
+    };
+
+    function renderBaseline(type) {
+        const data = baselineConfigs[type];
+        document.getElementById('baseline-canvas').innerHTML = data.svg;
+        document.getElementById('base-type-label').innerText = data.title;
+        document.getElementById('baseline-desc').innerText = data.desc;
+
+        document.querySelectorAll('.base-nav-btn').forEach(b => {
+            b.className = "base-nav-btn p-2.5 bg-slate-800 border border-slate-700 rounded-lg text-slate-300 hover:text-white text-center transition-all cursor-pointer";
+        });
+        document.getElementById(`base-btn-${type}`).className = "base-nav-btn p-2.5 bg-amber-900/40 border border-amber-500 rounded-lg text-amber-200 font-bold text-center transition-all cursor-pointer";
+    }
+
+    // PAGE 4: MAE vs RMSE Interactive Metric Visualizer
+    const metricConfigs = {
+        steady: {
+            title: "Profile A: Consistent Small Errors",
+            desc: "Errors are small and spread evenly across all days (|e| = 2 every day). MAE and RMSE yield the exact same value (2.00).",
+            svg: `<svg class="w-full h-full" viewBox="0 0 500 260">
+                <g transform="translate(10, 10)">
+                    <!-- Title & Legend -->
+                    <text x="240" y="5" fill="#94a3b8" font-size="11" font-weight="bold" text-anchor="middle">ACTUAL (y) VS PREDICTED (ŷ) OVER 5 DAYS</text>
+                    
+                    <circle cx="100" cy="26" r="4" fill="#34d399"/>
+                    <text x="110" y="29" fill="#cbd5e1" font-size="10">Actual y</text>
+                    
+                    <circle cx="210" cy="26" r="4" fill="#38bdf8"/>
+                    <text x="220" y="29" fill="#cbd5e1" font-size="10">Predicted ŷ</text>
+                    
+                    <line x1="320" y1="26" x2="340" y2="26" stroke="#f43f5e" stroke-width="2" stroke-dasharray="3,3"/>
+                    <text x="348" y="29" fill="#f43f5e" font-size="10">Error Gap |e|</text>
+
+                    <!-- Plot Area: Shifted down to y=65 -->
+                    <!-- Day 1: y=10, y_hat=12 -->
+                    <g transform="translate(40, 65)">
+                        <text x="30" y="110" fill="#64748b" font-size="10" text-anchor="middle">Day 1</text>
+                        <line x1="30" y1="80" x2="30" y2="60" stroke="#f43f5e" stroke-width="2" stroke-dasharray="3,2"/>
+                        <circle cx="30" cy="80" r="5" fill="#34d399"/>
+                        <circle cx="30" cy="60" r="5" fill="#38bdf8"/>
+                        <text x="30" y="50" fill="#f43f5e" font-size="10" font-weight="bold" text-anchor="middle">|e|=2</text>
+                    </g>
+
+                    <!-- Day 2: y=15, y_hat=13 -->
+                    <g transform="translate(120, 65)">
+                        <text x="30" y="110" fill="#64748b" font-size="10" text-anchor="middle">Day 2</text>
+                        <line x1="30" y1="40" x2="30" y2="60" stroke="#f43f5e" stroke-width="2" stroke-dasharray="3,2"/>
+                        <circle cx="30" cy="40" r="5" fill="#34d399"/>
+                        <circle cx="30" cy="60" r="5" fill="#38bdf8"/>
+                        <text x="30" y="30" fill="#f43f5e" font-size="10" font-weight="bold" text-anchor="middle">|e|=2</text>
+                    </g>
+
+                    <!-- Day 3: y=12, y_hat=14 -->
+                    <g transform="translate(200, 65)">
+                        <text x="30" y="110" fill="#64748b" font-size="10" text-anchor="middle">Day 3</text>
+                        <line x1="30" y1="70" x2="30" y2="50" stroke="#f43f5e" stroke-width="2" stroke-dasharray="3,2"/>
+                        <circle cx="30" cy="70" r="5" fill="#34d399"/>
+                        <circle cx="30" cy="50" r="5" fill="#38bdf8"/>
+                        <text x="30" y="40" fill="#f43f5e" font-size="10" font-weight="bold" text-anchor="middle">|e|=2</text>
+                    </g>
+
+                    <!-- Day 4: y=18, y_hat=16 -->
+                    <g transform="translate(280, 65)">
+                        <text x="30" y="110" fill="#64748b" font-size="10" text-anchor="middle">Day 4</text>
+                        <line x1="30" y1="20" x2="30" y2="40" stroke="#f43f5e" stroke-width="2" stroke-dasharray="3,2"/>
+                        <circle cx="30" cy="20" r="5" fill="#34d399"/>
+                        <circle cx="30" cy="40" r="5" fill="#38bdf8"/>
+                        <text x="30" y="10" fill="#f43f5e" font-size="10" font-weight="bold" text-anchor="middle">|e|=2</text>
+                    </g>
+
+                    <!-- Day 5: y=20, y_hat=22 -->
+                    <g transform="translate(360, 65)">
+                        <text x="30" y="110" fill="#64748b" font-size="10" text-anchor="middle">Day 5</text>
+                        <line x1="30" y1="20" x2="30" y2="0" stroke="#f43f5e" stroke-width="2" stroke-dasharray="3,2"/>
+                        <circle cx="30" cy="20" r="5" fill="#34d399"/>
+                        <circle cx="30" cy="0" r="5" fill="#38bdf8"/>
+                        <text x="30" y="-10" fill="#f43f5e" font-size="10" font-weight="bold" text-anchor="middle">|e|=2</text>
+                    </g>
+
+                    <!-- CALCULATED SCORE CARDS (Shifted down to y=195) -->
+                    <rect x="20" y="195" width="210" height="45" fill="#0284c7" fill-opacity="0.15" stroke="#38bdf8" rx="6"/>
+                    <text x="125" y="213" fill="#38bdf8" font-size="11" font-weight="bold" text-anchor="middle">MAE = 2.00</text>
+                    <text x="125" y="228" fill="#94a3b8" font-size="9" text-anchor="middle">Mean of [2, 2, 2, 2, 2]</text>
+
+                    <rect x="250" y="195" width="210" height="45" fill="#10b981" fill-opacity="0.15" stroke="#34d399" rx="6"/>
+                    <text x="355" y="213" fill="#34d399" font-size="11" font-weight="bold" text-anchor="middle">RMSE = 2.00</text>
+                    <text x="355" y="228" fill="#94a3b8" font-size="9" text-anchor="middle">√(Mean of [4, 4, 4, 4, 4])</text>
+                </g>
+            </svg>`
+        },
+        outlier: {
+            title: "Profile B: Single Outlier Error",
+            desc: "4 days are perfectly predicted (|e| = 0), but Day 5 has a huge error (|e| = 10). Notice how MAE stays at 2.00, but RMSE spikes to 4.47!",
+            svg: `<svg class="w-full h-full" viewBox="0 0 500 260">
+                <g transform="translate(10, 10)">
+                    <!-- Title & Legend -->
+                    <text x="240" y="5" fill="#94a3b8" font-size="11" font-weight="bold" text-anchor="middle">ACTUAL (y) VS PREDICTED (ŷ) OVER 5 DAYS</text>
+                    
+                    <circle cx="100" cy="26" r="4" fill="#34d399"/>
+                    <text x="110" y="29" fill="#cbd5e1" font-size="10">Actual y</text>
+                    
+                    <circle cx="210" cy="26" r="4" fill="#38bdf8"/>
+                    <text x="220" y="29" fill="#cbd5e1" font-size="10">Predicted ŷ</text>
+                    
+                    <line x1="320" y1="26" x2="340" y2="26" stroke="#f43f5e" stroke-width="2" stroke-dasharray="3,3"/>
+                    <text x="348" y="29" fill="#f43f5e" font-size="10">Error Gap |e|</text>
+
+                    <!-- Plot Area: Shifted down to y=65 -->
+                    <!-- Day 1: y=10, y_hat=10 -->
+                    <g transform="translate(40, 65)">
+                        <text x="30" y="110" fill="#64748b" font-size="10" text-anchor="middle">Day 1</text>
+                        <circle cx="30" cy="80" r="5" fill="#34d399"/>
+                        <text x="30" y="68" fill="#10b981" font-size="10" font-weight="bold" text-anchor="middle">|e|=0</text>
+                    </g>
+
+                    <!-- Day 2: y=15, y_hat=15 -->
+                    <g transform="translate(120, 65)">
+                        <text x="30" y="110" fill="#64748b" font-size="10" text-anchor="middle">Day 2</text>
+                        <circle cx="30" cy="50" r="5" fill="#34d399"/>
+                        <text x="30" y="38" fill="#10b981" font-size="10" font-weight="bold" text-anchor="middle">|e|=0</text>
+                    </g>
+
+                    <!-- Day 3: y=12, y_hat=12 -->
+                    <g transform="translate(200, 65)">
+                        <text x="30" y="110" fill="#64748b" font-size="10" text-anchor="middle">Day 3</text>
+                        <circle cx="30" cy="65" r="5" fill="#34d399"/>
+                        <text x="30" y="53" fill="#10b981" font-size="10" font-weight="bold" text-anchor="middle">|e|=0</text>
+                    </g>
+
+                    <!-- Day 4: y=18, y_hat=18 -->
+                    <g transform="translate(280, 65)">
+                        <text x="30" y="110" fill="#64748b" font-size="10" text-anchor="middle">Day 4</text>
+                        <circle cx="30" cy="35" r="5" fill="#34d399"/>
+                        <text x="30" y="23" fill="#10b981" font-size="10" font-weight="bold" text-anchor="middle">|e|=0</text>
+                    </g>
+
+                    <!-- Day 5: y=20, y_hat=30 (OUTLIER) -->
+                    <g transform="translate(360, 65)">
+                        <text x="30" y="110" fill="#64748b" font-size="10" text-anchor="middle">Day 5</text>
+                        <line x1="30" y1="25" x2="30" y2="-15" stroke="#f43f5e" stroke-width="2.5" stroke-dasharray="3,2"/>
+                        <circle cx="30" cy="25" r="5" fill="#34d399"/>
+                        <circle cx="30" cy="-10" r="5" fill="#38bdf8"/>
+                        <text x="30" y="-18" fill="#f43f5e" font-size="11" font-weight="extrabold" text-anchor="middle">|e|=10!</text>
+                    </g>
+
+                    <!-- CALCULATED SCORE CARDS (Shifted down to y=195) -->
+                    <rect x="20" y="195" width="210" height="45" fill="#0284c7" fill-opacity="0.15" stroke="#38bdf8" rx="6"/>
+                    <text x="125" y="213" fill="#38bdf8" font-size="11" font-weight="bold" text-anchor="middle">MAE = 2.00 (Unchanged)</text>
+                    <text x="125" y="228" fill="#94a3b8" font-size="9" text-anchor="middle">Mean of [0, 0, 0, 0, 10]</text>
+
+                    <rect x="250" y="195" width="210" height="45" fill="#f43f5e" fill-opacity="0.2" stroke="#f43f5e" rx="6"/>
+                    <text x="355" y="213" fill="#f43f5e" font-size="11" font-weight="bold" text-anchor="middle">RMSE = 4.47 (Spiked!)</text>
+                    <text x="355" y="228" fill="#cbd5e1" font-size="9" text-anchor="middle">√(Mean of [0, 0, 0, 0, 100])</text>
+                </g>
+            </svg>`
+        }
+    };
+
+    function renderMetric(profile) {
+        const data = metricConfigs[profile];
+        document.getElementById('metric-canvas').innerHTML = data.svg;
+        document.getElementById('metric-tag').innerText = data.title;
+        document.getElementById('metric-desc').innerText = data.desc;
+
+        document.querySelectorAll('.metric-nav-btn').forEach(b => {
+            b.className = "metric-nav-btn p-2.5 bg-slate-800 border border-slate-700 rounded-lg text-slate-300 hover:text-white text-center transition-all cursor-pointer";
+        });
+
+        if (profile === 'steady') {
+            document.getElementById('metric-btn-steady').className = "metric-nav-btn p-2.5 bg-emerald-900/40 border border-emerald-500 rounded-lg text-emerald-200 font-bold text-center transition-all cursor-pointer";
+            document.getElementById('metric-tag').className = "text-[10px] text-emerald-300 bg-emerald-950 border border-emerald-500/30 px-2.5 py-1 rounded font-semibold";
+        } else {
+            document.getElementById('metric-btn-outlier').className = "metric-nav-btn p-2.5 bg-rose-900/40 border border-rose-500 rounded-lg text-rose-200 font-bold text-center transition-all cursor-pointer";
+            document.getElementById('metric-tag').className = "text-[10px] text-rose-300 bg-rose-950 border border-rose-500/30 px-2.5 py-1 rounded font-semibold";
+        }
+    }
+
+    // Initialize Default Views
+    renderParadigm('tabular');
+    renderWindow(3);
+    renderBaseline('naive');
+    renderMetric('steady');
+
+    // PAGE 5: Lab Execution Script
+    function runLabCode() {
+        document.getElementById('terminal-placeholder').classList.add('hidden');
+        const output = document.getElementById('terminal-output');
+        output.classList.remove('hidden');
+        output.classList.remove('animate-fade-in');
+        void output.offsetWidth; // Reflow trigger
+        output.classList.add('animate-fade-in');
+    }
+
+    function switchLabTab(tabKey) {
+        const figMatrix = document.getElementById('lab-fig-matrix');
+        const figEval = document.getElementById('lab-fig-eval');
+        const tabMatrixBtn = document.getElementById('lab-tab-matrix');
+        const tabEvalBtn = document.getElementById('lab-tab-eval');
+
+        if (tabKey === 'matrix') {
+            figMatrix.classList.remove('hidden');
+            figEval.classList.add('hidden');
+            tabMatrixBtn.className = "px-2.5 py-1 bg-violet-900/60 text-violet-200 rounded text-[10px] font-bold border border-violet-500/50 cursor-pointer";
+            tabEvalBtn.className = "px-2 py-1 bg-slate-800 text-slate-400 hover:text-white rounded text-[10px] cursor-pointer";
+        } else {
+            figMatrix.classList.add('hidden');
+            figEval.classList.remove('hidden');
+            tabEvalBtn.className = "px-2.5 py-1 bg-violet-900/60 text-violet-200 rounded text-[10px] font-bold border border-violet-500/50 cursor-pointer";
+            tabMatrixBtn.className = "px-2 py-1 bg-slate-800 text-slate-400 hover:text-white rounded text-[10px] cursor-pointer";
+        }
+    }
+    </script>
+</body>
+</html>

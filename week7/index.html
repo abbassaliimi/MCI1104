@@ -1,0 +1,1049 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Week 7: MCI1104</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        darkBg: '#0b1120',
+                        cardBg: '#1e293b',
+                        accentViolet: '#8b5cf6',
+                        accentSky: '#0284c7',
+                        accentPink: '#ec4899',
+                        accentAmber: '#f59e0b',
+                        accentEmerald: '#10b981',
+                        accentIndigo: '#6366f1',
+                        accentTeal: '#14b8a6'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Smooth vertical scroll snap settings */
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background-color: #0b1120;
+            color: #f8fafc;
+        }
+
+        .scroll-container {
+            height: 100vh;
+            overflow-y: scroll;
+            scroll-snap-type: y mandatory;
+            scroll-behavior: smooth;
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        .scroll-container::-webkit-scrollbar {
+            display: none;
+        }
+
+        .page-section {
+            height: 100vh;
+            width: 100vw;
+            scroll-snap-align: start;
+            scroll-snap-stop: always;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-sizing: border-box;
+            padding: 2.5rem 5rem 2.5rem 3rem;
+        }
+
+        /* Nav dot indicators */
+        .nav-dot {
+            transition: all 0.3s ease;
+        }
+        .nav-dot.active {
+            background-color: #8b5cf6;
+            height: 1.75rem;
+            border-radius: 9999px;
+        }
+
+        /* Code Editor Simulation */
+        .code-font {
+            font-family: 'Fira Code', 'Courier New', Courier, monospace;
+        }
+
+        /* Fade-in animation */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in {
+            animation: fadeIn 0.35s ease-out forwards;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Vertical Floating Navigation Indicators (12 Sections) -->
+    <nav class="fixed right-6 top-1/2 -translate-y-1/2 z-50 flex flex-col items-center gap-2 bg-slate-900/80 backdrop-blur-md p-2.5 rounded-full border border-slate-700 shadow-2xl">
+        <button onclick="scrollToPage(0)" title="1. Title & Overview" class="nav-dot w-3 h-3 bg-slate-600 rounded-full hover:bg-violet-400 focus:outline-none"></button>
+        <button onclick="scrollToPage(1)" title="2. Ecosystem Matrix" class="nav-dot w-3 h-3 bg-slate-600 rounded-full hover:bg-violet-400 focus:outline-none"></button>
+        <button onclick="scrollToPage(2)" title="3. Logistics & VRP" class="nav-dot w-3 h-3 bg-slate-600 rounded-full hover:bg-violet-400 focus:outline-none"></button>
+        <button onclick="scrollToPage(3)" title="4. Inventory Rebalancing" class="nav-dot w-3 h-3 bg-slate-600 rounded-full hover:bg-violet-400 focus:outline-none"></button>
+        <button onclick="scrollToPage(4)" title="5. Healthcare Bed Allocation" class="nav-dot w-3 h-3 bg-slate-600 rounded-full hover:bg-violet-400 focus:outline-none"></button>
+        <button onclick="scrollToPage(5)" title="6. Clinical Decisions & Protocols" class="nav-dot w-3 h-3 bg-slate-600 rounded-full hover:bg-violet-400 focus:outline-none"></button>
+        <button onclick="scrollToPage(6)" title="7. Finance Portfolio Frontier" class="nav-dot w-3 h-3 bg-slate-600 rounded-full hover:bg-violet-400 focus:outline-none"></button>
+        <button onclick="scrollToPage(7)" title="8. Algorithmic Execution & Credit" class="nav-dot w-3 h-3 bg-slate-600 rounded-full hover:bg-violet-400 focus:outline-none"></button>
+        <button onclick="scrollToPage(8)" title="9. Retail Dynamic Pricing" class="nav-dot w-3 h-3 bg-slate-600 rounded-full hover:bg-violet-400 focus:outline-none"></button>
+        <button onclick="scrollToPage(9)" title="10. Markdown & Promotions" class="nav-dot w-3 h-3 bg-slate-600 rounded-full hover:bg-violet-400 focus:outline-none"></button>
+        <button onclick="scrollToPage(10)" title="11. The Bridge: Predictive Tools" class="nav-dot w-3 h-3 bg-slate-600 rounded-full hover:bg-violet-400 focus:outline-none"></button>
+        <button onclick="scrollToPage(11)" title="12. Practical Lab Studio" class="nav-dot w-3 h-3 bg-slate-600 rounded-full hover:bg-violet-400 focus:outline-none"></button>
+    </nav>
+
+    <!-- Main Vertical Scroll Container -->
+    <main id="scrollContainer" class="scroll-container">
+
+        <!-- SECTION 0: INTRO & TITLE -->
+        <section class="page-section bg-gradient-to-b from-slate-950 via-violet-950/40 to-slate-900">
+            <div class="max-w-5xl w-full text-center space-y-8">
+                <div class="flex items-center justify-center gap-3">
+                    <span class="px-4 py-1.5 bg-violet-500/10 text-violet-400 border border-violet-500/30 rounded-full text-sm font-bold tracking-wider uppercase shadow-[0_0_20px_rgba(167,139,250,0.15)]">
+                        Week 6
+                    </span>
+                </div>
+
+                <h1 class="text-5xl md:text-6xl font-bold text-white tracking-tight leading-tight">
+                    Prescriptive Analytics (Part 2)
+                </h1>
+
+                <p class="text-lg text-slate-400">
+                    by <span class="text-xl font-bold text-slate-300">Abbas Saliimi Lokman</span>
+                </p>
+
+                 <!-- Overview Summary Card -->
+                <div class="max-w-2xl mx-auto pt-4 text-center">
+                    <div class="p-5 bg-slate-900/80 border border-slate-800 rounded-xl space-y-1.5 shadow-lg">
+                        <span class="text-xs font-bold text-violet-400 uppercase tracking-wider block">What you will learn</span>
+                        <p class="text-xs text-slate-200 leading-relaxed text-center">
+                            How prescriptive analytics transforms predictive models into concrete, optimal actions across high-stakes industries including logistics, healthcare, finance, and retail.
+                        </p>
+                    </div>
+            </div>
+        </section>
+
+        <!-- SECTION 1: TOPIC 01 - PRESCRIPTIVE ECOSYSTEM MATRIX -->
+        <section class="page-section bg-darkBg">
+            <div class="max-w-6xl w-full grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                <div class="lg:col-span-6 space-y-5">
+                    <div class="flex items-center gap-3">
+                        <span class="px-3 py-1 bg-violet-500/10 text-violet-400 border border-violet-500/30 rounded-full text-xs font-semibold tracking-wider uppercase">Topic 01</span>
+                        <span class="flex items-center gap-1 text-slate-400 text-xs font-medium">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                            Estimated Time: 15 Mins
+                        </span>
+                    </div>
+
+                    <h2 class="text-4xl font-extrabold text-white tracking-tight">Prescriptive Industry Ecosystem Matrix</h2>
+
+                    <div class="p-4 bg-slate-900 border-l-4 border-violet-500 rounded-r-xl shadow-lg">
+                        <p class="text-slate-200 text-xs leading-relaxed">
+                            <strong>Introduction:</strong> Last week, you explored the fundamentals of prescriptive analytics and optimization. Now, we bridge theory with industry practice. How do real-world organizations translate predictive forecasts into multi-million dollar actions? In this module, you will step into the shoes of domain decision-makers to evaluate industry-specific case studies where prescriptive analytics drives massive ROI.
+                        </p>
+                    </div>
+
+                    <div class="p-3.5 bg-slate-950 border border-slate-800 rounded-xl text-xs space-y-2">
+                        <strong class="text-violet-400 block font-semibold">Anatomy of Industry Prescription:</strong>
+                        <div class="grid grid-cols-3 gap-2 text-center text-[11px]">
+                            <div class="p-2 bg-slate-900 rounded border border-slate-800"><span class="text-slate-400 block text-[10px]">1. Forecast</span> Predictive Data</div>
+                            <div class="p-2 bg-slate-900 rounded border border-slate-800"><span class="text-violet-400 block text-[10px]">2. Constraint</span> Business Rules</div>
+                            <div class="p-2 bg-slate-900 rounded border border-slate-800"><span class="text-emerald-400 block text-[10px]">3. Action</span> Prescribed Decision</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Interactive Ecosystem Matrix Selector -->
+                <div class="lg:col-span-6 bg-slate-900 p-6 rounded-2xl border border-slate-800 shadow-xl space-y-4">
+                    <div class="flex justify-between items-center">
+                        <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider">Industry Ecosystem Example</h3>
+                        <span class="text-[10px] text-violet-300 bg-violet-950 border border-violet-800 px-2 py-0.5 rounded font-mono">4 Sectors</span>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-2 text-xs">
+                        <button onclick="selectSector('logistics')" id="sec-btn-logistics" class="sector-btn p-3 bg-slate-800 border border-slate-700 rounded-xl text-left hover:border-violet-500 transition-all ring-2 ring-violet-500">
+                            <span class="text-violet-400 font-bold block">1. Logistics &amp; Supply Chain</span>
+                            <span class="text-[11px] text-slate-400">Route optimization &amp; stock balance</span>
+                        </button>
+                        <button onclick="selectSector('healthcare')" id="sec-btn-healthcare" class="sector-btn p-3 bg-slate-800 border border-slate-700 rounded-xl text-left hover:border-sky-500 transition-all">
+                            <span class="text-sky-400 font-bold block">2. Healthcare Systems</span>
+                            <span class="text-[11px] text-slate-400">Bed allocation &amp; clinical plans</span>
+                        </button>
+                        <button onclick="selectSector('finance')" id="sec-btn-finance" class="sector-btn p-3 bg-slate-800 border border-slate-700 rounded-xl text-left hover:border-pink-500 transition-all">
+                            <span class="text-pink-400 font-bold block">3. Financial Services</span>
+                            <span class="text-[11px] text-slate-400">Efficient frontier &amp; algo trading</span>
+                        </button>
+                        <button onclick="selectSector('retail')" id="sec-btn-retail" class="sector-btn p-3 bg-slate-800 border border-slate-700 rounded-xl text-left hover:border-emerald-500 transition-all">
+                            <span class="text-emerald-400 font-bold block">4. Retail &amp; Dynamic Pricing</span>
+                            <span class="text-[11px] text-slate-400">Elasticity &amp; markdown timing</span>
+                        </button>
+                    </div>
+
+                    <div id="sector-display" class="p-4 bg-slate-950 border border-slate-800 rounded-xl min-h-[120px]">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 2: TOPIC 02 - LOGISTICS & VRP -->
+        <section class="page-section bg-slate-900">
+            <div class="max-w-6xl w-full grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                <div class="lg:col-span-5 space-y-5">
+                    <div class="flex items-center gap-3">
+                        <span class="px-3 py-1 bg-violet-500/10 text-violet-400 border border-violet-500/30 rounded-full text-xs font-semibold tracking-wider uppercase">Topic 02</span>
+                        <span class="flex items-center gap-1 text-slate-400 text-xs font-medium">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                            Estimated Time: 15 Mins
+                        </span>
+                    </div>
+
+                    <h2 class="text-3xl font-extrabold text-white tracking-tight">1. Logistics: Vehicle Routing Problem (VRP)</h2>
+
+                    <div class="p-4 bg-slate-950 border-l-4 border-violet-500 rounded-r-lg shadow-md">
+                        <p class="text-slate-300 text-xs leading-relaxed">
+                            <strong class="text-violet-300">Core Concept:</strong> Imagine managing a fleet of 500 delivery trucks across a metropolitan area. Forecasting traffic isn't enough; you must prescribe the exact sequence of turns, pickup order, and load balancing for every single driver.
+                        </p>
+                    </div>
+
+                    <ul class="text-xs text-slate-300 space-y-2 bg-slate-950 p-3.5 rounded-xl border border-slate-800">
+                        <li>• <strong class="text-amber-200">Vehicle Routing Problem (VRP):</strong> Moving beyond simple shortest-path algorithms, VRP prescribes optimal delivery routes across fleets while respecting hard constraints like capacity limits and time-window restrictions.</li>
+                        <li>• <strong class="text-amber-200">Fuel &amp; Carbon Minimization:</strong> By dynamically re-prescribing routes based on live traffic data and package priorities, logistics giants save millions of gallons of fuel annually.</li>
+                    </ul>
+
+                    <div class="p-3 bg-amber-500/10 border border-amber-500/30 rounded-xl text-xs text-amber-200">
+                        💬 <strong>Interactive Student Reflection:</strong> <em>If a highway accident delays Truck A by 25 minutes, what decision variables must your prescriptive model evaluate before re-assigning its remaining delivery windows to Truck B?</em>
+                    </div>
+                </div>
+
+                <!-- SVG Interactive Fleet Network Map -->
+                <div class="lg:col-span-7 bg-slate-950 p-6 rounded-2xl border border-slate-800 shadow-xl space-y-3">
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <h3 class="text-xs font-bold text-slate-300 uppercase tracking-wider">VRP Dynamic Fleet Route Optimizer</h3>
+                            <p class="text-[10px] text-slate-500">Live network topology and constraint evaluation engine</p>
+                        </div>
+                        <button onclick="toggleVRPRoute()" id="vrp-toggle-btn" class="px-3 py-1.5 bg-violet-600 hover:bg-violet-500 text-white font-bold rounded text-[11px] transition-all shadow-md cursor-pointer">
+                            Trigger Delay &amp; Re-Prescribe
+                        </button>
+                    </div>
+
+                    <!-- Canvas Container -->
+                    <div id="vrp-canvas" class="w-full h-52 bg-slate-900 rounded-xl border border-slate-800 flex items-center justify-center relative overflow-hidden">
+                        <!-- SVG graph rendered via JS -->
+                    </div>
+
+                    <!-- Dynamic Metrics Bar (Outside Canvas Grid) -->
+                    <div id="vrp-metrics">
+                        <!-- Metrics rendered dynamically via JS -->
+                    </div>
+
+                    <!-- Status Description -->
+                    <div id="vrp-status-desc" class="p-2.5 bg-slate-900 rounded-lg border border-slate-800">
+                        <!-- Populated dynamically via JS -->
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- SECTION 3: TOPIC 03 - INVENTORY REBALANCING -->
+        <section class="page-section bg-darkBg">
+            <div class="max-w-6xl w-full grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                <div class="lg:col-span-5 space-y-5">
+                    <div class="flex items-center gap-3">
+                        <span class="px-3 py-1 bg-violet-500/10 text-violet-400 border border-violet-500/30 rounded-full text-xs font-semibold tracking-wider uppercase">Topic 03</span>
+                        <span class="flex items-center gap-1 text-slate-400 text-xs font-medium">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                            Estimated Time: 15 Mins
+                        </span>
+                    </div>
+
+                    <h2 class="text-3xl font-extrabold text-white tracking-tight">2. Supply Chain: Inventory Rebalancing</h2>
+
+                    <div class="p-4 bg-slate-900 border-l-4 border-violet-500 rounded-r-lg shadow-md">
+                        <p class="text-slate-300 text-xs leading-relaxed">
+                            <strong class="text-violet-300">Core Concept:</strong> Preventing costly stockouts while minimizing holding costs across multi-echelon distribution networks.
+                        </p>
+                    </div>
+
+                    <div class="p-4 bg-slate-950 border border-slate-800 rounded-xl text-xs space-y-2">
+                        <strong class="text-white block">Continuous Multi-Warehouse Evaluation:</strong>
+                        <p class="text-slate-300 leading-relaxed">
+                            Prescriptive algorithms continuously evaluate warehouse stock levels and customer demand spikes to recommend automated transfers between distribution centers before stockouts occur.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Interactive Inventory Rebalancing Visualizer -->
+                <div class="lg:col-span-7 bg-slate-900 p-6 rounded-2xl border border-slate-800 shadow-xl space-y-4">
+                    <div class="flex justify-between items-center">
+                        <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider">Multi-Echelon Stock Transfer Simulator</h3>
+                        <span class="text-[10px] text-violet-400 font-mono">Automated Re-allocation</span>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="p-4 bg-slate-950 rounded-xl border border-slate-800 space-y-2">
+                            <div class="flex justify-between items-center">
+                                <span class="text-xs font-bold text-white">Hub Warehouse Alpha</span>
+                                <span class="text-[10px] text-emerald-400 font-mono">Surplus (+450 units)</span>
+                            </div>
+                            <div class="w-full bg-slate-800 h-3 rounded-full overflow-hidden">
+                                <div class="bg-emerald-500 h-full w-[85%]"></div>
+                            </div>
+                            <p class="text-[11px] text-slate-400">Capacity: 85% full | Holding cost penalty accumulating.</p>
+                        </div>
+
+                        <div class="p-4 bg-slate-950 rounded-xl border border-slate-800 space-y-2">
+                            <div class="flex justify-between items-center">
+                                <span class="text-xs font-bold text-white">Hub Warehouse Beta</span>
+                                <span class="text-[10px] text-rose-400 font-mono">Stockout Risk (&lt;15%)</span>
+                            </div>
+                            <div class="w-full bg-slate-800 h-3 rounded-full overflow-hidden">
+                                <div class="bg-rose-500 h-full w-[12%]"></div>
+                            </div>
+                            <p class="text-[11px] text-slate-400">Capacity: 12% full | High localized surge forecast.</p>
+                        </div>
+                    </div>
+
+                    <div class="p-3 bg-violet-950/60 border border-violet-500/40 rounded-xl text-xs space-y-1">
+                        <strong class="text-violet-300 font-bold block">Prescribed Action:</strong>
+                        <p class="text-slate-300">
+                            Transfer 300 units from Warehouse Alpha to Beta via regional transit route #4. Minimizes combined stockout penalty ($12,000) and transport cost ($1,400). Net Saved ROI: <strong>$10,600</strong>.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 4: TOPIC 04 - HEALTHCARE BED ALLOCATION -->
+        <section class="page-section bg-slate-900">
+            <div class="max-w-6xl w-full grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                <div class="lg:col-span-5 space-y-5">
+                    <div class="flex items-center gap-3">
+                        <span class="px-3 py-1 bg-sky-500/10 text-sky-400 border border-sky-500/30 rounded-full text-xs font-semibold tracking-wider uppercase">Topic 04</span>
+                        <span class="flex items-center gap-1 text-slate-400 text-xs font-medium">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                            Estimated Time: 15 Mins
+                        </span>
+                    </div>
+
+                    <h2 class="text-3xl font-extrabold text-white tracking-tight">3. Healthcare: Bed &amp; Resource Allocation</h2>
+
+                    <div class="p-4 bg-slate-950 border-l-4 border-sky-500 rounded-r-lg shadow-md">
+                        <p class="text-slate-300 text-xs leading-relaxed">
+                            <strong class="text-sky-300">Core Concept:</strong> In healthcare, prescriptive analytics isn't just about reducing operational costs—it actively saves lives by optimizing scarce resources and personalizing care plans.
+                        </p>
+                    </div>
+
+                    <div class="p-3.5 bg-slate-950 border border-slate-800 rounded-xl text-xs space-y-2">
+                        <strong class="text-sky-400 font-semibold block">Capacity &amp; Bed Allocation:</strong>
+                        <p class="text-slate-300 leading-relaxed">
+                            Hospitals use predictive patient influx models to prescribe real-time bed assignments, emergency room triage queues, and staff shifts.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Interactive Emergency Queue Allocator -->
+                <div class="lg:col-span-7 bg-slate-950 p-6 rounded-2xl border border-slate-800 shadow-xl space-y-4">
+                    <div class="flex justify-between items-center">
+                        <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider">Hospital Triage &amp; Bed Prescriber</h3>
+                        <span class="text-[10px] text-sky-300 bg-sky-950 border border-sky-800 px-2 py-0.5 rounded">ER Dynamic Simulation</span>
+                    </div>
+
+                    <div class="grid grid-cols-3 gap-2 text-xs">
+                        <div class="p-3 bg-slate-900 rounded-lg border border-slate-800 text-center space-y-1">
+                            <span class="text-[10px] text-slate-400 uppercase block">ICU Beds</span>
+                            <span class="text-lg font-bold text-rose-400">92% Full</span>
+                            <span class="text-[10px] text-slate-400 block">2 Available</span>
+                        </div>
+                        <div class="p-3 bg-slate-900 rounded-lg border border-slate-800 text-center space-y-1">
+                            <span class="text-[10px] text-slate-400 uppercase block">Surgical Beds</span>
+                            <span class="text-lg font-bold text-amber-400">78% Full</span>
+                            <span class="text-[10px] text-slate-400 block">6 Available</span>
+                        </div>
+                        <div class="p-3 bg-slate-900 rounded-lg border border-slate-800 text-center space-y-1">
+                            <span class="text-[10px] text-slate-400 uppercase block">General Ward</span>
+                            <span class="text-lg font-bold text-emerald-400">54% Full</span>
+                            <span class="text-[10px] text-slate-400 block">18 Available</span>
+                        </div>
+                    </div>
+
+                    <div class="p-3 bg-slate-900 rounded-xl border border-slate-800 text-xs space-y-1">
+                        <div class="text-sky-400 font-bold">Prescribed Emergency Queue Re-Route:</div>
+                        <p class="text-slate-300">
+                            Transfer 3 post-op recovery patients to Step-Down Ward B at 14:00 to release ICU buffer capacity for predicted evening trauma intake.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 5: TOPIC 05 - CLINICAL DECISIONS & PROTOCOLS -->
+        <section class="page-section bg-darkBg">
+            <div class="max-w-6xl w-full grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                <div class="lg:col-span-5 space-y-5">
+                    <div class="flex items-center gap-3">
+                        <span class="px-3 py-1 bg-sky-500/10 text-sky-400 border border-sky-500/30 rounded-full text-xs font-semibold tracking-wider uppercase">Topic 05</span>
+                        <span class="flex items-center gap-1 text-slate-400 text-xs font-medium">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                            Estimated Time: 15 Mins
+                        </span>
+                    </div>
+
+                    <h2 class="text-3xl font-extrabold text-white tracking-tight">4. Clinical Decisions &amp; Operating Rooms</h2>
+
+                    <ul class="text-xs text-slate-300 space-y-2 bg-slate-900 p-3.5 rounded-xl border border-slate-800">
+                        <li>• <strong>Operating Room Scheduling:</strong> Prescribes optimal surgical schedules to balance surgeon availability, equipment sterilization times, and emergency buffer capacity.</li>
+                        <li>• <strong>Personalized Treatment Protocols:</strong> By combining genetic profiles, historical outcomes, and medical histories, prescriptive algorithms recommend tailored drug dosages and treatment paths to maximize recovery rates.</li>
+                    </ul>
+
+                    <div class="p-3 bg-amber-500/10 border border-amber-500/30 rounded-xl text-xs text-amber-200">
+                        💬 <strong>Interactive Student Reflection:</strong> <em>How do you configure a prescriptive model when the primary goal (patient health outcomes) directly conflicts with a secondary constraint (budgetary limits)?</em>
+                    </div>
+                </div>
+
+                <!-- Interactive OR Schedule & Protocol Matrix -->
+                <div class="lg:col-span-7 bg-slate-900 p-6 rounded-2xl border border-slate-800 shadow-xl space-y-4">
+                    <div class="flex justify-between items-center">
+                        <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider">OR Schedule Optimization Matrix</h3>
+                        <span class="text-[10px] text-sky-400 font-mono">Sterilization Buffer Active</span>
+                    </div>
+
+                    <div class="space-y-2 text-xs">
+                        <div class="p-2.5 bg-slate-950 rounded-lg border border-slate-800 flex justify-between items-center">
+                            <div>
+                                <span class="text-white font-bold block">OR Suite 1 (Cardiology)</span>
+                                <span class="text-[10px] text-slate-400">Dr. Aris | 08:00 - 12:30 | Prep time: 45 min</span>
+                            </div>
+                            <span class="px-2 py-0.5 bg-emerald-950 text-emerald-300 border border-emerald-800 text-[10px] rounded">Optimized</span>
+                        </div>
+
+                        <div class="p-2.5 bg-slate-950 rounded-lg border border-slate-800 flex justify-between items-center">
+                            <div>
+                                <span class="text-white font-bold block">OR Suite 2 (Orthopedic)</span>
+                                <span class="text-[10px] text-slate-400">Dr. Elena | 09:15 - 14:00 | Sterilization gap included</span>
+                            </div>
+                            <span class="px-2 py-0.5 bg-emerald-950 text-emerald-300 border border-emerald-800 text-[10px] rounded">Optimized</span>
+                        </div>
+
+                        <div class="p-2.5 bg-slate-950 rounded-lg border border-slate-800 flex justify-between items-center">
+                            <div>
+                                <span class="text-white font-bold block">OR Suite 3 (Emergency Buffer)</span>
+                                <span class="text-[10px] text-slate-400">Reserved for dynamic unscheduled arrival window</span>
+                            </div>
+                            <span class="px-2 py-0.5 bg-amber-950 text-amber-300 border border-amber-800 text-[10px] rounded">Standby</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 6: TOPIC 06 - FINANCE PORTFOLIO EFFICIENT FRONTIER -->
+        <section class="page-section bg-slate-900">
+            <div class="max-w-6xl w-full grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                <div class="lg:col-span-5 space-y-5">
+                    <div class="flex items-center gap-3">
+                        <span class="px-3 py-1 bg-pink-500/10 text-pink-400 border border-pink-500/30 rounded-full text-xs font-semibold tracking-wider uppercase">Topic 06</span>
+                        <span class="flex items-center gap-1 text-slate-400 text-xs font-medium">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                            Estimated Time: 15 Mins
+                        </span>
+                    </div>
+
+                    <h2 class="text-3xl font-extrabold text-white tracking-tight">5. Financial Portfolio Prescriptions</h2>
+
+                    <div class="p-4 bg-slate-950 border-l-4 border-pink-500 rounded-r-lg shadow-md">
+                        <p class="text-slate-300 text-xs leading-relaxed">
+                            <strong class="text-pink-300">Core Concept:</strong> Financial markets generate millions of data points per second. Prescriptive analytics enables automated systems to execute precise investment decisions in milliseconds.
+                        </p>
+                    </div>
+
+                    <div class="p-3.5 bg-slate-950 border border-slate-800 rounded-xl text-xs space-y-2">
+                        <strong class="text-pink-400 font-semibold block">Markowitz Efficient Frontier:</strong>
+                        <p class="text-slate-300 leading-relaxed">
+                            Prescribes exact percentage allocations across asset classes to maximize expected returns for a given level of risk.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Interactive Markowitz Efficient Frontier Plot -->
+                <div class="lg:col-span-7 bg-slate-950 p-6 rounded-2xl border border-slate-800 shadow-xl space-y-3">
+                    <div class="flex justify-between items-center">
+                        <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider">Markowitz Efficient Frontier Curve</h3>
+                        <span class="text-[10px] text-pink-300 bg-pink-950 border border-pink-800 px-2 py-0.5 rounded font-mono">Risk vs. Return</span>
+                    </div>
+
+                    <div id="frontier-canvas" class="w-full h-56 bg-slate-900 rounded-xl border border-slate-800 flex items-center justify-center p-2 relative">
+                        <!-- Rendered by JS -->
+                    </div>
+
+                    <p id="frontier-desc" class="text-xs text-slate-400 p-2 bg-slate-900 rounded-lg border border-slate-800">
+                        Tangency Portfolio: Prescribes 45% Tech Stocks, 35% Treasury Bonds, 20% Commodities for max Sharpe Ratio.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 7: TOPIC 07 - ALGORITHMIC TRADING & CREDIT GRANTING -->
+        <section class="page-section bg-darkBg">
+            <div class="max-w-6xl w-full grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                <div class="lg:col-span-5 space-y-5">
+                    <div class="flex items-center gap-3">
+                        <span class="px-3 py-1 bg-pink-500/10 text-pink-400 border border-pink-500/30 rounded-full text-xs font-semibold tracking-wider uppercase">Topic 07</span>
+                        <span class="flex items-center gap-1 text-slate-400 text-xs font-medium">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                            Estimated Time: 15 Mins
+                        </span>
+                    </div>
+
+                    <h2 class="text-3xl font-extrabold text-white tracking-tight">6. Algorithmic Execution &amp; Credit Prescriptions</h2>
+
+                    <ul class="text-xs text-slate-300 space-y-2 bg-slate-900 p-3.5 rounded-xl border border-slate-800">
+                        <li>• <strong>Algorithmic Trading Strategies:</strong> Prescribes automated buy/sell order execution schedules to minimize market impact and slippage during large volume trades.</li>
+                        <li>• <strong>Automated Credit Granting:</strong> Evaluates applicant risk profiles to automatically prescribe customized loan amounts, interest rates, and repayment terms.</li>
+                    </ul>
+
+                    <div class="p-3 bg-amber-500/10 border border-amber-500/30 rounded-xl text-xs text-amber-200">
+                        💬 <strong>Interactive Student Reflection:</strong> <em>Why is it critical to include strict liquidity constraints in a portfolio optimization model during market volatility?</em>
+                    </div>
+                </div>
+
+                <!-- Interactive Automated Credit Engine -->
+                <div class="lg:col-span-7 bg-slate-950 p-6 rounded-2xl border border-slate-800 shadow-xl space-y-4">
+                    <div class="flex justify-between items-center">
+                        <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider">Automated Credit Prescriber Engine</h3>
+                        <span class="text-[10px] text-pink-400 font-mono">Real-Time Scoring</span>
+                    </div>
+
+                    <div class="p-4 bg-slate-900 rounded-xl border border-slate-800 space-y-3 text-xs">
+                        <div class="flex justify-between items-center border-b border-slate-800 pb-2">
+                            <span class="text-slate-300 font-bold">Applicant Risk Profile: #88241</span>
+                            <span class="px-2 py-0.5 bg-emerald-950 text-emerald-300 border border-emerald-800 rounded font-mono">Credit Score: 742</span>
+                        </div>
+
+                        <div class="grid grid-cols-3 gap-2 text-center text-[11px]">
+                            <div class="p-2 bg-slate-950 rounded">
+                                <span class="text-slate-400 block text-[10px]">Prescribed Limit</span>
+                                <strong class="text-white text-sm">$35,000</strong>
+                            </div>
+                            <div class="p-2 bg-slate-950 rounded">
+                                <span class="text-slate-400 block text-[10px]">Prescribed Rate</span>
+                                <strong class="text-pink-400 text-sm">6.2% APR</strong>
+                            </div>
+                            <div class="p-2 bg-slate-950 rounded">
+                                <span class="text-slate-400 block text-[10px]">Term Length</span>
+                                <strong class="text-white text-sm">48 Months</strong>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 8: TOPIC 08 - RETAIL DYNAMIC PRICING -->
+        <section class="page-section bg-slate-900">
+            <div class="max-w-6xl w-full grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                <div class="lg:col-span-5 space-y-5">
+                    <div class="flex items-center gap-3">
+                        <span class="px-3 py-1 bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 rounded-full text-xs font-semibold tracking-wider uppercase">Topic 08</span>
+                        <span class="flex items-center gap-1 text-slate-400 text-xs font-medium">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                            Estimated Time: 15 Mins
+                        </span>
+                    </div>
+
+                    <h2 class="text-3xl font-extrabold text-white tracking-tight">7. Retail, Dynamic Pricing &amp; Revenue</h2>
+
+                    <div class="p-4 bg-slate-950 border-l-4 border-emerald-500 rounded-r-lg shadow-md">
+                        <p class="text-slate-300 text-xs leading-relaxed">
+                            <strong class="text-emerald-300">Core Concept:</strong> Airlines and e-commerce platforms don't use static prices. They dynamically alter prices in real time to maximize total revenue.
+                        </p>
+                    </div>
+
+                    <div class="p-3.5 bg-slate-950 border border-slate-800 rounded-xl text-xs space-y-2">
+                        <strong class="text-emerald-400 font-semibold block">Price Elasticity Prescriptions:</strong>
+                        <p class="text-slate-300 leading-relaxed">
+                            Calculates consumer price sensitivity to automatically adjust item pricing based on current demand, competitor pricing, and inventory lifespan.
+                        </p>
+                    </div>
+
+                    <div class="p-3 bg-amber-500/10 border border-amber-500/30 rounded-xl text-xs text-amber-200">
+                        💬 <strong>Interactive Student Reflection:</strong> <em>What ethical guardrails should a retail prescriptive pricing model incorporate to avoid predatory pricing during emergencies?</em>
+                    </div>
+                </div>
+
+                <!-- Dynamic Elasticity Curve Interactive Widget -->
+                <div class="lg:col-span-7 bg-slate-950 p-6 rounded-2xl border border-slate-800 shadow-xl space-y-3">
+                    <div class="flex justify-between items-center">
+                        <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider">Dynamic Elasticity Curve &amp; Revenue Maxima</h3>
+                        <span class="text-[10px] text-emerald-300 bg-emerald-950 border border-emerald-800 px-2 py-0.5 rounded font-mono">Real-time Elasticity</span>
+                    </div>
+
+                    <div id="elasticity-canvas" class="w-full h-56 bg-slate-900 rounded-xl border border-slate-800 flex items-center justify-center p-2 relative">
+                        <!-- Rendered by JS -->
+                    </div>
+
+                    <p id="elasticity-desc" class="text-xs text-slate-400 p-2 bg-slate-900 rounded-lg border border-slate-800">
+                        Prescribed Optimal Price: $142.50 | Expected Demand: 1,850 units | Max Projected Revenue: $263,625.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 9: TOPIC 09 - MARKDOWN & PROMOTION OPTIMIZATION -->
+        <section class="page-section bg-darkBg">
+            <div class="max-w-6xl w-full grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                <div class="lg:col-span-5 space-y-5">
+                    <div class="flex items-center gap-3">
+                        <span class="px-3 py-1 bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 rounded-full text-xs font-semibold tracking-wider uppercase">Topic 09</span>
+                        <span class="flex items-center gap-1 text-slate-400 text-xs font-medium">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                            Estimated Time: 15 Mins
+                        </span>
+                    </div>
+
+                    <h2 class="text-3xl font-extrabold text-white tracking-tight">8. Markdown Strategy &amp; Tailored Promotions</h2>
+
+                    <ul class="text-xs text-slate-300 space-y-2 bg-slate-900 p-3.5 rounded-xl border border-slate-800">
+                        <li>• <strong>Markdown Optimization:</strong> Prescribes the exact timing and discount percentage for seasonal clearance items to clear inventory while maximizing profit margin.</li>
+                        <li>• <strong>Personalized Promotions:</strong> Recommends specific coupon values or bundle offers tailored to individual user shopping cart histories to drive conversion rates.</li>
+                    </ul>
+                </div>
+
+                <!-- Interactive Clearance Markdown Schedule -->
+                <div class="lg:col-span-7 bg-slate-950 p-6 rounded-2xl border border-slate-800 shadow-xl space-y-4">
+                    <div class="flex justify-between items-center">
+                        <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider">Seasonal Clearance Markdown Schedule</h3>
+                        <span class="text-[10px] text-emerald-400 font-mono">Profit Margin Target: &gt;22%</span>
+                    </div>
+
+                    <div class="grid grid-cols-3 gap-2 text-xs">
+                        <div class="p-3 bg-slate-900 rounded-lg border border-slate-800 text-center space-y-1">
+                            <span class="text-[10px] text-slate-400 uppercase block">Phase 1 (Week 1-2)</span>
+                            <span class="text-base font-bold text-emerald-400">15% Discount</span>
+                            <span class="text-[10px] text-slate-400 block">Target: High-intent users</span>
+                        </div>
+                        <div class="p-3 bg-slate-900 rounded-lg border border-slate-800 text-center space-y-1">
+                            <span class="text-[10px] text-slate-400 uppercase block">Phase 2 (Week 3-4)</span>
+                            <span class="text-base font-bold text-amber-400">30% Discount</span>
+                            <span class="text-[10px] text-slate-400 block">Target: Cart abandoners</span>
+                        </div>
+                        <div class="p-3 bg-slate-900 rounded-lg border border-slate-800 text-center space-y-1">
+                            <span class="text-[10px] text-slate-400 uppercase block">Phase 3 (Final Week)</span>
+                            <span class="text-base font-bold text-rose-400">50% Clearance</span>
+                            <span class="text-[10px] text-slate-400 block">Target: Bulk liquidation</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 10: TOPIC 10 - THE BRIDGE TO PREDICTIVE METHOD APPLICATIONS -->
+        <section class="page-section bg-slate-900">
+            <div class="max-w-4xl w-full text-center space-y-6">
+                <span class="px-3 py-1 bg-violet-500/10 text-violet-400 border border-violet-500/30 rounded-full text-xs font-semibold tracking-wider uppercase">
+                    The Conceptual Bridge
+                </span>
+
+                <h2 class="text-4xl font-extrabold text-white tracking-tight">
+                    From Strategic Concepts to Concrete Predictive Methods
+                </h2>
+
+                <div class="p-6 bg-slate-950 border border-slate-800 rounded-2xl text-left space-y-4 shadow-xl">
+                    <p class="text-slate-300 text-sm leading-relaxed">
+                        Now that you have seen how prescriptive frameworks optimize real-world decisions across industries, we must master the foundational mathematical tools that power these predictions.
+                    </p>
+
+                    <div class="p-4 bg-violet-950/40 border border-violet-500/30 rounded-xl flex items-center gap-4">
+                        <div class="w-10 h-10 rounded-full bg-violet-600 text-white flex items-center justify-center font-bold text-lg shrink-0">&rarr;</div>
+                        <p class="text-xs text-violet-200 leading-relaxed">
+                            Starting next week, we dive deep into <strong>Predictive Method Applications</strong>, beginning with <strong>Simple Linear Regression</strong> to mathematically model relationships between variables.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 11: TOPIC 11 - PRACTICAL LAB STUDIO -->
+        <section class="page-section bg-darkBg">
+            <div class="max-w-5xl w-full bg-[#1e1e1e] p-1 rounded-2xl border border-slate-700 shadow-2xl overflow-hidden flex flex-col h-[85vh]">
+                
+                <!-- Mock IDE Header -->
+                <div class="w-full bg-[#2d2d2d] py-2 px-4 flex items-center justify-between border-b border-[#3c3c3c]">
+                    <div class="flex gap-2">
+                        <div class="w-3 h-3 rounded-full bg-rose-500"></div>
+                        <div class="w-3 h-3 rounded-full bg-amber-500"></div>
+                        <div class="w-3 h-3 rounded-full bg-emerald-500"></div>
+                    </div>
+                    <div class="text-[11px] text-slate-400 font-mono">Week6_Prescriptive_Optimization.ipynb</div>
+                    <div class="text-[10px] px-2 py-1 bg-violet-600 text-white rounded font-sans font-bold">Python 3 / PuLP &amp; SciPy</div>
+                </div>
+
+                <!-- IDE Content Area -->
+                <div class="flex-1 flex flex-col md:flex-row overflow-hidden bg-[#1e1e1e]">
+                    
+                    <!-- Sidebar Instructions -->
+                    <div class="w-full md:w-1/3 bg-[#252526] border-r border-[#3c3c3c] p-4 overflow-y-auto space-y-3">
+                        <div class="flex items-center gap-2">
+                            <span class="px-2 py-0.5 bg-violet-500/20 text-violet-400 rounded text-[10px] font-bold uppercase">4 Hours</span>
+                            <h2 class="text-xs font-bold text-white">Case-Study Based Modeling</h2>
+                        </div>
+
+                        <div class="space-y-2 text-[11px] text-slate-300">
+                            <div class="p-2 bg-[#1e1e1e] rounded border border-slate-800">
+                                <strong>1. Domain Selection:</strong> Select VRP, Bed Allocation, or Portfolio.
+                            </div>
+                            <div class="p-2 bg-[#1e1e1e] rounded border border-slate-800">
+                                <strong>2. Predictive Baseline:</strong> Train model for target metric (stay duration or volatility).
+                            </div>
+                            <div class="p-2 bg-[#1e1e1e] rounded border border-slate-800">
+                                <strong>3. Prescriptive Model:</strong> Formulate via <code>SciPy.optimize</code> or <code>PuLP</code>.
+                            </div>
+                            <div class="p-2 bg-[#1e1e1e] rounded border border-slate-800">
+                                <strong>4. Scenario Analysis:</strong> Run "what-if" simulations on business constraints.
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Code Editor & Execution Panel -->
+                    <div class="w-full md:w-2/3 flex flex-col h-full bg-[#1e1e1e]">
+                        <div class="flex-1 p-4 overflow-y-auto code-font text-xs space-y-2">
+                            <div class="p-2 bg-[#252526]/60 rounded border-l-2 border-violet-500">
+                                <span class="text-[#6a9955]"># Step 1 &amp; 2: Import PuLP &amp; setup Optimization Problem</span><br>
+                                <span class="text-[#c586c0]">import</span> pulp <span class="text-[#c586c0]">as</span> pl<br>
+                                prob = pl.LpProblem(<span class="text-[#ce9178]">'SupplyChain_VRP_Optimization'</span>, pl.LpMinimize)
+                            </div>
+
+                            <div class="p-2 bg-[#252526]/60 rounded border-l-2 border-sky-500">
+                                <span class="text-[#6a9955]"># Step 3: Define Decision Variables &amp; Objective Function</span><br>
+                                x_A = pl.LpVariable(<span class="text-[#ce9178]">'Truck_A_Units'</span>, lowBound=<span class="text-[#b5cea8]">0</span>, cat=<span class="text-[#ce9178]'Integer'</span>)<br>
+                                x_B = pl.LpVariable(<span class="text-[#ce9178]">'Truck_B_Units'</span>, lowBound=<span class="text-[#b5cea8]">0</span>, cat=<span class="text-[#ce9178]'Integer'</span>)<br>
+                                prob += <span class="text-[#b5cea8]">12</span>*x_A + <span class="text-[#b5cea8]">15</span>*x_B, <span class="text-[#ce9178]'Total_Transit_Cost'</span>
+                            </div>
+
+                            <div class="p-2 bg-[#252526]/60 rounded border-l-2 border-emerald-500">
+                                <span class="text-[#6a9955]"># Step 4: Constraints &amp; Solver Execution</span><br>
+                                prob += x_A + x_B &gt;= <span class="text-[#b5cea8]">500</span>, <span class="text-[#ce9178]'Demand_Requirement'</span><br>
+                                prob += x_A &lt;= <span class="text-[#b5cea8]">300</span>, <span class="text-[#ce9178]'Capacity_Truck_A'</span><br>
+                                prob.solve()
+                            </div>
+                        </div>
+
+                        <!-- Run Bar -->
+                        <div class="bg-[#2d2d2d] p-2.5 px-4 border-t border-b border-[#3c3c3c] flex justify-between items-center">
+                            <span class="text-[10px] text-slate-400 font-mono">In [1]: PuLP Solver Pipeline</span>
+                            <button onclick="runLabCode()" class="px-4 py-1.5 bg-violet-900 hover:bg-violet-600 text-white text-xs font-semibold rounded flex items-center gap-2 transition-colors cursor-pointer">
+                                <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg> Solve Model
+                            </button>
+                        </div>
+
+                        <!-- Terminal Output -->
+                        <div class="h-1/3 bg-[#1e1e1e] p-3 overflow-y-auto code-font text-[11px] text-slate-300 relative">
+                            <div id="terminal-placeholder" class="text-[#6a9955] italic p-2"># Click "Solve Model" above to solve PuLP optimization model...</div>
+                            <div id="terminal-output" class="hidden space-y-2 animate-fade-in">
+                                <div class="p-2 bg-slate-950 rounded border border-slate-800 text-[10px] text-emerald-400 font-mono">
+                                    Status: Optimal Solution Found!<br>
+                                    Truck_A_Units = 300 | Truck_B_Units = 200<br>
+                                    Prescribed Minimum Cost = $6,600
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Interactive Scripts -->
+    <script>
+        const container = document.getElementById('scrollContainer');
+        const dots = document.querySelectorAll('.nav-dot');
+        const totalPages = 12;
+
+        function getCurrentPageIndex() {
+            return Math.round(container.scrollTop / window.innerHeight);
+        }
+
+        function scrollToPage(index) {
+            if (index < 0) index = 0;
+            if (index >= totalPages) index = totalPages - 1;
+            container.scrollTo({
+                top: index * window.innerHeight,
+                behavior: 'smooth'
+            });
+            updateDots(index);
+        }
+
+        function updateDots(activeIndex) {
+            dots.forEach((dot, idx) => {
+                if (idx === activeIndex) {
+                    dot.classList.add('active');
+                } else {
+                    dot.classList.remove('active');
+                }
+            });
+        }
+
+        container.addEventListener('scroll', () => {
+            updateDots(getCurrentPageIndex());
+        });
+
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowDown' || e.key === 'PageDown') {
+                e.preventDefault();
+                scrollToPage(getCurrentPageIndex() + 1);
+            } else if (e.key === 'ArrowUp' || e.key === 'PageUp') {
+                e.preventDefault();
+                scrollToPage(getCurrentPageIndex() - 1);
+            }
+        });
+
+        // Sector Data for Topic 01
+        const sectors = {
+            logistics: {
+                title: "Logistics & Supply Chain Ecosystem",
+                desc: "Solves Fleet VRP (Vehicle Routing Problem), fuel minimization, and dynamic warehouse rebalancing.",
+                metrics: "Primary KPI: Minimum Transit Cost & Zero Stockouts"
+            },
+            healthcare: {
+                title: "Healthcare Systems Ecosystem",
+                desc: "Optimizes ER triage queues, ICU bed allocation, and surgeon scheduling.",
+                metrics: "Primary KPI: Reduced Wait Time & Maximized Care Outcomes"
+            },
+            finance: {
+                title: "Financial Services Ecosystem",
+                desc: "Finds the ideal mix of investments (like stocks and bonds) to give the highest returns for  comfortable risk level, while automating trades and loan approvals.",
+                metrics: "Primary KPI: Highest Investment Growth at Lowest Risk"
+            },
+            retail: {
+                title: "Retail & Dynamic Pricing Ecosystem",
+                desc: "Automatically adjusts product prices based on demand, plans discounts to clear old inventory, and offers targeted deals to shoppers at checkout.",
+                metrics: "Primary KPI: Maximum Profit & Fast Stock Clearance"
+            }
+        };
+
+        function selectSector(key) {
+            const data = sectors[key];
+            const box = document.getElementById('sector-display');
+            box.innerHTML = `
+                <div class="space-y-2 animate-fade-in">
+                    <strong class="text-white font-bold text-sm">${data.title}</strong>
+                    <p class="text-slate-300 text-xs">${data.desc}</p>
+                    <span class="text-[10px] text-violet-400 block font-mono">${data.metrics}</span>
+                </div>
+            `;
+            document.querySelectorAll('.sector-btn').forEach(b => b.classList.remove('ring-2', 'ring-violet-500'));
+            document.getElementById(`sec-btn-${key}`).classList.add('ring-2', 'ring-violet-500');
+        }
+
+        // Initialize Sector 1
+        selectSector('logistics');
+
+        // SVG VRP Optimizer Canvas Script
+        let vrpAlternative = false;
+
+        function renderVRP() {
+            const canvas = document.getElementById('vrp-canvas');
+            const toggleBtn = document.getElementById('vrp-toggle-btn');
+            const statusDesc = document.getElementById('vrp-status-desc');
+            const metricsBox = document.getElementById('vrp-metrics');
+
+            if (!vrpAlternative) {
+                toggleBtn.innerText = "Trigger Delay & Re-Prescribe";
+                toggleBtn.className = "px-3 py-1.5 bg-violet-600 hover:bg-violet-500 text-white font-bold rounded text-[11px] transition-all shadow-md cursor-pointer";
+                
+                statusDesc.innerHTML = `
+                    <div class="flex justify-between items-center text-xs">
+                        <span><strong class="text-violet-400">Baseline Schedule:</strong> Truck A covers Nodes N1 → N2 → N3. Truck B covers Nodes N4 → N5.</span>
+                        <span class="px-2 py-0.5 bg-emerald-950 text-emerald-400 border border-emerald-800 rounded font-mono text-[10px]">Traffic: Clear</span>
+                    </div>`;
+
+                canvas.innerHTML = `
+                <svg class="w-full h-full" viewBox="0 0 520 200" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
+                            <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#1e293b" stroke-width="0.8"/>
+                        </pattern>
+                        <filter id="glow-violet" x="-20%" y="-20%" width="140%" height="140%">
+                            <feGaussianBlur stdDeviation="3" result="blur" />
+                            <feComposite in="SourceGraphic" in2="blur" operator="over" />
+                        </filter>
+                    </defs>
+                    
+                    <!-- Grid Background -->
+                    <rect width="100%" height="100%" fill="url(#grid)" />
+
+                    <!-- Baseline Route A (Truck A - Purple) -->
+                    <path d="M 60 100 L 150 45 L 270 45 L 410 80" stroke="#8b5cf6" stroke-width="3" fill="none" stroke-dasharray="6,3" />
+                    
+                    <!-- Baseline Route B (Truck B - Pink) -->
+                    <path d="M 60 100 L 180 155 L 330 155 L 410 80" stroke="#ec4899" stroke-width="2.5" fill="none" stroke-dasharray="4,4" opacity="0.3" />
+                    <path d="M 60 100 L 180 155 L 330 155" stroke="#ec4899" stroke-width="3" fill="none" />
+
+                    <!-- Hub -->
+                    <g transform="translate(60, 100)">
+                        <circle r="16" fill="#0f172a" stroke="#8b5cf6" stroke-width="3" filter="url(#glow-violet)"/>
+                        <text y="4" fill="#fff" font-size="9" font-weight="bold" text-anchor="middle">HUB</text>
+                    </g>
+
+                    <!-- Route A Nodes -->
+                    <g transform="translate(150, 45)"><circle r="11" fill="#1e293b" stroke="#8b5cf6" stroke-width="2"/><text y="3" fill="#a7f3d0" font-size="8" font-weight="bold" text-anchor="middle">N1</text></g>
+                    <g transform="translate(270, 45)"><circle r="11" fill="#1e293b" stroke="#8b5cf6" stroke-width="2"/><text y="3" fill="#a7f3d0" font-size="8" font-weight="bold" text-anchor="middle">N2</text></g>
+                    <g transform="translate(410, 80)"><circle r="11" fill="#1e293b" stroke="#8b5cf6" stroke-width="2"/><text y="3" fill="#a7f3d0" font-size="8" font-weight="bold" text-anchor="middle">N3</text></g>
+
+                    <!-- Route B Nodes -->
+                    <g transform="translate(180, 155)"><circle r="11" fill="#1e293b" stroke="#ec4899" stroke-width="2"/><text y="3" fill="#f472b6" font-size="8" font-weight="bold" text-anchor="middle">N4</text></g>
+                    <g transform="translate(330, 155)"><circle r="11" fill="#1e293b" stroke="#ec4899" stroke-width="2"/><text y="3" fill="#f472b6" font-size="8" font-weight="bold" text-anchor="middle">N5</text></g>
+
+                    <!-- Route Labels -->
+                    <rect x="185" y="18" width="100" height="18" rx="4" fill="#0f172a" stroke="#8b5cf6" stroke-width="1"/>
+                    <text x="235" y="30" fill="#c084fc" font-size="8" font-weight="bold" text-anchor="middle">Truck A (3 Stops)</text>
+
+                    <rect x="210" y="165" width="100" height="18" rx="4" fill="#0f172a" stroke="#ec4899" stroke-width="1"/>
+                    <text x="260" y="177" fill="#f472b6" font-size="8" font-weight="bold" text-anchor="middle">Truck B (2 Stops)</text>
+                </svg>`;
+
+                metricsBox.innerHTML = `
+                    <div class="grid grid-cols-3 gap-2 bg-slate-900 border border-slate-800 p-2.5 rounded-xl text-center text-[11px]">
+                        <div class="p-1.5 bg-slate-950 rounded border border-slate-800/80">
+                            <span class="text-slate-400 block text-[10px]">Total Fleet Distance</span>
+                            <strong class="text-white font-mono">142 km</strong>
+                        </div>
+                        <div class="p-1.5 bg-slate-950 rounded border border-slate-800/80">
+                            <span class="text-slate-400 block text-[10px]">Est. Fuel Usage</span>
+                            <strong class="text-emerald-400 font-mono">28.4 L</strong>
+                        </div>
+                        <div class="p-1.5 bg-slate-950 rounded border border-slate-800/80">
+                            <span class="text-slate-400 block text-[10px]">On-Time Window</span>
+                            <strong class="text-emerald-400 font-mono">100%</strong>
+                        </div>
+                    </div>`;
+            } else {
+                toggleBtn.innerText = "Reset to Baseline Route";
+                toggleBtn.className = "px-3 py-1.5 bg-amber-600 hover:bg-amber-500 text-white font-bold rounded text-[11px] transition-all shadow-md cursor-pointer";
+
+                statusDesc.innerHTML = `
+                    <div class="flex justify-between items-center text-xs">
+                        <span><strong class="text-rose-400">Incident Detected:</strong> 25-min delay on Highway N2. Prescriptive engine re-assigned <strong>Node N3</strong> to Truck B.</span>
+                        <span class="px-2 py-0.5 bg-rose-950 text-rose-400 border border-rose-800 rounded font-mono text-[10px] animate-pulse">Delay Mitigated</span>
+                    </div>`;
+
+                canvas.innerHTML = `
+                <svg class="w-full h-full" viewBox="0 0 520 200" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <pattern id="grid2" width="20" height="20" patternUnits="userSpaceOnUse">
+                            <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#1e293b" stroke-width="0.8"/>
+                        </pattern>
+                    </defs>
+                    
+                    <rect width="100%" height="100%" fill="url(#grid2)" />
+
+                    <!-- Truncated Truck A Route -->
+                    <path d="M 60 100 L 150 45 L 270 45" stroke="#8b5cf6" stroke-width="3" fill="none" />
+                    <!-- Blocked Leg -->
+                    <path d="M 270 45 L 410 80" stroke="#f43f5e" stroke-width="2" fill="none" stroke-dasharray="4,4" opacity="0.6"/>
+
+                    <!-- Re-Prescribed Truck B Route -->
+                    <path d="M 60 100 L 180 155 L 330 155 L 410 80" stroke="#f59e0b" stroke-width="3.5" fill="none" stroke-dasharray="8,4" />
+
+                    <!-- Hub -->
+                    <g transform="translate(60, 100)">
+                        <circle r="16" fill="#0f172a" stroke="#8b5cf6" stroke-width="3"/>
+                        <text y="4" fill="#fff" font-size="9" font-weight="bold" text-anchor="middle">HUB</text>
+                    </g>
+
+                    <!-- Nodes -->
+                    <g transform="translate(150, 45)"><circle r="11" fill="#1e293b" stroke="#8b5cf6" stroke-width="2"/><text y="3" fill="#a7f3d0" font-size="8" font-weight="bold" text-anchor="middle">N1</text></g>
+                    <g transform="translate(270, 45)"><circle r="11" fill="#1e293b" stroke="#f43f5e" stroke-width="2.5"/><text y="3" fill="#fca5a5" font-size="8" font-weight="bold" text-anchor="middle">N2</text></g>
+                    
+                    <!-- Re-assigned Node 3 -->
+                    <g transform="translate(410, 80)">
+                        <circle r="14" fill="#f59e0b" opacity="0.2"/>
+                        <circle r="11" fill="#1e293b" stroke="#f59e0b" stroke-width="3"/>
+                        <text y="3" fill="#fde047" font-size="8" font-weight="bold" text-anchor="middle">N3</text>
+                    </g>
+
+                    <g transform="translate(180, 155)"><circle r="11" fill="#1e293b" stroke="#ec4899" stroke-width="2"/><text y="3" fill="#f472b6" font-size="8" font-weight="bold" text-anchor="middle">N4</text></g>
+                    <g transform="translate(330, 155)"><circle r="11" fill="#1e293b" stroke="#ec4899" stroke-width="2"/><text y="3" fill="#f472b6" font-size="8" font-weight="bold" text-anchor="middle">N5</text></g>
+
+                    <!-- Traffic Warning Badge -->
+                    <g transform="translate(340, 50)">
+                        <rect x="-35" y="-10" width="70" height="20" rx="10" fill="#881337" stroke="#f43f5e" stroke-width="1"/>
+                        <text x="0" y="3" fill="#fecdd3" font-size="8" font-weight="bold" text-anchor="middle">⚠️ Delay +25m</text>
+                    </g>
+
+                    <!-- Re-Prescribed Route Tag -->
+                    <rect x="315" y="115" width="115" height="18" rx="4" fill="#0f172a" stroke="#f59e0b" stroke-width="1"/>
+                    <text x="372" y="127" fill="#fde047" font-size="8" font-weight="bold" text-anchor="middle">Re-Prescribed Truck B Leg</text>
+                </svg>`;
+
+                metricsBox.innerHTML = `
+                    <div class="grid grid-cols-3 gap-2 bg-slate-900 border border-amber-500/30 p-2.5 rounded-xl text-center text-[11px]">
+                        <div class="p-1.5 bg-slate-950 rounded border border-slate-800/80">
+                            <span class="text-slate-400 block text-[10px]">Re-routed Fleet Distance</span>
+                            <strong class="text-white font-mono">154 km (+12km)</strong>
+                        </div>
+                        <div class="p-1.5 bg-slate-950 rounded border border-slate-800/80">
+                            <span class="text-slate-400 block text-[10px]">Net Delay Penalty</span>
+                            <strong class="text-amber-400 font-mono">$0 (SLA Saved)</strong>
+                        </div>
+                        <div class="p-1.5 bg-slate-950 rounded border border-slate-800/80">
+                            <span class="text-slate-400 block text-[10px]">Prescribed Optimization</span>
+                            <strong class="text-emerald-400 font-mono">+14% ROI</strong>
+                        </div>
+                    </div>`;
+            }
+        }
+
+        function toggleVRPRoute() {
+            vrpAlternative = !vrpAlternative;
+            renderVRP();
+        }
+        renderVRP();
+
+        // Render Efficient Frontier & Elasticity SVGs
+        document.getElementById('frontier-canvas').innerHTML = `
+            <svg class="w-full h-full" viewBox="0 0 400 180">
+                <line x1="40" y1="20" x2="40" y2="150" stroke="#475569" stroke-width="1.5"/>
+                <line x1="40" y1="150" x2="380" y2="150" stroke="#475569" stroke-width="1.5"/>
+                <path d="M 60 140 Q 100 40 360 30" stroke="#ec4899" stroke-width="3" fill="none"/>
+                <circle cx="180" cy="52" r="6" fill="#10b981"/>
+                <text x="180" y="42" fill="#34d399" font-size="9" font-weight="bold" text-anchor="middle">Tangency Portfolio</text>
+                <text x="210" y="168" fill="#94a3b8" font-size="8" text-anchor="middle">Volatility / Risk (&sigma;)</text>
+                <text x="20" y="85" fill="#94a3b8" font-size="8" text-anchor="middle" transform="rotate(-90 20 85)">Expected Return E(R)</text>
+            </svg>
+        `;
+
+        document.getElementById('elasticity-canvas').innerHTML = `
+            <svg class="w-full h-full" viewBox="0 0 400 180">
+                <line x1="40" y1="20" x2="40" y2="150" stroke="#475569" stroke-width="1.5"/>
+                <line x1="40" y1="150" x2="380" y2="150" stroke="#475569" stroke-width="1.5"/>
+                <path d="M 50 30 Q 200 140 370 145" stroke="#10b981" stroke-width="2.5" fill="none"/>
+                <path d="M 50 140 Q 200 30 370 140" stroke="#0284c7" stroke-width="2" stroke-dasharray="3" fill="none"/>
+                <circle cx="200" cy="52" r="5" fill="#f59e0b"/>
+                <text x="200" y="42" fill="#f59e0b" font-size="9" font-weight="bold" text-anchor="middle">Max Revenue Point ($142.50)</text>
+                <text x="210" y="168" fill="#94a3b8" font-size="8" text-anchor="middle">Price ($)</text>
+            </svg>
+        `;
+
+        function runLabCode() {
+            document.getElementById('terminal-placeholder').classList.add('hidden');
+            document.getElementById('terminal-output').classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>

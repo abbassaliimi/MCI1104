@@ -812,7 +812,7 @@
         const metricCases = {
             r2: {
                 title: "Coefficient of Determination (R²)",
-                desc: "<b>R² measures the percentage of variance explained:</b> R² = 1.0 means perfect predictions (0 residual variance), while R² = 0.0 means the model explains none of the variance and predicts no better than the sample mean of Y.",
+                desc: "<b>R² measures the percentage of total variation in your outcome that the model successfully explains:</b> R² = 1.0 means perfect predictions (0 residual variance), while R² = 0.0 means the model explains none of the variance and predicts no better than the sample mean of Y.<br><br><strong>Example:</strong> An R² of 0.85 means 85% of house price differences are explained by your model's inputs (like size and location), while the remaining 15% comes from unmeasured factors (like modern renovations).",
                 svg: `<svg class="w-full h-full" viewBox="0 0 440 200">
                     <rect x="50" y="40" width="150" height="120" fill="#0369a1" fill-opacity="0.2" stroke="#06b6d4" stroke-width="2" rx="8"/>
                     <text x="125" y="100" fill="#06b6d4" font-size="12" font-weight="bold" text-anchor="middle">Explained: 85%</text>
@@ -822,7 +822,7 @@
             },
             mae: {
                 title: "Mean Absolute Error (MAE)",
-                desc: "<b>MAE measures the linear magnitude of errors:</b> It averages absolute differences (|y - ŷ|). Highly interpretable because it remains in original units (e.g., $15,000 average error).",
+                desc: "<b>MAE measures the average size of your prediction errors in real-world units, treating small and large mistakes proportionally:</b> It averages absolute differences (|y - ŷ|). Highly interpretable because it remains in original units (e.g., $15,000 average error).<br><br><strong>Example:</strong> If your model predicts house prices with an MAE of $15,000, it means that on average, your predictions are off by $15,000 from the actual sale prices.",
                 svg: `<svg class="w-full h-full" viewBox="0 0 440 200">
                     <line x1="40" y1="100" x2="400" y2="100" stroke="#475569" stroke-width="2"/>
                     <line x1="100" y1="100" x2="100" y2="60" stroke="#a855f7" stroke-width="3"/>
@@ -833,7 +833,7 @@
             },
             rmse: {
                 title: "Root Mean Squared Error (RMSE)",
-                desc: "<b>RMSE heavily penalizes large errors:</b> By squaring errors before averaging and taking the square root, single large outliers inflate RMSE much more than MAE.",
+                desc: "<b>RMSE measures the average error size in real-world units, but heavily penalizes rare, large blunders.:</b> By squaring errors before averaging and taking the square root, single large outliers inflate RMSE much more than MAE.<br><br><strong>Example:</strong> If your model predicts house prices with an RMSE of $25,000, it means that while most predictions are close, a few large mistakes (like predicting $200,000 for a $400,000 house) are significantly affecting the average error size.",
                 svg: `<svg class="w-full h-full" viewBox="0 0 440 200">
                     <rect x="80" y="80" width="40" height="40" fill="#10b981" fill-opacity="0.3" stroke="#10b981" stroke-width="1.5"/>
                     <text x="100" y="105" fill="#34d399" font-size="9" font-weight="bold" text-anchor="middle">e²</text>

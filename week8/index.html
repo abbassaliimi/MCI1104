@@ -858,8 +858,8 @@
         // Topic 4: Assumptions Inspector
         const assumptionCases = {
             linearity: {
-                title: "1. Linearity Assumption",
-                desc: "The relationship between X and Y must follow a straight line. If data exhibits curvature, a linear model will produce biased forecasts.",
+                title: "1. Linearity (The Trend is Actually Straight)",
+                desc: "The relationship between cause (X) and effect (Y) must follow a straight-line pattern. If your data naturally forms a curve, wave, or U-shape, forcing a straight line through it will result in bad predictions.",
                 svg: `<svg class="w-full h-full" viewBox="0 0 440 200">
                     <line x1="35" y1="175" x2="420" y2="175" stroke="#475569" stroke-width="1.5"/>
                     <path d="M 40 160 Q 220 20 400 160" stroke="#f59e0b" stroke-width="2.5" fill="none"/>
@@ -868,8 +868,8 @@
                 </svg>`
             },
             independence: {
-                title: "2. Independence Assumption",
-                desc: "Residual errors must not be correlated with each other (no autocorrelation in residuals across sequence).",
+                title: "2. Independence (Data Points Don't Influence Each Other)",
+                desc: "Each measurement must be separate and independent. For example, measuring stock prices minute-by-minute breaks this rule because right now's price relies heavily on one minute ago. When data points drag each other along, the model gets tricked into thinking it has more unique evidence than it actually does.",
                 svg: `<svg class="w-full h-full" viewBox="0 0 440 200">
                     <line x1="35" y1="100" x2="420" y2="100" stroke="#475569" stroke-dasharray="3"/>
                     <circle cx="60" cy="70" r="3" fill="#f59e0b"/><circle cx="90" cy="75" r="3" fill="#f59e0b"/><circle cx="120" cy="80" r="3" fill="#f59e0b"/>
@@ -878,8 +878,8 @@
                 </svg>`
             },
             homoscedasticity: {
-                title: "3. Homoscedasticity Assumption",
-                desc: "The variance of residuals must remain constant across all levels of X (no 'fan' or 'cone' shape in scatter plots).",
+                title: "3. Homoscedasticity (Consistent Mistake Size)",
+                desc: "Your model's prediction errors (called residuals) should stay roughly the same size across the entire chart. If you are predicting house prices, your model shouldn't be off by just $5,000 on budget homes but off by $500,000 on luxury mansions. The spread of your mistakes must remain even from left to right.",
                 svg: `<svg class="w-full h-full" viewBox="0 0 440 200">
                     <line x1="35" y1="100" x2="420" y2="100" stroke="#475569" stroke-dasharray="3"/>
                     <!-- Fan shape -->
@@ -890,8 +890,8 @@
                 </svg>`
             },
             normality: {
-                title: "4. Normality of Residuals",
-                desc: "Prediction errors should follow a bell-shaped normal distribution centered around zero error.",
+                title: "4. Normality of Residuals (Errors Balance Out)",
+                desc: "The mistakes your model makes should form a standard bell curve centered at zero. This means most of your predictions are spot-on or off by just a tiny bit, with small over-guesses and under-guesses happening equally often, and massive blunders being very rare.",
                 svg: `<svg class="w-full h-full" viewBox="0 0 440 200">
                     <path d="M 40 170 Q 220 20 400 170" stroke="#10b981" stroke-width="2.5" fill="none"/>
                     <line x1="220" y1="20" x2="220" y2="170" stroke="#10b981" stroke-dasharray="2"/>
